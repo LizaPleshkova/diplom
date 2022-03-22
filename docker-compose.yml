@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_PORT=${DATABASE_PORT}
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: >
+      sh -c "python3 manage.py migrate &&
+        python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
