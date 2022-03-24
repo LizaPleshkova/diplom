@@ -8,9 +8,9 @@ media
 
 # Backup files #
 *.bak
-
+static/
 frontend/vue-cinema/node_modules
-
+data/
 # If you are using PyCharm #
 # User-specific stuff
 .idea/**/workspace.xml
