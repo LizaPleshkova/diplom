@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+
     'client',
     'cinema',
     'movie'
@@ -61,17 +63,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CityCinema.wsgi.application'
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv("DATABASE_NAME"),
-#         'USER': os.getenv("DATABASE_USER"),
-#         'PASSWORD': os.getenv("DATABASE_PASSWORD"),
-#         'HOST': os.getenv('DATABASE_HOST'),
-#         'PORT': os.getenv('DATABASE_POST')
-#     }
-# }
 DATABASES = {
     'default': env.db()
 }
@@ -90,7 +81,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL = 'client.User'
+AUTH_USER_MODEL = 'client.user'
 
 LANGUAGE_CODE = 'en-us'
 

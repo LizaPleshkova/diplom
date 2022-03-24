@@ -3,41 +3,36 @@ from django.urls import reverse
 
 
 class PersonalData(models.Model):
-    id_person = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'{self.id_person} - {self.first_name} - {self.last_name} '
+        return f'{self.id} - {self.first_name} - {self.last_name} '
 
 
 class Studio(models.Model):
-    id_studio = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'{self.id_studio} - {self.name} '
+        return f'{self.id} - {self.name} '
 
 
 class Country(models.Model):
-    id_country = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'{self.id_country} - {self.name} '
+        return f'{self.id} - {self.name} '
 
 
 class Genre(models.Model):
-    id_genre = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'{self.id_genre} - {self.name} '
+        return f'{self.id} - {self.name} '
 
 
 class Movie(models.Model):
-    id_movie = models.AutoField(primary_key=True)#del
     name = models.CharField(max_length=255)
     duration = models.TimeField(blank=True, null=True)
     release_date = models.DateField(blank=True, null=True)
@@ -49,43 +44,40 @@ class Movie(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.id_movie} - {self.name} '
+        return f'{self.id} - {self.name} '
 
     def get_absolute_url(self):
-        return reverse('movie_detail', kwargs={"pk": self.id_movie})
+        return reverse('movie_detail', kwargs={"id": self.id})
 
 
 class MovieComposition(models.Model):
     position = models.CharField(max_length=255)
-    id_person = models.ForeignKey('PersonalData', models.DO_NOTHING, blank=True, null=True)
-    id_movie = models.ForeignKey(Movie, models.DO_NOTHING)
+    person = models.ForeignKey('PersonalData', on_delete=models.CASCADE, blank=True, null=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.position} - {self.id_person} - {self.id_movie} '
+        return f'{self.position} - {self.person} - {self.movie} '
 
 
 class MovieCountries(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    movie = models.ForeignKey(Movie, models.DO_NOTHING)
-    country = models.ForeignKey(Country, models.DO_NOTHING)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('movie', 'country'),)
 
 
 class MovieGenres(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    movie = models.ForeignKey(Movie, models.DO_NOTHING, related_name='movie_genre')
-    genre = models.ForeignKey(Genre, models.DO_NOTHING, related_name='m_genre')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE,blank=True, null=True,  related_name='movie_genre')
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, blank=True, null=True, related_name='movie_genre')
 
     class Meta:
         unique_together = (('movie', 'genre'),)
 
 
 class MovieStudios(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    movie = models.ForeignKey(Movie, models.DO_NOTHING)
-    studio = models.ForeignKey('Studio', models.DO_NOTHING)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="ms_movie")
+    studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='ms_studio')
 
     class Meta:
         unique_together = (('movie', 'studio'),)
