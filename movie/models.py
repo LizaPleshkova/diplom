@@ -37,7 +37,7 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
-    id_movie = models.AutoField(primary_key=True)
+    id_movie = models.AutoField(primary_key=True)#del
     name = models.CharField(max_length=255)
     duration = models.TimeField(blank=True, null=True)
     release_date = models.DateField(blank=True, null=True)
