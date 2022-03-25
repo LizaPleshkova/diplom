@@ -17,3 +17,6 @@ class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.G
         if self.action == 'retrieve' or self.action == 'create':
             return MovieListSerializer
         return MovieListSerializer
+
+
+

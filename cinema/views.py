@@ -1,11 +1,13 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import generics, permissions, viewsets, status, serializers
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
+from rest_framework.viewsets import ModelViewSet
+
 from .serializers import CinemaListSerializer, HallListSerializer
 from .models import Cinema, Hall
 
 
-class CinemaView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet,  viewsets.ViewSet):
+class CinemaView(ModelViewSet):
     permission_classes = (AllowAny,)
 
     def get_queryset(self, *args, **kwargs):
@@ -19,7 +21,7 @@ class CinemaView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.
         return CinemaListSerializer
 
 
-class HallView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet,  viewsets.ViewSet):
+class HallView(ModelViewSet):
     permission_classes = (AllowAny,)
 
     def get_queryset(self, *args, **kwargs):

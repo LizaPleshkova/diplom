@@ -8,7 +8,7 @@ class StudioListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Studio
-        fields = ('name')
+        fields = ('name',)
 
 
 class StudioslListSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class StudioslListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MovieStudios
-        fields = ('studio')
+        fields = ('studio',)
 
 
 class MovieListSerializer(serializers.ModelSerializer):
