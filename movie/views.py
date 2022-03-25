@@ -9,7 +9,8 @@ class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.G
     permission_classes = (AllowAny,)
 
     def get_queryset(self, *args, **kwargs):
-        # наверное только с текущей даты
+        # наверное только с текущей даты ScheduleRental.start_date 
+        # Movie.objects.filter()
         queryset = Movie.objects.all()
         return queryset
 
