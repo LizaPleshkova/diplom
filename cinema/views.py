@@ -7,26 +7,28 @@ from .models import Cinema, Hall
 
 class CinemaView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet,  viewsets.ViewSet):
     permission_classes = (AllowAny,)
+    serializer_class = CinemaListSerializer
 
     def get_queryset(self, *args, **kwargs):
         # наверное только с текущей даты
         queryset = Cinema.objects.all()
         return queryset
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve' or self.action == 'create':
-            return CinemaListSerializer
-        return CinemaListSerializer
+    # def get_serializer_class(self):
+    #     if self.action == 'retrieve' or self.action == 'create':
+    #         return CinemaListSerializer
+    #     return CinemaListSerializer
 
 
 class HallView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet,  viewsets.ViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = HallListSerializer
 
     def get_queryset(self, *args, **kwargs):
         queryset = Hall.objects.all()
         return queryset
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve' or self.action == 'create':
-            return HallListSerializer
-        return HallListSerializer
+    # def get_serializer_class(self):
+    #     if self.action == 'retrieve' or self.action == 'create':
+    #         return HallListSerializer
+    #     return HallListSerializer

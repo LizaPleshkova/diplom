@@ -8,9 +8,5 @@ router = routers.SimpleRouter()
 
 
 router.register(r'movie', MovieView, basename='movie')
-#
-# urlpatterns = [
-#     path('movie/', MovieView.as_view(), name='movie')
-# ]
 
 urlpatterns = router.urls
