@@ -22,9 +22,10 @@ class Hall(models.Model):
     '''  validate count places <10 '''
     name = models.CharField(max_length=100)
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, blank=True, null=True)
+    count_places = models.IntegerField()
 
     def __str__(self):
-        return f'{self.pk} - {self.name} - {self.cinema}'
+        return f'{self.pk} - {self.name} - {self.cinema}- {self.count_places}'
 
 
 class Sector(models.Model):
@@ -47,7 +48,8 @@ class Seat(models.Model):
 
 class ScheduleRental(models.Model):
     '''  прокат фильма '''
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True, related_name='movie_rental')# not on_delte
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True,
+                              related_name='movie_rental')  # not on_delte
     start_date = models.DateField()
     end_date = models.DateField()
 
@@ -75,9 +77,8 @@ class SessionSchedule(models.Model):
 class MovieSession(models.Model):
     ''' киноcеанс '''
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE, blank=True, null=True, related_name='session_hall')
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True,  related_name='session_movie')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True, related_name='session_movie')
     datetime_session = models.DateTimeField()
 
     def __str__(self):
         return f'{self.pk} - {self.hall} - {self.movie}'
-

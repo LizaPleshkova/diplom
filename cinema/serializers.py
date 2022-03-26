@@ -23,6 +23,22 @@ class HallListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class HallCreateSerializer(serializers.ModelSerializer):
+    count_places = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Hall
+        fields = ('name', 'cinema', 'count_places',)
+
+    def validate(self, data):
+        """ checking count places """
+        if data.get('count_places') is None:
+            data['count_places'] = 10
+        if data.get('count_places') > 10:
+            raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
+        return data
+
+
 class SeatListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
@@ -45,4 +61,3 @@ class ScheduleRentalListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduleRental
         fields = '__all__'
-
