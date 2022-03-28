@@ -6,11 +6,15 @@ __pycache__
 db.sqlite3
 media
 
-# Backup files #
-*.bak
+# my folders
 static/
 frontend/vue-cinema/node_modules
+node_modules/
 data/
+
+# Backup files #
+*.bak
+
 # If you are using PyCharm #
 # User-specific stuffpython manage.py migrate --fake
 .idea/**/workspace.xml

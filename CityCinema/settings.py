@@ -120,10 +120,11 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# USER LOGIN
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_URL = 'home'
+
 
 # CRISPY - FORMS
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = ["http://localhost:8080"]
