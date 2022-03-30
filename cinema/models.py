@@ -1,8 +1,18 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.urls import reverse
+from enum import Enum
 
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+from django.db import models
 from movie.models import Movie
+
+User = get_user_model()
+
+
+class SectorChoice(Enum):
+    VIP = 'VIP'
+    A = 'A'
+    B = 'B'
+    C = 'C'
 
 
 class Cinema(models.Model):
@@ -41,6 +51,7 @@ class Seat(models.Model):
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE)
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING, blank=True, null=True)
     number_place = models.IntegerField()
+    number_row = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.pk} - {self.hall} - {self.sector} - {self.number_place}'
@@ -82,3 +93,21 @@ class MovieSession(models.Model):
 
     def __str__(self):
         return f'{self.pk} - {self.hall} - {self.movie}'
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session = models.ForeignKey(
+        MovieSession,
+        on_delete=models.CASCADE,
+        related_name='booking_ms'
+    )
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE, related_name='booking_seat')
+    price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
+    datetime_book = models.DateTimeField()
+
+    class Meta:
+        unique_together = (('session', 'seat'),)
+
+    def __str__(self):
+        return f'{self.id} - {self.user.username} - {self.session} - {self.seat.number_place} - {self.price} - {self.datetime_book} '

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema
+    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema, Booking
 )
 
 
@@ -10,7 +10,7 @@ class CinemaAdmin(admin.ModelAdmin):
 
 
 class HallAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'cinema')
+    list_display = ('id', 'name', 'cinema', 'count_places')
     list_filter = ['id', 'cinema']
     search_fields = ['name']
 
@@ -24,7 +24,7 @@ class SectorAdmin(admin.ModelAdmin):
 
 class SeatAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'hall', 'sector', 'number_place'
+        'id', 'hall', 'sector', 'number_place', 'number_row',
     )
     list_filter = ['hall', 'sector']
     search_fields = ['hall', 'sector']
@@ -52,6 +52,15 @@ class SessionScheduleAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class BookingAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'session', 'seat', 'price', 'datetime_book',
+    )
+    search_fields = ['user', 'session']
+    list_filter = ['user', 'session']
+
+
+admin.site.register(Booking, BookingAdmin)
 admin.site.register(Cinema, CinemaAdmin)
 admin.site.register(Hall, HallAdmin)
 admin.site.register(Seat, SeatAdmin)

@@ -24,15 +24,12 @@ class MovieService:
     @staticmethod
     def get_movies_now():
         ''' movies that are in the rental now
-        ? которые вооюще в прокате или есть сейансы егодня
         '''
         today = datetime.datetime.now().date()
         mv = MovieSession.objects.filter(
             datetime_session__date=today
-        ).distinct().values('id_movie')
-        movies = Movie.objects.filter(pk__in=mv)
-        # print(mv)
-        # print(today)
+        ).distinct().values('id')
+        movies = Movie.objects.filter(id__in=mv)
         return movies
 
     @staticmethod
