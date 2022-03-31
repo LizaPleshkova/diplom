@@ -23,24 +23,14 @@ const routes = [
       name: 'cinema-list',
     //   component: CinemaList,
     component: () => import( '../components/CinemaList.vue'),
-    children: [
-      {
-        path: '',
-        name: 'cinema-list',
-        component: () => import( '../components/CinemaList.vue'),
-      },
-      {
-        path: ':id',
-        name: 'cinema',
-        component: () => import( '../components/Cinema.vue'),
-      },
-      // {
-      //   path: '/:catchAll(.*)',
-      //   redirect: { name: 'cinema-list' }
-      // },
-    ]
-
-   
+       
+    },
+    {
+      path: '/cinema-detail',
+      name: 'cinema-detail',
+    component: () => import( '../components/CinemaDetail.vue'),
+    props: true,
+       
     }
   ]
   const router = createRouter({

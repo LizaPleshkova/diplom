@@ -30,7 +30,7 @@ export default {
   },
   async created(){
     var response = await fetch('http://localhost:8000/api/movie/');
-    this.movies = await response.json();console.log(this.movie);
+    this.movies = await response.json();
   }
 }
 </script>

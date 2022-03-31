@@ -1,7 +1,7 @@
 import math
 from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
-from ...models import Seat, Sector, Hall
+from ...models import Seat, Sector, Hall, SectorChoice
 
 
 class Command(BaseCommand):
@@ -13,9 +13,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         id_hall = options['id_hall']
         hall = Hall.objects.get(id=id_hall)  # 14
-        sector_A = Sector.objects.get(id=1)
-        sector_C = Sector.objects.get(id=3)
-        sector_B = Sector.objects.get(id=2)
+        sector_A = Sector.objects.get(name=SectorChoice.A.value)
+        sector_C = Sector.objects.get(name=SectorChoice.C.value)
+        sector_B = Sector.objects.get(name=SectorChoice.B.value)
 
         print(hall)
         number_of_seats = hall.count_places

@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-if="cinema">
+    <div class="card" >
         <div class="card-body text-center">
         
     <img v-bind:src="cinema.image" alt="" class="card-img-top">
@@ -9,7 +9,7 @@
             <p >{{ cinema.phone_number }}</p>
             </div>
             
-    <router-link :to="{ name: 'cinema', params: { id: cinema.id }}" 
+    <router-link :to="{ name: 'cinema-detail', query: { id: cinema.id }}" 
                 class="btn btn-outline-success btn-sm">Read More </router-link>
 
         </div>
