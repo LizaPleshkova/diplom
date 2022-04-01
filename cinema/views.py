@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .serializers import CinemaListSerializer, HallListSerializer, HallCreateSerializer, SeatListSerializer, \
-    BookingSerializer
-from .models import Cinema, Hall, MovieSession, Booking, Seat
+    BookingSerializer, MovieSessionSerializer
+from .models import Cinema, Hall, MovieSession, Booking, Seat, BookingHistory, ActionChoice
 from .services.BookingService import BookingClassService
 
 
@@ -66,19 +66,42 @@ class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, v
         queryset = Booking.objects.all()
         return queryset
 
+    @action(methods=['get'], detail=False, url_path='update-booking', url_name='update_booking')
+    def update_booking_seats(self, request, pk=None):
+        movie_session_time = MovieSession.objects.filter(datetime_session__lte=datetime.now())
+        for ms in movie_session_time:
+            # все забронированные места в выбранных киносеансах
+            booking_ms = Booking.objects.filter(
+                session=ms
+            )
+            for booking in booking_ms:
+                booking_history = BookingHistory.objects.create(
+                    action=ActionChoice.DELETE.value,
+                    user=booking.user,
+                    session=booking.session,
+                    seat=booking.seat,
+                    price=booking.price,
+                    datetime_book=booking.datetime_book
+                )
+                booking_history.save()
+                print(' for del ', booking)
+                booking.delete()
+
+        return Response(content_type="application/json", status=status.HTTP_200_OK)
+
 
 class MovieSessionView(ModelViewSet):
     permission_classes = (AllowAny,)
-    serializer_class = BookingSerializer
+    serializer_class = MovieSessionSerializer
 
     def get_queryset(self):
         queryset = MovieSession.objects.filter(datetime_session__date__gte=datetime.now().date())
         return queryset
 
-    @action(methods=['get'], detail=False, url_path='(?P<pk>[^/.]+)/get-seats', url_name='get-seats')
-    def get_seats(self, request, **kwargs):
-        movie_session_id = kwargs.get('pk')
-        free_seats, booked_seats = BookingClassService.get_free_booked_seats(movie_session_id)
+    @action(methods=['get'], detail=True, url_path='get-seats', url_name='get_seats')
+    def get_seats(self, request, pk=None):
+        # movie_session_id = self.get_object()
+        free_seats, booked_seats = BookingClassService.get_free_booked_seats(pk)
         seats = {
             'count_free_seats': free_seats.count(),
             'count_booked_seats': booked_seats.count(),
@@ -87,12 +110,13 @@ class MovieSessionView(ModelViewSet):
         }
         return Response(seats, content_type="application/json", status=status.HTTP_200_OK)
 
-    @action(methods=['post'], detail=False, url_path='(?P<pk>[^/.]+)/booking', url_name='booking')
+    @action(methods=['post'], detail=True, url_path='booking', url_name='booking')
     def booking_seats(self, request, **kwargs):
         movie_session_id = kwargs.get('pk')
-
+        #
+        print(self.request.user)
         booking_instance = BookingClassService.create_booking(movie_session_id, request)
         if booking_instance:
-            return Response(booking_instance, content_type="application/json", status=status.HTTP_200_OK)
+            return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
         else:
             return Response(content_type="application/json", status=status.HTTP_400_BAD_REQUEST)

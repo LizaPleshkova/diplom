@@ -3,7 +3,7 @@ import json
 from datetime import datetime, date
 from turtle import pd
 import holidays
-from ..models import Booking, Seat, MovieSession, SectorChoice
+from ..models import Booking, Seat, MovieSession, SectorChoice, BookingHistory, ActionChoice
 from django.contrib.auth import get_user_model
 
 from ..serializers import BookingSerializer
@@ -50,8 +50,16 @@ class BookingClassService:
         )
         if ser.is_valid(raise_exception=True):
             instance = ser.save()
+            booking_history = BookingHistory.objects.create(
+                action=ActionChoice.CREATE.value,
+                user=instance.user,
+                session=instance.session,
+                seat=instance.seat,
+                price=instance.price,
+                datetime_book=instance.datetime_book
+            )
+            booking_history.save()
             return ser.data
-
 
     @staticmethod
     def get_ids_booked_seats(pk_session: int):
@@ -67,6 +75,7 @@ class BookingClassService:
 
     @staticmethod
     def get_free_booked_seats(pk_session: int) -> object:
+        ''' not id -> to object'''
         # get id of booked_seats in the movie_session
         booked_seats = Booking.objects.filter(session=pk_session)
 

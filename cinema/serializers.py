@@ -65,20 +65,41 @@ class HallListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class HallCreateSerializer(serializers.ModelSerializer):
-    count_places = serializers.IntegerField(required=False)
+class HallCreateSerializer(serializers.Serializer):
+    count_places = serializers.IntegerField(required=False, allow_null=False)
+    name = serializers.CharField()
+    cinema = serializers.CharField()
 
-    class Meta:
-        model = Hall
-        fields = ('name', 'cinema', 'count_places',)
+    def validate_cinema(self, value):
+        print(value)
 
-    def validate(self, data):
-        """ checking count places """
-        if data.get('count_places') is None:
-            data['count_places'] = 10
-        if data.get('count_places') > 10:
-            raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
-        return data
+        if not Cinema.objects.filter(id=int(value)).exists():
+            raise serializers.ValidationError("cinema doesn't exist", code='invalid')
+        else:
+            value = Cinema.objects.get(id=int(value))
+        return value
+
+    def validate_count_places(self, value):
+        ''' not work '''
+        print("validate_count_places", value)
+        if value is not None:
+            if value > 10:
+                raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
+        else:
+            value = 10
+        return value
+
+    def create(self, validated_data):
+        return Hall.objects.create(**validated_data)
+
+    # def validate(self, data):
+    #     """ validate for all fields (cienema id"""
+    #     """ checking count places """
+    #     if data.get('count_places') is None:
+    #         data['count_places'] = 10
+    #     if data.get('count_places') > 10:
+    #         raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
+    #     return data
 
 
 class SeatListSerializer(serializers.ModelSerializer):

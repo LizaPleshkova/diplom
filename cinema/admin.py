@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema, Booking
+    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema, Booking, BookingHistory
 )
 
 
@@ -60,6 +60,15 @@ class BookingAdmin(admin.ModelAdmin):
     list_filter = ['user', 'session']
 
 
+class BookingHistoryAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'session', 'seat', 'action'
+    )
+    search_fields = ['user', 'session', 'action']
+    list_filter = ['user', 'session', 'action']
+
+
+admin.site.register(BookingHistory, BookingHistoryAdmin)
 admin.site.register(Booking, BookingAdmin)
 admin.site.register(Cinema, CinemaAdmin)
 admin.site.register(Hall, HallAdmin)

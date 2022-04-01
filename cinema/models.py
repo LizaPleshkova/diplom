@@ -1,5 +1,8 @@
+import math
 from enum import Enum
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -36,6 +39,43 @@ class Hall(models.Model):
 
     def __str__(self):
         return f'{self.pk} - {self.name} - {self.cinema}- {self.count_places}'
+
+
+@receiver(post_save, sender=Hall)
+def create_seats(sender, instance, created, *args, **kwargs):
+    if created:
+        print(instance)
+        number_of_seats = instance.count_places
+        num_seat = 1
+        count_rows = 3  # or 4
+
+        sector_A = Sector.objects.get(name=SectorChoice.A.value)
+        sector_C = Sector.objects.get(name=SectorChoice.C.value)
+        sector_B = Sector.objects.get(name=SectorChoice.B.value)
+
+        columns = math.ceil(number_of_seats / count_rows)
+        for row in range(count_rows):
+            for column in range(columns):
+                if num_seat > number_of_seats:
+                    break
+                else:
+                    if row == 0:
+                        sector = sector_A
+                    elif row == 1:
+                        sector = sector_B
+                    else:
+                        sector = sector_C
+                    new_seat = Seat(
+                        hall=instance,
+                        number_place=num_seat,
+                        sector=sector,
+                        number_row=row
+                    )
+                    print(new_seat)
+                    new_seat.save()
+                    num_seat += 1
+    else:
+        print('not run')
 
 
 class Sector(models.Model):
@@ -111,3 +151,31 @@ class Booking(models.Model):
 
     def __str__(self):
         return f'{self.id} - {self.user.username} - {self.session} - {self.seat.number_place} - {self.price} - {self.datetime_book} '
+
+
+class ActionChoice(Enum):
+    DELETE = 'Delete'
+    CREATE = 'Create'
+    UPDATE = 'Update'
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
+
+
+class BookingHistory(models.Model):
+    '''
+    может добавить что именно сделал пользователь: удалил\добавил
+    => signal ( after save Booking)
+    '''
+    action = models.CharField("Type of action", max_length=7, choices=ActionChoice.choices(), null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    session = models.ForeignKey(
+        MovieSession,
+        on_delete=models.CASCADE,
+        related_name='history_ms'
+    )
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE, related_name='history_seat')
+    price = models.DecimalField(max_digits=1000, decimal_places=2, blank=True, null=True)
+    datetime_book = models.DateTimeField()
+    action_time = models.DateTimeField(auto_now=True)

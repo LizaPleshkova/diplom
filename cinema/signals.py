@@ -38,3 +38,5 @@ def create_seats(sender, instance, created, *args, **kwargs):
                     print(new_seat)
                     new_seat.save()
                     num_seat += 1
+    else:
+        print('not run')
