@@ -34,11 +34,31 @@ const routes = [
     component: () => import("../components/CinemaDetail.vue"),
     props: true,
   },
+  {
+    path: "/login",
+    component: () => import("../components/user/Login.vue"),
+  },
+  {
+    path: "/register",
+    component: () => import("../components/user/Register.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register', '/home'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -36,11 +36,15 @@
           />
         </form>
 
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">
+        <div class="text-end ">
+         <router-link to="/login">
+                      <button type="button" class="m-2 btn btn-outline-light me-2">
             Login
           </button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
+            </router-link>
+          <router-link to="/register" >
+          <button type="button" class="m-2 btn btn-warning ">Sign-up</button>
+          </router-link>
         </div>
       </div>
     </div>
