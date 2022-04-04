@@ -1,40 +1,44 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 // import { CinemaList } from "../components/CinemaList"
 // import {MovieList} from '../components/MovieList'
-// import Main from '../components/base/Main'
-
-
-
+// import CinemaDataService from "./services/DataService";
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'main',
-    //     component: Main
-    //   },
-    {
-      path: '/',
-      name: 'movie-list',
-    //   component: MovieList
-      component: () => import( '../components/MovieList.vue')
-    },
-    {
-      path: '/cinema',
-      name: 'cinema-list',
-    //   component: CinemaList,
-    component: () => import( '../components/CinemaList.vue'),
-       
-    },
-    {
-      path: '/cinema-detail',
-      name: 'cinema-detail',
-    component: () => import( '../components/CinemaDetail.vue'),
+  {
+    path: "/",
+    name: "main",
+    component: () => import("../components/base/Main.vue"),
+  },
+  {
+    path: "/movie",
+    name: "movie-list",
+    // component: CinemaDataService,
+    component: () => import("../components/MovieList.vue"),
+  },
+  {
+    path: "/movie/:movieId",
+    name: "movie-detail",
+    // component: CinemaDataService,
+    component: () => import("../components/Movie.vue"),
     props: true,
-       
-    }
-  ]
-  const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
-    routes
-  })
-  export default router
+  },
+  {
+    path: "/cinema",
+    name: "cinema-list",
+    //   component: CinemaList,
+    component: () => import("../components/CinemaList.vue"),
+  },
+  {
+    path: "/cinema/:cinemaId",
+    name: "cinema-detail",
+    component: () => import("../components/CinemaDetail.vue"),
+    props: true,
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes,
+});
+
+export default router;

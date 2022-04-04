@@ -1,36 +1,16 @@
 <template>
-  <div class="left-ads-display col-lg-9">
-    <div class="row">
-        <section id="gallery">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mb-4">
-
-                        <Movie v-for="movie in movies" v-bind:key="movie.id" :movie="movie"/>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</div>
+        <Movie v-for="movie in movies" v-bind:key="movie.id" :movie="movie" />
+      
 </template>
 
 <script>
-import Movie from "./Movie"
+import Movie from "./Movie.vue";
 
 export default {
-  name: 'MovieList',
-  data() {
-    return {
-      movies: [],
-    };
+  name: "MovieList",
+  components: {
+    Movie,
   },
-  components:{
-    Movie
-  },
-  async created(){
-    var response = await fetch('http://localhost:8000/api/movie/');
-    this.movies = await response.json();
-  }
-}
+  props: ["movies"]
+};
 </script>

@@ -1,35 +1,37 @@
 <template>
   <div class="left-ads-display col-lg-9">
-    <div class="row">
-        <section id="gallery">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mb-4">
-                    <Cinema v-for="cinema in cinemas" v-bind:key="cinema.id" :cinema="cinema"/>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="row" id="gallery">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h1>from cinema list</h1>
+            <Cinema
+              v-for="cinema in allCinemas"
+              v-bind:key="cinema.id"
+              :cinema="cinema"
+            />
+            <!-- query: { id: cinema.id }-->
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-import Cinema from './Cinema'
+import Cinema from "./Cinema.vue";
+import {mapGetters, mapActions} from 'vuex' 
 
 export default {
-  name: 'CinemaList',
-  data() {
-    return {
-      cinemas: [],
-    };
+  name: "CinemaList",
+  components: {
+    Cinema,
   },
-  components:{
-    Cinema
-  },
-  async created(){
-    var response = await fetch('http://localhost:8000/api/cinema/');
-    this.cinemas = await response.json();
+  computed:mapGetters(['allCinemas']),
+  methods: mapActions(['getCinemas']),
+  mounted(){
+    this.getCinemas();
+    console.log(this.allCinemas);
   }
-}
+};
 </script>
