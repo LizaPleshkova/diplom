@@ -13,4 +13,12 @@ export const HTTP_USER = axios.create({
   },
 });
 
+// // this.$store.getters.accessToken;
+// console.log($store.getters.accessToken)
+// if ($store.getters.accessToken) {
+//   axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
+// } else {
+//   axios.defaults.headers.common['Authorization'] = "";
+// }
+
 export default HTTP;

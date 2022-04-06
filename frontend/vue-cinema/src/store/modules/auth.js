@@ -42,6 +42,9 @@ export const authModule = {
   getters:{
     loggedIn(state){
       return state.isAuthenticated = true
+    },
+    getToken(state){
+      return state.accessToken;
     }
   },
   actions: {

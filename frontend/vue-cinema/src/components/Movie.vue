@@ -1,7 +1,6 @@
 <template>
   <div class="col mb-4">
     <div class="card">
-      <!--                    width="400" height="300"-->
       <img v-bind:src="movie.image" alt="" class="card-img-top"/>
       <div class="card-body text-center">
         <h5 class="card-title">{{ movie.name }}</h5>
@@ -22,6 +21,9 @@ export default {
   name: "Movie",
     // computed:mapGetters(['allCinema']),
   props:[ 'movie'],
+  created(){
+    console.log('from M', this.movie)
+  }
 //   mounted(){
 //         console.log(this.movies);
 

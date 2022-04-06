@@ -10,17 +10,17 @@
     <div class="collapse navbar-collapse" id="navb">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link to="/movie" class="nav-link" href="javascript:void(0)"
+          <router-link to="/movie" class="nav-link"
             >Movies</router-link
           >
         </li>
         <li class="nav-item">
-          <router-link to="/cinema" class="nav-link" href="javascript:void(0)"
+          <router-link to="/cinema" class="nav-link"
             >Cinema</router-link
           >
         </li>
         <li class="nav-item">
-          <router-link to="/" class="nav-link" href="javascript:void(0)"
+          <router-link to="/" class="nav-link"
             >About</router-link
           >
         </li>
@@ -57,10 +57,6 @@
           ></path>
         </svg>
       </button>
-       <router-link to="/logout">
-          Logout
-        </router-link
-      >
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <router-link to="/profile" class="dropdown-item">Profile </router-link>
         <router-link to="/logout" class="dropdown-item"> LogOut</router-link>
@@ -69,7 +65,7 @@
 
     <div v-else>
       <router-link to="/login">
-        <button type="button" class="btn btn-outline-warning">
+        <button type="button" class="btn btn-outline-warning m-3">
           Login
         </button></router-link
       >

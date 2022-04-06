@@ -22,14 +22,11 @@ export default {
   name: "cinema-detail",
   computed: mapGetters(["currentCinema"]),
   methods: mapActions(["getCinema"]),
-  mounted() {
-    console.log('cinemaId', this.$route.params.cinemaId);
-    this.getCinema(this.$route.params.cinemaId);
-  },
+  // mounted() {
+  //   this.getCinema(this.$route.params.cinemaId);
+  // },
   created(){
-     console.log('cinemaId', this.$route.params.cinemaId);
     this.getCinema(this.$route.params.cinemaId);
-    console.log('cinemaId', this.$route.params.cinemaId);
 
   }
 };

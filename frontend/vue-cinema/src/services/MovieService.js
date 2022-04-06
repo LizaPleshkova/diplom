@@ -1,15 +1,25 @@
 import HTTP from "../http-common";
 import axios from "axios";
 
+
+
 const MovieService = {
   getMovies() {
+    // console.log(this.$state, this.$state.getters)
+    // console.log(this.$store.state.authModule.user.accessToken)
     return HTTP.get("/movie/").then((response) => {
       return response.data;
     });
   },
 
   getMovie(pk) {
-    return HTTP.get(`/movie/${pk}`).then((response) => response.data);
+    console.log('from MS')
+    return HTTP.get(
+      `/movie/${pk}/`
+    //  { headers: {
+    //     Authorization: 'Bearer ' + token //the token is a variable which holds the token
+    //   }}
+      ).then((response) => response.data);
   },
 
   getFilterMovies(filters) {

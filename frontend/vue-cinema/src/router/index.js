@@ -19,7 +19,7 @@ const routes = [
     path: "/movie/:movieId",
     name: "movie-detail",
     // component: CinemaDataService,
-    component: () => import("../components/Movie.vue"),
+    component: () => import("../components/MovieDetail.vue"),
     props: true,
   },
   {

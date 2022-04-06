@@ -12,17 +12,20 @@ from .models import Movie, Genre
 from .services.movie_service import MovieService
 from rest_framework.response import Response
 
-import django_filters
+from django_filters import rest_framework as filters
 
 
 class MoviesFilter(django_filters.FilterSet):
-    genre = django_filters.CharFilter(method='filter_by_genre')
+    # genres = django_filters.CharFilter(field_name='genres__name')
+    # genres = django_filters.NumberFilter(field_name="genres")
+    genres = django_filters.AllValuesFilter
+    # genre = django_filters.CharFilter(method='filter_by_genre')
     date = django_filters.CharFilter(method='filter_by_date', label='filter_by_date')
     cinema = django_filters.CharFilter(method='filter_by_cinema', label='cinema')
 
     class Meta:
         model = Movie
-        fields = ['genre', 'date', 'cinema']
+        fields = ['genres', 'date', 'cinema']
 
     def filter_by_cinema(self, queryset, name, value):
         queryset = Movie.objects.filter(Q(session_movie__hall__cinema__name=value))
@@ -37,12 +40,12 @@ class MoviesFilter(django_filters.FilterSet):
         print(value)
         queryset = Movie.objects.filter(Q(session_movie__datetime_session__date=value))
         return queryset
-
+#
 
 class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
     permission_classes = (AllowAny,)
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    # filterset_fields = ['genres']
+    filter_backends = (filters.DjangoFilterBackend,)
+    # filterset_fields = ('genres__name',)
     filterset_class = MoviesFilter
 
     def get_queryset(self, *args, **kwargs):

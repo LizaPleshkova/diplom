@@ -52,7 +52,7 @@ export default {
     this.$store.commit('initializeStore')
 
     if (this.$store.state.authModule.user.accessToken) {
-      axios.defaults.headers.common['Authorization'] = "Token " + this.$store.state.authModule.user.accessToken;
+      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
     } else {
       axios.defaults.headers.common['Authorization'] = "";
     }
