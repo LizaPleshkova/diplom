@@ -1,47 +1,47 @@
 <template>
   <div class="side-bar col-sm-3">
-    <div class="card border-dark mb-2">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Кинотеатры
-      </div>
-      <div class="card-body text-dark"></div>
-    </div>
-
-    <div class="card border-dark mb-2">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Даты
-      </div>
-      <div class="card-text text-center m-1"></div>
-    </div>
-
-    <div class="card border-dark mb-3">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Жанры
-      </div>
-      <div class="card-text text-center"></div>
-    </div>
+    <Filters />
   </div>
 
-  <div class=" col-sm-9">
-  <div class="row row-cols-3 row-cols-md-3">
-
+  <div class="col-sm-9">
+    <div class="row row-cols-3 row-cols-md-3">
       <MovieList :movies="allMovies" />
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import MovieList from "@/components/MovieList";
+import Filters from "@/components/Filter.vue";
 
 export default {
   name: "Main",
+  //   data(){
+  //     return{
+  //       f_cinemas:[],
+  //       f_genres:[],
+  //       f_dates:[]
+  //     }
+  // },
+  //  created(){
+  //       FilterService.getFilters().then((cinemas, genres, dates) => {
+  //           this.f_cinemas = cinemas;
+  //           this.f_dates = dates;
+  //           this.f_genres = genres;
+
+  //           console.log(this.f_cinemas);
+  //           console.log(this.f_genres);
+  //           console.log(this.f_dates);
+  //       });
+  // },
   components: {
     MovieList,
+    Filters,
   },
   computed: mapGetters(["allMovies"]),
   methods: mapActions(["getMovies"]),
-   mounted() {
+  mounted() {
     this.getMovies();
   },
 };

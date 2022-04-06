@@ -34,7 +34,8 @@ class MovieSessionCompositionAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'hall', 'movie', 'datetime_session',
     )
-    list_filter = ['hall', 'movie']
+    list_filter = ['hall', 'movie', 'datetime_session',]
+    search_fields = ['hall', 'movie', 'datetime_session',]
 
 
 class ScheduleRentalAdmin(admin.ModelAdmin):

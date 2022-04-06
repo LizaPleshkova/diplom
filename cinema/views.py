@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework import viewsets, status, serializers
@@ -11,6 +11,41 @@ from .serializers import CinemaListSerializer, HallListSerializer, HallCreateSer
     BookingSerializer, MovieSessionSerializer
 from .models import Cinema, Hall, MovieSession, Booking, Seat, BookingHistory, ActionChoice
 from .services.BookingService import BookingClassService
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from movie.models import Genre
+from movie.serializers import GenreListSerializer
+
+
+def _get_range_dates():
+    start_date = datetime.now().date()
+    end_date = start_date + timedelta(days=5)
+
+    # start = datetime.strptime(start_date, '%A, %d %B %Y')
+    start = datetime.strptime(str(start_date), '%Y-%m-%d')
+    end = datetime.strptime(str(end_date), '%Y-%m-%d')
+
+    daterange = [(start + timedelta(days=x)).strftime('%Y-%m-%d') for x in range(0, (end - start).days)]
+    print(daterange)
+    return daterange
+
+
+@api_view(['GET'])
+def filters_data(request):
+    # latest = MovieService.get_latest_movies()
+
+    genres = Genre.objects.all()
+    dates = _get_range_dates()
+    cinema_list = Cinema.objects.all()
+
+    filters_data = {
+        'dates': dates,
+        'cinemas': CinemaListSerializer(cinema_list, many=True).data,
+        'genres': GenreListSerializer(genres, many=True).data,
+    }
+    return Response(filters_data, content_type='application/json', status=status.HTTP_200_OK)
 
 
 class BookingView(ModelViewSet):

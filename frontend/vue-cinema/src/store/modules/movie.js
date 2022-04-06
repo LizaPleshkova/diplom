@@ -1,5 +1,6 @@
 // import CinemaService from "./services/DataService";
 import MovieService from "../../services/MovieService";
+// import axios from 'axios';
 
 const movieModule = {
   actions: {
@@ -8,10 +9,18 @@ const movieModule = {
         context.commit("set_movies", movies);
       });
     },
-    async getMovie(context, pk) {
-      MovieService.getMovie(pk).then((movie) => {
+    async getMovie(context, pk, filters=null) {
+      if ( filters == null){
+         MovieService.getMovie(pk).then((movie) => {
         context.commit("set_movie", movie);
       });
+      }
+    },
+    async getFilterMovies(context, filters) {
+      console.log('from vuex', filters);
+      MovieService.getFilterMovies(filters).then((movies) => {
+        context.commit("set_movies", movies);
+        });
     },
   },
   mutations: {

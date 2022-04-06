@@ -40,6 +40,7 @@
 <script>
 import Header from "./components/base/Header";
 import Footer from "./components/base/Footer";
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -47,10 +48,14 @@ export default {
     Header,
     Footer,
   },
-  computed: {
-    currentUser() {
-      return this.$store.state.auth.user;
-    },
+  beforeCreate() {
+    this.$store.commit('initializeStore')
+
+    if (this.$store.state.authModule.user.accessToken) {
+      axios.defaults.headers.common['Authorization'] = "Token " + this.$store.state.authModule.user.accessToken;
+    } else {
+      axios.defaults.headers.common['Authorization'] = "";
+    }
   },
   methods: {
     logOut() {

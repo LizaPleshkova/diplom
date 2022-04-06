@@ -1,67 +1,57 @@
-import AuthService from '@/services/user/AuthService.js';
+// import AuthService from '@/services/user/AuthService.js';
 
-const user = JSON.parse(localStorage.getItem('user'));
+// const user = JSON.parse(localStorage.getItem('user'));
 
-const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
-console.log(initialState);
+// const initialState = user
+//   ? { status: { loggedIn: true }, user }
+//   : { status: { loggedIn: false }, user: null };
+// console.log(initialState);
 
-export const auth = {
-  namespaced: true,
-
-  state: initialState,
-
-  actions: {
-    login({ commit }, user) {
-      return AuthService.login(user).then(
-        user => {
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
-        },
-        error => {
-          commit('loginFailure');
-          return Promise.reject(error);
-        }
-      );
+export const authModule = {
+  state: {
+    user: {
+      accessToken: "",
+      refreshToken: "",
+      isAuthenticated: false,
     },
-    logout({ commit }) {
-      AuthService.logout();
-      commit('logout');
-    },
-    register({ commit }, user) {
-      return AuthService.register(user).then(
-        response => {
-          commit('registerSuccess');
-          return Promise.resolve(response.data);
-        },
-        error => {
-          commit('registerFailure');
-          return Promise.reject(error);
-        }
-      );
-    }
   },
   mutations: {
-    loginSuccess(state, user) {
-      state.status.loggedIn = true;
-      state.user = user;
+    initializeStore(state) {
+      if (localStorage.getItem("token")) {
+        state.user.accessToken = localStorage.getItem("token");
+        state.user.isAuthenticated = true;
+      } else {
+        state.user.accessToken = "";
+        state.user.refreshToken = "";
+        state.user.isAuthenticated = false;
+      }
     },
-    loginFailure(state) {
-      state.status.loggedIn = false;
-      state.user = null;
+    setToken(state, accessToken, refreshToken) {
+      state.user.accessToken = accessToken;
+      state.user.refreshToken = refreshToken;
+      state.user.isAuthenticated = true;
     },
-    logout(state) {
-      state.status.loggedIn = false;
-      state.user = null;
+    removeToken(state) {
+      state.user.accessToken = "";
+      state.user.refreshToken = "";
+      state.user.isAuthenticated = false;
+      
+      // localStorage.removeItem('username')
     },
-    registerSuccess(state) {
-      state.status.loggedIn = false;
-    },
-    registerFailure(state) {
-      state.status.loggedIn = false;
+  },
+  getters:{
+    loggedIn(state){
+      return state.isAuthenticated = true
     }
-  }
+  },
+  actions: {
+    userLogout(context) {
+        if (context.getters.loggedIn){
+          context.commit('removeToken')
+          localStorage.removeItem('token');
+        }
+      }
+  },
 };
 
-export default auth;
+export default authModule;
