@@ -6,8 +6,8 @@
         <h5 class="card-title">{{ movie.name }}</h5>
         <p class="card-text" v-for="genre in movie.genres" :key="genre.id">
           {{ genre.name }} </p>
-         <router-link
-        :to="{ name: 'movie-detail', params: { movieId: movie.id } }"
+          {{movie.id}}
+         <router-link :to="{ name: 'movie-detail', params: { movieId: movie.id } }"
         class="btn btn-outline-success btn-sm"
         >Read more
       </router-link>

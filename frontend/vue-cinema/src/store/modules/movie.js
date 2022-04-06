@@ -10,12 +10,16 @@ const movieModule = {
       });
     },
     async getMovie(context, pk) {
-      MovieService.getMovie(pk).then((movie) => {
-        context.commit("set_movie", movie);
+      MovieService.getMovie(pk).then((data) => {
+
+        console.log('only movie',data.movie);
+        console.log('only ms',data.movie_sessions);
+        
+        context.commit("set_movie", data.movie);
+        context.commit("set_movie_session", data.movie_sessions);
       });
     },
     async getFilterMovies(context, filters) {
-      console.log("from vuex", filters);
       MovieService.getFilterMovies(filters).then((movies) => {
         context.commit("set_movies", movies);
       });
@@ -28,10 +32,14 @@ const movieModule = {
     set_movie(state, movie) {
       state.movie = movie;
     },
+    set_movie_session(state, movie_s) {
+      state.movie_session = movie_s;
+    },
   },
   state: {
     movies: [],
     movie: null,
+    movie_session: []
   },
   getters: {
     allMovies(state) {
@@ -39,6 +47,10 @@ const movieModule = {
     },
     currentMovie(state) {
       return state.movie;
+    },
+    movieSession(state) {
+      console.log(state.movie_session)
+      return state.movie_session;
     },
   },
 };

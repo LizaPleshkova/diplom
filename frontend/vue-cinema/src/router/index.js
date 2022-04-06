@@ -21,6 +21,14 @@ const routes = [
     // component: CinemaDataService,
     component: () => import("../components/MovieDetail.vue"),
     props: true,
+    children:[
+      {
+        path: "/movie-session/:movieSessionId",
+        name: "movie-session",
+        component: () => import("../components/MovieSessionSeats.vue"),
+        props: true,
+      },
+    ]
   },
   {
     path: "/cinema",
@@ -34,6 +42,7 @@ const routes = [
     component: () => import("../components/CinemaDetail.vue"),
     props: true,
   },
+
   {
     path: "/login",
     name:"login",

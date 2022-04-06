@@ -7,7 +7,7 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateMode
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .serializers import MovieListSerializer
+from .serializers import MovieListSerializer, MovieRetrieveSerializer
 from .models import Movie, Genre
 from .services.movie_service import MovieService
 from rest_framework.response import Response
@@ -40,7 +40,10 @@ class MoviesFilter(django_filters.FilterSet):
         print(value)
         queryset = Movie.objects.filter(Q(session_movie__datetime_session__date=value))
         return queryset
+
+
 #
+
 
 class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
     permission_classes = (AllowAny,)
@@ -55,9 +58,21 @@ class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.G
         return queryset
 
     def get_serializer_class(self):
-        if self.action == 'retrieve' or self.action == 'create':
-            return MovieListSerializer
+        if self.action == 'retrieve':
+            return MovieRetrieveSerializer
         return MovieListSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        ''' рассортировать киносеансы по киинотеарам '''
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        movie_sessions = MovieService.get_sessions_movie(instance.id)
+        print(movie_sessions)
+        data = {
+            'movie': serializer.data,
+            'movie_sessions': movie_sessions
+        }
+        return Response(data, content_type='application/json', status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, url_path='now')
     def movies_now(self, request):

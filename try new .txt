@@ -1,15 +1,81 @@
-<form class="form-signin">
-      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-    </form>
+
+              <div class="col-md-6 m-5">
+                <h2 class="text-black">{{ currentMovie.name }}</h2>
+                <br />
+                <p>{{ currentMovie.description }}</p>
+                <hr />
+
+                <h4 class="text-black">Год:</h4>
+                <p>{{ currentMovie.release_date }}</p>
+                <h4 class="text-black">Страна:</h4>
+                <p v-for="country in currentMovie.countries" :key="country.id">
+                  {{ country.name }}
+                </p>
+                <h4 class="text-black">Жанры:</h4>
+                <p v-for="genre in currentMovie.genres" :key="genre.id">
+                  {{ genre.name }}
+                </p>
+                <h4 class="text-black">Студия:</h4>
+                <p v-for="st in currentMovie.studios" :key="st.id">
+                  {{ st.name }}
+                </p>
+                <h4 class="text-black">Возрастная категория:</h4>
+                <p>{{ currentMovie.category }}+</p>
+                <h4 class="text-black">Длительность:</h4>
+                <p>{{ currentMovie.duration }}</p>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="text-black">Киносеансы</h2>
+                <br />
+
+                <div v-if="movieSession != null">
+                  <div
+                    class="card-deck"
+                    v-for="movie_s in movieSession"
+                    :key="movie_s.id"
+                  >
+                    <div class="col-md-4 col-xl-3">
+                      <div class="card border text-center border-danger">
+                        <div class="card-header bg-danger text-white">
+                          {{ movie_s.hall.name }} зал
+                        </div>
+                        <div class="card-body text-center">
+                          <router-link
+                            :to="{
+                              name: 'booking',
+                              params: { movieSessionId: movie_s.id },
+                            }"
+                            class="btn btn-outline-dark"
+                          >
+                            {{ movie_s.datetime_session }}
+                          </router-link>
+                          <p>
+                            {{ movie_s.datetime_session }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <p>Киносеансов на данный фильм пока что нет</p>
+                  <p>Попробуйте выбрать другой фильм</p>
+                </div>
+              </div>
+            </div>
+          </div>

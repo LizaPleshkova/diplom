@@ -3,7 +3,7 @@
     class="navbar navbar-expand-lg navbar-dark bg-dark"
     style="margin: 24px 0"
   >
-    <router-link to="/" class="navbar-brand" href="javascript:void(0)"
+    <router-link to="/" class="navbar-brand"
       >CityCinema</router-link
     >
 

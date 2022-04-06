@@ -1,10 +1,8 @@
 import datetime
-
 from movie.models import Movie
-# from CinemaProject import cinema
-from cinema.models import MovieSession
+from cinema.models import MovieSession, ScheduleRental
 
-from cinema.models import ScheduleRental
+from cinema.serializers import MovieSessionSerializer
 
 
 class MovieService:
@@ -33,9 +31,9 @@ class MovieService:
         return movies
 
     @staticmethod
-    def get_sessions_movie(pk: int):
+    def get_sessions_movie(movie_id: int):
         mv = MovieSession.objects.filter(
-            pk=pk, datetime_session__gte=datetime.datetime.now(),
-
+            movie=movie_id, datetime_session__gte=datetime.datetime.now(),
         )
-        return mv
+        serializer = MovieSessionSerializer(mv, many=True)
+        return serializer.data

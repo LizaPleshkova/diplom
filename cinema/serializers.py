@@ -14,12 +14,6 @@ class BookingListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MovieSessionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MovieSession
-        fields = '__all__'
-
-
 class BookingSerializer(serializers.ModelSerializer):
     datetime_book = serializers.DateTimeField(required=False)
 
@@ -100,6 +94,14 @@ class HallCreateSerializer(serializers.Serializer):
     #     if data.get('count_places') > 10:
     #         raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
     #     return data
+
+
+class MovieSessionSerializer(serializers.ModelSerializer):
+    hall = HallListSerializer()
+
+    class Meta:
+        model = MovieSession
+        fields = ('id', 'hall', 'movie', 'datetime_session',)
 
 
 class SeatListSerializer(serializers.ModelSerializer):
