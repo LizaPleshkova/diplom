@@ -49,11 +49,11 @@
               <h2 class="text-black">Киносеансы</h2>
               <br />
 
-              <div v-if="movieSession != null">
+              <div v-if="movieSessions != null">
                 <div class="row row-cols-3 row-cols-md-2">
                   <div
                     class="card col-md-3 m-4"
-                    v-for="movie_s in movieSession"
+                    v-for="movie_s in movieSessions"
                     :key="movie_s.id"
                   >
                       <div class="card border text-center border-danger m-3">
@@ -68,10 +68,10 @@
                             }"
                             class="btn btn-outline-dark"
                           >
-                            {{ movie_s.datetime_session }}
+                            {{ movie_s.datetime_session.time }}
                           </router-link> 
                           <p>
-                            {{ movie_s.datetime_session }}
+                            {{ movie_s.datetime_session.date }}
                           </p>
                         </div>
                       </div>
@@ -85,6 +85,7 @@
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   </div>
@@ -95,12 +96,12 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "movie-detail",
-  computed: mapGetters(["currentMovie", "movieSession"]),
+  computed: mapGetters(["currentMovie", "movieSessions"]),
   methods: mapActions(["getMovie"]),
   created() {
     console.log("from MD", this.$route.params.movieId);
     this.getMovie(this.$route.params.movieId);
-    console.log(this.currentMovie, this.movieSession);
+    console.log(this.currentMovie, this.movieSessions);
   },
 };
 </script>

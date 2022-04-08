@@ -42,6 +42,7 @@ import Header from "./components/base/Header";
 import Footer from "./components/base/Footer";
 import axios from 'axios';
 
+
 export default {
   name: "App",
   components: {

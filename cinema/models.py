@@ -10,6 +10,7 @@ from movie.models import Movie
 
 User = get_user_model()
 
+COUNT_COLLUMNS_HALL = 3
 
 class SectorChoice(Enum):
     VIP = 'VIP'

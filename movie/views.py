@@ -17,9 +17,10 @@ from django_filters import rest_framework as filters
 
 class MoviesFilter(django_filters.FilterSet):
     # genres = django_filters.CharFilter(field_name='genres__name')
-    # genres = django_filters.NumberFilter(field_name="genres")
-    genres = django_filters.AllValuesFilter
-    # genre = django_filters.CharFilter(method='filter_by_genre')
+    # genres = django_filters.CharFilter(field_name="genres")
+    
+    # genres = django_filters.AllValuesFilter()
+    genres = django_filters.CharFilter(method='filter_by_genre')
     date = django_filters.CharFilter(method='filter_by_date', label='filter_by_date')
     cinema = django_filters.CharFilter(method='filter_by_cinema', label='cinema')
 
@@ -32,7 +33,7 @@ class MoviesFilter(django_filters.FilterSet):
         return queryset
 
     def filter_by_genre(self, queryset, name, value):
-        print(value)
+        print(value , type(value))
         queryset = Movie.objects.filter(Q(genres__name=value))
         return queryset
 

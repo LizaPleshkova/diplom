@@ -30,7 +30,7 @@ def _get_holidays_weekends():
     return all_dates
 
 
-class PriceService:
+class PriceClassService:
     @staticmethod
     def make_price_seat(seat):
         '''

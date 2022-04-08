@@ -64,12 +64,12 @@
     </div>
 
     <div v-else>
-      <router-link to="/login">
+      <router-link to="/login/">
         <button type="button" class="btn btn-outline-warning m-3">
           Login
         </button></router-link
       >
-      <router-link to="/sign-up">
+      <router-link to="/sign-up/">
         <button type="button" class="btn btn-outline-warning">
           Sign Up
         </button></router-link

@@ -2,8 +2,10 @@ from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+from movie.serializers import MovieMainSerializer
 from .models import Cinema, Hall, Sector, Seat, SessionSchedule, MovieSession, ScheduleRental, Booking
-from .services.PriceService import PriceService
+from .services.PriceService import PriceClassService
 
 User = get_user_model()
 
@@ -35,7 +37,7 @@ class BookingSerializer(serializers.ModelSerializer):
         if booking_instance['seat'].id in booked_seats_list:
             raise serializers.ValidationError('seat is already booked', code='invalid')
 
-        price = PriceService.make_price_seat(booking_instance['seat'])
+        price = PriceClassService.make_price_seat(booking_instance['seat'])
         booking_instance['price'] = price
         booking_instance['datetime_book'] = datetime.now()
         return booking_instance
@@ -54,6 +56,7 @@ class SectorlListSerializer(serializers.ModelSerializer):
 
 
 class HallListSerializer(serializers.ModelSerializer):
+    cinema = CinemaListSerializer()
     class Meta:
         model = Hall
         fields = '__all__'
@@ -98,11 +101,31 @@ class HallCreateSerializer(serializers.Serializer):
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     hall = HallListSerializer()
+    movie=MovieMainSerializer()
 
     class Meta:
         model = MovieSession
         fields = ('id', 'hall', 'movie', 'datetime_session',)
 
+class SeatIdSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+#         fields = ('id', 'hall', 'sector', 'number_place', 'number_row', 'isBooked')
+
+#     def to_representation(self, instance):
+#         representation = super().to_representation(instance)
+#         cntx = 
+
+#         ms = Seat.objects.get(id=representation['id']).values('hall')
+#         ids_booked_seats = BookingClassService.get_ids_booked_seats(pk_session)
+#         print(ids_booked_seats)
+# if ser.data['id'] in ids_booked_seats:
+#                 ser.data['isBooked'] = True
+#                 print('true')
+#             else:
+#                 ser.data['isBooked'] = False
+#                 print('false')
+#         return representation
 
 class SeatListSerializer(serializers.ModelSerializer):
     class Meta:

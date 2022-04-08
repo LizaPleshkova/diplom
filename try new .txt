@@ -1,81 +1,172 @@
+ 
+<div<div class="container">
+                                                <table class="flex-fill container-fluid bg-">
+                                                    <tbody>
+                                                        <tr v-for="row in allSeats" :key="1" >
+                                                        {{ row }}
+                                                            <td v-for="seat in row" :key="seat.id">
 
-              <div class="col-md-6 m-5">
-                <h2 class="text-black">{{ currentMovie.name }}</h2>
-                <br />
-                <p>{{ currentMovie.description }}</p>
-                <hr />
+                                                                <div v-if="booked_seats.indexOf(seat.number_place) != -1">
+                                                                    <input type="checkbox"
+                                                                        class="cliteTooltip btn-check btn-danger danger"
+                                                                        autocomplete="off" name="selected_seat"
+                                                                        :value="seat.id" disabled >
+                                                                    <label class="btn btn-outline-danger ">
+                                                                        {{ seat.number_place }}</label>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <input type="checkbox"
+                                                                        class="checkbox btn-check btn-info"
+                                                                        :id="seat.number_place"
+                                                                        autocomplete="off" name="selected_seat"
+                                                                        :value="seat.id" v-model="selectedSeats">
+                                                                    <label class="checkbox liteTooltip btn btn-outline-primary"
+                                                                        :for="seat.number_place"
+                                                                        data-tooltip-mouseover=" sector: {{ seat.sector.name }}<br/> price: {{ seat.price }} р.">
+                                                                        {{ seat.number_place }}</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <p>selected seats : {{selectedSeats}}</p>
+                                                </table>
+                                            </div>
 
-                <h4 class="text-black">Год:</h4>
-                <p>{{ currentMovie.release_date }}</p>
-                <h4 class="text-black">Страна:</h4>
-                <p v-for="country in currentMovie.countries" :key="country.id">
-                  {{ country.name }}
-                </p>
-                <h4 class="text-black">Жанры:</h4>
-                <p v-for="genre in currentMovie.genres" :key="genre.id">
-                  {{ genre.name }}
-                </p>
-                <h4 class="text-black">Студия:</h4>
-                <p v-for="st in currentMovie.studios" :key="st.id">
-                  {{ st.name }}
-                </p>
-                <h4 class="text-black">Возрастная категория:</h4>
-                <p>{{ currentMovie.category }}+</p>
-                <h4 class="text-black">Длительность:</h4>
-                <p>{{ currentMovie.duration }}</p>
-              </div>
+booked_seats.indexOf(seat.number_place) != -1
+    
 
-
-
-
-
-
-
-
+                <span>{{ movieSession.hall.cinema.name }} - {{ movieSession.hall.name }}</span><br/>
+                <span>{{ movieSession.datetime_session }}</span>
 
 
 
-
-
- <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h2 class="text-black">Киносеансы</h2>
-                <br />
-
-                <div v-if="movieSession != null">
-                  <div
-                    class="card-deck"
-                    v-for="movie_s in movieSession"
-                    :key="movie_s.id"
-                  >
-                    <div class="col-md-4 col-xl-3">
-                      <div class="card border text-center border-danger">
-                        <div class="card-header bg-danger text-white">
-                          {{ movie_s.hall.name }} зал
-                        </div>
-                        <div class="card-body text-center">
-                          <router-link
-                            :to="{
-                              name: 'booking',
-                              params: { movieSessionId: movie_s.id },
-                            }"
-                            class="btn btn-outline-dark"
-                          >
-                            {{ movie_s.datetime_session }}
-                          </router-link>
-                          <p>
-                            {{ movie_s.datetime_session }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <!-- Часть с ошибками -> нужно добавить ошибки в comp.  -->
+        <div class="card col-sm-6 m-1 text-center">
+            <div class="messages">
+                <div class="alert alert-success m-1" role="alert">
+                        <p>возможные ошибки</p>
                 </div>
-                <div v-else>
-                  <p>Киносеансов на данный фильм пока что нет</p>
-                  <p>Попробуйте выбрать другой фильм</p>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
+    
+
+
+
+
+    <div><p>Seats laoyt</p>
+    <div class="row justify-content-center">
+        <div class="card col-sm-6 m-1">
+            <div class="card-body text-center bg-danger text-white">
+                <p class="card-text">
+                <h5>{{ movieSession }}</h5>
+                </p>
+            </div>
+        </div>
+        <br/>
+
+   <!--     <div class="row justify-content-center m-1">
+            <div class="col-sm-6">
+                <div class="site-section">
+                    <div class="container">
+                        <div class="row m-1">
+                                <div class="card text-center">
+                                    <div class="card-header">Экран</div>
+                                    <div class="card-body">
+                                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                </div>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+ <div class="row justify-content-center m-1">
+                    <div class="col-sm-6">
+                            <div class="container">
+                                <div class="row m-1">
+                                        <div class="card text-center">
+                                            <div class="card-header">Экран</div>
+                                            <div class="card-body">
+                                                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                        </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+        </div>
+
+        </div>
+
+
+
+
+         <div class="row justify-content-center">
+            <div class="card col-sm-6 m-1">
+                <div class="card-body text-center bg-danger text-white">
+                    <p class="card-text"></p>
+                </div>
+            </div>
+            <div class="row justify-content-center m-1">
+                <div class="col-sm-6">
+                    <div class="site-section">
+                        <div class="container">
+                            <div class="row m-1">
+                                <div class="card text-center">
+                                    <div class="card-header">
+                                    <h3>Экран</h3>
+                                    </div>
+                                        <div class="card-body">
+                                            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+            <b-form-group
+      label="Button-group style checkboxes with variant primary and large buttons"
+      v-slot="{ ariaDescribedby }"
+    >
+      <b-form-checkbox-group
+        v-model="selected"
+        :options="options"
+        :aria-describedby="ariaDescribedby"
+        buttons
+        button-variant="primary"
+        size="lg"
+        name="buttons-2"
+      ></b-form-checkbox-group>
+    </b-form-group>
