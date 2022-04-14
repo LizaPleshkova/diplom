@@ -1,6 +1,7 @@
 import base64
 import json
 from datetime import datetime, date
+from msilib.schema import InstallUISequence
 from turtle import pd
 import holidays
 
@@ -42,24 +43,40 @@ def _get_free_booked_seats(pk_session: int):
 class BookingClassService:
 
     @staticmethod
+    def get_seats(session_id:int):
+        ms_hall = MovieSession.objects.filter(id=session_id)
+        
+
+    @staticmethod
     def create_booking(session_id: int, request):
-        # user_id = _get_user_id_from_token(request)
-        user_id = 2
+        # WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        user_id = request.user.id
         booking_instance_ids = request.data
         print(booking_instance_ids)
+        # print(booking_instance_ids)
         booked_inst = {}
         created_book = []
         for booked_id in booking_instance_ids:
             booked_inst['user'] = user_id
             booked_inst['session'] = session_id
             booked_inst['seat'] = booked_id
+            # for postman
+            # booked_inst['seat'] = booking_instance_ids['seat']
+            print(booked_inst)
             ser = BookingSerializer(
                 data=booked_inst,
                 context={'user': User.objects.get(
                     id=user_id), 'session': session_id}
             )
+            print('after')
+
             if ser.is_valid(raise_exception=True):
+                seat = Seat.objects.get(id=ser.validated_data['seat'].id)
+                seat.isBooked = True
+                seat.save(update_fields=['isBooked'])
                 instance = ser.save()
+                print('after save inst')
+
                 booking_history = BookingHistory.objects.create(
                     action=ActionChoice.CREATE.value,
                     user=instance.user,
@@ -68,6 +85,7 @@ class BookingClassService:
                     price=instance.price,
                     datetime_book=instance.datetime_book
                 )
+
                 booking_history.save()
                 created_book.append(ser.data)
 
@@ -99,9 +117,7 @@ class BookingClassService:
         free_seats = Seat.objects.filter(
             hall__id=hall.id).exclude(id__in=ids_booked_seats)
         booked_seats = Seat.objects.filter(id__in=ids_booked_seats)
-        return free_seats, ids_booked_seats
-    
-    
+        return free_seats, ids_booked_seats    
 
     @staticmethod
     def create_seat_layout(seats, pk_session):
@@ -110,22 +126,15 @@ class BookingClassService:
         Make seat's price
         """
         seat_columns = COUNT_COLLUMNS_HALL
-        ids_booked_seats = BookingClassService.get_ids_booked_seats(pk_session)
-        print(ids_booked_seats)
+        # ids_booked_seats = BookingClassService.get_ids_booked_seats(pk_session)
+        # print(ids_booked_seats)
         current_column = 0
         seat_layout, seat_row = [], []
         for seat in seats:
-            ser= SeatListSerializer(seat)
-            print(ser.data['id'])
-            if ser.data['id'] in ids_booked_seats:
-                ser.data['isBooked'] = True
-                print('true')
-            else:
-                ser.data['isBooked'] = False
-                print('false')
-            print('service', ser.data)
-            seat_row.append(ser.data)
-            seat.price = PriceClassService.make_price_seat(seat)
+            ser = SeatListSerializer(seat)
+            seat_valid = ser.data
+            seat_valid['price'] = PriceClassService.make_price_seat(seat)
+            seat_row.append(seat_valid)
             current_column += 1
             if current_column == seat_columns:
                 seat_layout.append(seat_row)

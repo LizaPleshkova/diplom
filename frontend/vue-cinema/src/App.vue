@@ -28,9 +28,7 @@
       style="padding-left: 3rem; padding-right: 3rem"
     >
       <div class="container-fluid py-md-3">
-        <div class="row">
           <router-view />
-        </div>
       </div>
     </section>
     <Footer />
@@ -51,7 +49,7 @@ export default {
   },
   beforeCreate() {
     this.$store.commit('initializeStore')
-
+    console.log(this.$store.state.authModule.user.accessToken)
     if (this.$store.state.authModule.user.accessToken) {
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
     } else {

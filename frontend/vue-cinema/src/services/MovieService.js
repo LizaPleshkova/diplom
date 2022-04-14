@@ -48,26 +48,15 @@ function get_list_filter(filters, key) {
 
 function set_filter_url(cinemas, genres, dates) {
   var api_url = new URL("http://localhost:8000/api/movie/");
-  if (cinemas != null) {
-    for (let key1 in cinemas) {
-      console.log(cinemas[key1]);
-      api_url.searchParams.append("cinema", cinemas[key1]);
-    }
+  console.log(typeof(cinemas), cinemas.join(','))
+  if (Object.keys(cinemas).length != 0) {
+    api_url.searchParams.append("cinema", cinemas.join(','));
   }
-  console.log('after c ', api_url)
-  if (genres != null) {
-    for (let key1 in genres) {
-      console.log(genres[key1]);
-      api_url.searchParams.append("genre", genres[key1]);
-    }
+ if (Object.keys(genres).length != 0) {
+    api_url.searchParams.append("genre", genres);
   }
-  console.log('after g', api_url)
-
-  if (dates != null) {
-    for (let key1 in dates) {
-      console.log(dates[key1]);
-      api_url.searchParams.append("date", dates[key1]);
-    }
+  if (Object.keys(dates).length != 0) {
+    api_url.searchParams.append("date", dates);
   }
   console.log(api_url);
   return api_url;

@@ -70,7 +70,8 @@ def create_seats(sender, instance, created, *args, **kwargs):
                         hall=instance,
                         number_place=num_seat,
                         sector=sector,
-                        number_row=row
+                        number_row=row,
+                        isBooked=False
                     )
                     print(new_seat)
                     new_seat.save()
@@ -93,9 +94,10 @@ class Seat(models.Model):
     sector = models.ForeignKey(Sector, on_delete=models.DO_NOTHING, blank=True, null=True)
     number_place = models.IntegerField()
     number_row = models.IntegerField(default=0)
+    isBooked=models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.pk} - {self.hall} - {self.sector} - {self.number_place}'
+        return f'{self.pk} - {self.hall} -{self.isBooked}- {self.sector} - {self.number_place}'
 
 
 class ScheduleRental(models.Model):

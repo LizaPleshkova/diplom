@@ -1,11 +1,13 @@
 <template>
-  <div class="side-bar col-sm-3">
-    <Filters />
-  </div>
+  <div class="row">
+    <div class="side-bar col-sm-3">
+      <Filters />
+    </div>
 
-  <div class="col-sm-9">
-    <div class="row row-cols-3 row-cols-md-3">
-      <MovieList :movies="allMovies" />
+    <div class="col-sm-9">
+      <div class="row row-cols-3 row-cols-md-3">
+        <MovieList :movies="allMovies" />
+      </div>
     </div>
   </div>
 </template>

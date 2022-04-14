@@ -40,8 +40,7 @@
         type="button"
         id="dropdownMenuButton"
         data-toggle="dropdown"
-        aria-expanded="false"
-      >
+        aria-haspopup="true" aria-expanded="false">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -59,7 +58,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <router-link to="/profile" class="dropdown-item">Profile </router-link>
-        <router-link to="/logout" class="dropdown-item"> LogOut</router-link>
+        <router-link to="/logout/" class="dropdown-item"> LogOut</router-link>
       </div>
     </div>
 

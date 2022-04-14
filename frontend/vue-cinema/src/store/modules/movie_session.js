@@ -6,7 +6,7 @@ const movieSessionModule = {
   actions: {
     async getSeats(context, pk) {
       MovieSessionService.getSeats(pk).then((data) => {
-
+        console.log('from get seats module');
         var ids_booked_seats = Object.keys(data.booked_seats).map(function (
           key
         ) {

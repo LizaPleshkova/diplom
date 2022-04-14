@@ -1,22 +1,43 @@
 <template>
-  <div class="card">
-    <div class="card-body text-center">
-       <img v-bind:src="cinema.image" alt="" class="card-img-top" />
-      <h5 class="card-title">{{ cinema.name }}</h5>
-      <div class="card-text">
-        <p>{{ cinema.address }}</p>
-        <p>{{ cinema.phone_number }}</p>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-7">
+        <div class="card p-3">
+          <div class="row">
+            <div class="col-12 col-md-7">
+              <img
+                v-bind:src="cinema.image"
+                alt=""
+                class="m-2 card-img-left"
+                height="300"
+                width="425"
+              />
+            </div>
+            <div class="col-12 col-md-5 py-3 px-4">
+              <p class="small font-weight-bold my-2">cinema</p>
+              <h3 class="mb-3">
+                {{ cinema.name }}
+              </h3>
+              <p>
+                <strong>Address: </strong>{{ cinema.address }}<br />
+                <strong>Phone number: </strong>{{ cinema.phone_number }}<br />
+              </p>
+              <div class="d-flex mb-3">
+                <small class="text-muted">
+                  <router-link
+                    :to="{
+                      name: 'cinema-detail',
+                      params: { cinemaId: cinema.id },
+                    }"
+                  >
+                    here you can view movie sessions
+                  </router-link></small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <!--    <router-link
-        :to="{ name: 'cinema-detail', query: { id: cinema.id } }"
-        class="btn btn-outline-success btn-sm"
-        >Read More
-      </router-link>-->
-      <router-link
-        :to="{ name: 'cinema-detail', params: { cinemaId: cinema.id } }"
-        class="btn btn-outline-success btn-sm"
-        >Read more
-      </router-link>
     </div>
   </div>
 </template>
@@ -24,32 +45,6 @@
 <script>
 export default {
   name: "Cinema",
-  // computed:mapGetters(['allCinema']),
-  props:[ 'cinema'],
-  // data(){
-  //   return {
-  //     cinema:null,
-  //     id:null
-  //   }
-  // },
-  // props: {
-  //   cinema: {
-  //     type: Object,
-  //     default: () => {},
-  //   },
-  // },
-  // props:['cinemas'],
-  // mounted() {
-  //   console.log(this.$route.params.cinemaId)
-  //   this.id = this.$route.params.cinemaId;
-  //   this.cinema = this.cinemas.find((cinema) => cinema.id == this.id);
-
-  // },
-    // created() {
-    //   const cinema = cinemas.find(cinema => cinema.id == this.$route.params.id)
-    //   if (cinema) {
-    //     this.cinema = cinema
-    //   }
-    // }
+  props: ["cinema"],
 };
 </script>

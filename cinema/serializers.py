@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from numpy import source
 from rest_framework import serializers
 
 from movie.serializers import MovieMainSerializer
@@ -49,6 +50,7 @@ class CinemaListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class SectorlListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sector
@@ -57,6 +59,12 @@ class SectorlListSerializer(serializers.ModelSerializer):
 
 class HallListSerializer(serializers.ModelSerializer):
     cinema = CinemaListSerializer()
+    class Meta:
+        model = Hall
+        fields = '__all__'
+
+
+class HallSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hall
         fields = '__all__'
@@ -99,9 +107,18 @@ class HallCreateSerializer(serializers.Serializer):
     #     return data
 
 
+class MovieSessionMainSerializer(serializers.ModelSerializer):
+    hall = HallSerializer()
+    movie = MovieMainSerializer()
+    # hall_title = serializers.CharField(source='hall')
+
+    class Meta:
+        model = MovieSession
+        fields = ('id', 'hall', 'movie', 'datetime_session',)
+
+
 class MovieSessionSerializer(serializers.ModelSerializer):
-    hall = HallListSerializer()
-    movie=MovieMainSerializer()
+
 
     class Meta:
         model = MovieSession

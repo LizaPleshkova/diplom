@@ -6,7 +6,9 @@ from rest_framework import viewsets, status, serializers
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from .serializers import CinemaListSerializer, HallListSerializer, HallCreateSerializer, SeatIdSerializer, SeatListSerializer, \
+
+from cinema.services.Service import CinemaService
+from .serializers import CinemaListSerializer, HallListSerializer, HallCreateSerializer, MovieSessionMainSerializer, SeatIdSerializer, SeatListSerializer, \
     BookingSerializer, MovieSessionSerializer
 from .models import Cinema, Hall, MovieSession, Booking, Seat, BookingHistory, ActionChoice
 from .services.BookingService import BookingClassService
@@ -26,7 +28,6 @@ def _get_range_dates():
     start_date = datetime.now().date()
     end_date = start_date + timedelta(days=5)
 
-    # start = datetime.strptime(start_date, '%A, %d %B %Y')
     start = datetime.strptime(str(start_date), '%Y-%m-%d')
     end = datetime.strptime(str(end_date), '%Y-%m-%d')
 
@@ -69,9 +70,27 @@ class CinemaView(ModelViewSet):
     permission_classes = (AllowAny,)
     serializer_class = CinemaListSerializer
 
+    # def get_serializer_class(self):
+    #     if self.action == 'retrieve':
+    #         return CinemaListSerializer
+    #     return CinemaListSerializer
+
     def get_queryset(self, *args, **kwargs):
         queryset = Cinema.objects.all()
         return queryset
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        ms = CinemaService.get_cinema_sessions(instance.id)
+        ser = MovieSessionMainSerializer(ms, many=True)
+        return Response({'cinema': serializer.data, 'movie_session': ser.data})
+
+    @action(methods=['get'], detail=True, url_path='movie-session', url_name='movie_session')
+    def get_movie_session(self, request, pk=None):
+        ms = CinemaService.get_cinema_sessions(pk)
+        ser = MovieSessionMainSerializer(ms, many=True)
+        return Response(ser.data, content_type="application/json", status=status.HTTP_200_OK)
 
 
 class HallView(ModelViewSet):
@@ -96,41 +115,43 @@ class SeatView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.Ge
         return queryset
 
 
-class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
-    permission_classes = (AllowAny,)
-    serializer_class = BookingSerializer
+# class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
+#     permission_classes = (AllowAny,)
+#     serializer_class = BookingSerializer
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = Booking.objects.all()
-        return queryset
+#     def get_queryset(self, *args, **kwargs):
+#         queryset = Booking.objects.all()
+#         return queryset
 
-    @action(methods=['get'], detail=False, url_path='update-booking', url_name='update_booking')
-    def update_booking_seats(self, request, pk=None):
-        movie_session_time = MovieSession.objects.filter(datetime_session__lte=datetime.now())
-        for ms in movie_session_time:
-            # все забронированные места в выбранных киносеансах
-            booking_ms = Booking.objects.filter(
-                session=ms
-            )
-            for booking in booking_ms:
-                booking_history = BookingHistory.objects.create(
-                    action=ActionChoice.DELETE.value,
-                    user=booking.user,
-                    session=booking.session,
-                    seat=booking.seat,
-                    price=booking.price,
-                    datetime_book=booking.datetime_book
-                )
-                booking_history.save()
-                print(' for del ', booking)
-                booking.delete()
+#     @action(methods=['get'], detail=False, url_path='update-booking', url_name='update_booking')
+#     def update_booking_seats(self, request, pk=None):
+#         movie_session_time = MovieSession.objects.filter(datetime_session__lte=datetime.now())
+#         for ms in movie_session_time:
+#             # все забронированные места в выбранных киносеансах
+#             booking_ms = Booking.objects.filter(
+#                 session=ms
+#             )
+#             for booking in booking_ms:
+#                 booking_history = BookingHistory.objects.create(
+#                     action=ActionChoice.DELETE.value,
+#                     user=booking.user,
+#                     session=booking.session,
+#                     seat=booking.seat,
+#                     price=booking.price,
+#                     datetime_book=booking.datetime_book
+#                 )
+#                 booking.seat.isBooked = True
+#                 booking.seat.save(update_fields=["isBooked"])
+#                 booking_history.save()
+#                 print(' for del ', booking)
+#                 booking.delete()
 
-        return Response(content_type="application/json", status=status.HTTP_200_OK)
+#         return Response(content_type="application/json", status=status.HTTP_200_OK)
 
 
 class MovieSessionView(ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = MovieSessionSerializer
+    serializer_class = MovieSessionMainSerializer
 
     def get_queryset(self):
         queryset = MovieSession.objects.filter(datetime_session__date__gte=datetime.now().date())
@@ -151,7 +172,7 @@ class MovieSessionView(ModelViewSet):
     @action(methods=['get'], detail=True, url_path='seats', url_name='seats')
     def get_seats_layout(self, request, pk=None):
         # movie_session_id = self.get_object()
-        free_seats, booked_seats = BookingClassService.get_free_booked_seats(pk)
+        # free_seats, booked_seats = BookingClassService.get_free_booked_seats(pk)
 
         movie_session = MovieSession.objects.get(id=pk)
         # нужно получить зал и все места в нем
@@ -162,21 +183,19 @@ class MovieSessionView(ModelViewSet):
         print(seat_layot)
         seats = {
             'seat_layout':seat_layot,
-            'count_free_seats': free_seats.count(),
-            'movie_session': MovieSessionSerializer(movie_session).data,
-            'free_seats': SeatListSerializer(free_seats, many=True).data,
-            'booked_seats': booked_seats
+            'count_free_seats': seats.filter(isBooked=False).count(),
+            'movie_session': MovieSessionMainSerializer(movie_session).data,
         }
         return Response(seats, status=status.HTTP_200_OK)
 
     @action(methods=['post'], detail=True, url_path='booking', url_name='booking')
     def booking_seats(self, request, pk=None):
-        #
-        # user = User.objects.get(username='admin')
-        # self.requestuser = user
-        # print(self.request.user)
-        booking_instance = BookingClassService.create_booking(pk, request)
-        if booking_instance:
-            return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
-        else:
-            return Response(content_type="application/json", status=status.HTTP_400_BAD_REQUEST)
+        try:
+            booking_instance = BookingClassService.create_booking(int(pk), request)
+            if booking_instance:
+                return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
+            else:
+                print('smth worong')
+        except BaseException as error:
+            print('An exception occurred: {}'.format(error))
+            return Response(format(error), content_type="application/json", status=status.HTTP_400_BAD_REQUEST)

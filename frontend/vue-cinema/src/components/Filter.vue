@@ -2,7 +2,7 @@
   <div class="side-bar navbar-nav mr-auto">
     <div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Кинотеатры
+        Cinemasdate
       </div>
       <div class="card-body text-dark">
         <div class="form-check" v-for="cinema in f_cinemas" :key="cinema.id">
@@ -10,7 +10,7 @@
             class="form-check-input"
             type="checkbox"
             :id="cinema.id"
-            :value="cinema.name"
+            :value="cinema.id"
             v-model="selectedCinema"
           />
           <label class="form-check-label" :for="cinema.id">
@@ -20,11 +20,9 @@
       </div>
     </div>
 
-    <span>You have chosen: {{ selectedCinema }}</span>
-
     <div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Жанры
+        Genres
       </div>
       <div class="card-body text-dark">
         <div class="form-check" v-for="genre in f_genres" :key="genre.id">
@@ -32,7 +30,7 @@
             class="form-check-input"
             type="checkbox"
             :id="genre.id"
-            :value="genre.name"
+            :value="genre.id"
             v-model="selectedGenres"
           />
           <label class="form-check-label" :for="genre.id">
@@ -42,20 +40,22 @@
       </div>
     </div>
 
-    <div class="card border-dark mb-2">
+<div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Даты
+        Dates
       </div>
       <div class="card-body text-dark">
-        <div class="form-check" v-for="date in f_dates" :key="date.id">
+        <div class="form-check" v-for="(date, ind) in f_dates" :key="ind">
           <input
             class="form-check-input"
             type="checkbox"
-            :id="date.id"
+            :id="ind"
             :value="date"
             v-model="selectedDates"
           />
-          <label class="form-check-label" for="{{date.id}}">{{ date }}</label>
+          <label class="form-check-label" :for="ind">
+            {{ date }}</label
+          >
         </div>
       </div>
     </div>
