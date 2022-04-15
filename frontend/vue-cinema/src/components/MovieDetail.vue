@@ -49,7 +49,7 @@
               <h2 class="text-black">Киносеансы</h2>
               <br />
 
-              <div v-if="movieSessions != null">
+              <div v-if="movieSessions.length != []">
                 <div class="row row-cols-3 row-cols-md-2">
                   <div
                     class="card col-md-3 m-4"

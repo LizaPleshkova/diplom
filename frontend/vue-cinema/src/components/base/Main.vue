@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <div class="side-bar col-sm-3">
+    <div class="side-bar col-sm-2">
       <Filters />
     </div>
 
-    <div class="col-sm-9">
+    <div class="col-sm-10">
       <div class="row row-cols-3 row-cols-md-3">
         <MovieList :movies="allMovies" />
       </div>
@@ -19,24 +19,6 @@ import Filters from "@/components/Filter.vue";
 
 export default {
   name: "Main",
-  //   data(){
-  //     return{
-  //       f_cinemas:[],
-  //       f_genres:[],
-  //       f_dates:[]
-  //     }
-  // },
-  //  created(){
-  //       FilterService.getFilters().then((cinemas, genres, dates) => {
-  //           this.f_cinemas = cinemas;
-  //           this.f_dates = dates;
-  //           this.f_genres = genres;
-
-  //           console.log(this.f_cinemas);
-  //           console.log(this.f_genres);
-  //           console.log(this.f_dates);
-  //       });
-  // },
   components: {
     MovieList,
     Filters,

@@ -33,7 +33,7 @@ class MovieMainSerializer(serializers.ModelSerializer):
     studios = StudioListSerializer(read_only=True, many=True)
     genres = GenreListSerializer(read_only=True, many=True)
     countries = CountryListSerializer(read_only=True, many=True)
-
+    # start_date = serializers.DateField()
     class Meta:
         model = Movie
         fields = ('id', 'name', 'duration', 'release_date', 'studios', 'genres', 'countries', 'description', 'image',)

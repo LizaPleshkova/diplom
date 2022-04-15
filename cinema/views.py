@@ -115,38 +115,43 @@ class SeatView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.Ge
         return queryset
 
 
-# class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
-#     permission_classes = (AllowAny,)
-#     serializer_class = BookingSerializer
+class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
+    permission_classes = (AllowAny,)
+    serializer_class = BookingSerializer
 
-#     def get_queryset(self, *args, **kwargs):
-#         queryset = Booking.objects.all()
-#         return queryset
+    def get_queryset(self, *args, **kwargs):
+        queryset = Booking.objects.all()
+        return queryset
 
-#     @action(methods=['get'], detail=False, url_path='update-booking', url_name='update_booking')
-#     def update_booking_seats(self, request, pk=None):
-#         movie_session_time = MovieSession.objects.filter(datetime_session__lte=datetime.now())
-#         for ms in movie_session_time:
-#             # все забронированные места в выбранных киносеансах
-#             booking_ms = Booking.objects.filter(
-#                 session=ms
-#             )
-#             for booking in booking_ms:
-#                 booking_history = BookingHistory.objects.create(
-#                     action=ActionChoice.DELETE.value,
-#                     user=booking.user,
-#                     session=booking.session,
-#                     seat=booking.seat,
-#                     price=booking.price,
-#                     datetime_book=booking.datetime_book
-#                 )
-#                 booking.seat.isBooked = True
-#                 booking.seat.save(update_fields=["isBooked"])
-#                 booking_history.save()
-#                 print(' for del ', booking)
-#                 booking.delete()
+    @action(methods=['get'], detail=True,url_path='update-booking', url_name='update_booking')
+    def update_booking_seats(self, request, pk=None):
+        # movie_session_time = MovieSession.objects.filter(datetime_session__lte=datetime.now())
+        
+        movie_session_time = MovieSession.objects.get(id=int(pk))
+        print(movie_session_time)
+        seats = Seat.objects.filter(hall=movie_session_time.hall
+        ).update(isBooked=False)
+        print(seats)
 
-#         return Response(content_type="application/json", status=status.HTTP_200_OK)
+        booking_ms = Booking.objects.filter(
+            session=movie_session_time
+        )
+        for booking in booking_ms:
+            booking_history = BookingHistory.objects.create(
+                action=ActionChoice.DELETE.value,
+                user=booking.user,
+                session=booking.session,
+                seat=booking.seat,
+                price=booking.price,
+                datetime_book=booking.datetime_book
+            )
+            booking.seat.isBooked = True
+            booking.seat.save(update_fields=["isBooked"])
+            booking_history.save()
+            print(' for del ', booking)
+            booking.delete()
+
+        return Response(content_type="application/json", status=status.HTTP_200_OK)
 
 
 class MovieSessionView(ModelViewSet):
@@ -179,6 +184,7 @@ class MovieSessionView(ModelViewSet):
         seats = Seat.objects.select_related('sector').filter(
             hall=movie_session.hall
         ).order_by('number_place')
+        print('SEATS  ', seats)
         seat_layot = BookingClassService.create_seat_layout(seats, pk)
         print(seat_layot)
         seats = {
@@ -191,8 +197,10 @@ class MovieSessionView(ModelViewSet):
     @action(methods=['post'], detail=True, url_path='booking', url_name='booking')
     def booking_seats(self, request, pk=None):
         try:
+            print(pk, type(pk))
             booking_instance = BookingClassService.create_booking(int(pk), request)
             if booking_instance:
+                print('CREATE BOOKING INST', booking_instance)
                 return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
             else:
                 print('smth worong')

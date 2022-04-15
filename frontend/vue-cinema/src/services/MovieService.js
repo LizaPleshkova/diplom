@@ -1,8 +1,6 @@
 import HTTP from "../http-common";
 import axios from "axios";
 
-
-
 const MovieService = {
   getMovies() {
     // console.log(this.$state, this.$state.getters)
@@ -11,15 +9,29 @@ const MovieService = {
       return response.data;
     });
   },
+  getMoviesSoon() {
+    // console.log(this.$state, this.$state.getters)
+    // console.log(this.$store.state.authModule.user.accessToken)
+    return HTTP.get("/movie/soon/").then((response) => {
+      return response.data;
+    });
+  },
+  getMoviesLatest() {
+    // console.log(this.$state, this.$state.getters)
+    // console.log(this.$store.state.authModule.user.accessToken)
+    return HTTP.get("/movie/latest/").then((response) => {
+      return response.data;
+    });
+  },
 
   getMovie(pk) {
-    console.log('from MS')
+    console.log("from MS");
     return HTTP.get(
       `/movie/${pk}/`
-    //  { headers: {
-    //     Authorization: 'Bearer ' + token //the token is a variable which holds the token
-    //   }}
-      ).then((response) => response.data);
+      //  { headers: {
+      //     Authorization: 'Bearer ' + token //the token is a variable which holds the token
+      //   }}
+    ).then((response) => response.data);
   },
 
   getFilterMovies(filters) {
@@ -48,11 +60,11 @@ function get_list_filter(filters, key) {
 
 function set_filter_url(cinemas, genres, dates) {
   var api_url = new URL("http://localhost:8000/api/movie/");
-  console.log(typeof(cinemas), cinemas.join(','))
+  console.log(typeof cinemas, cinemas.join(","));
   if (Object.keys(cinemas).length != 0) {
-    api_url.searchParams.append("cinema", cinemas.join(','));
+    api_url.searchParams.append("cinema", cinemas.join(","));
   }
- if (Object.keys(genres).length != 0) {
+  if (Object.keys(genres).length != 0) {
     api_url.searchParams.append("genre", genres);
   }
   if (Object.keys(dates).length != 0) {

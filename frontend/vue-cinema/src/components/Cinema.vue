@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-7">
-        <div class="card p-3">
+    <div class="row">
+      <div class="col-12 col-md-10">
+        <div class="card p-3 m-1">
           <div class="row">
             <div class="col-12 col-md-7">
               <img
@@ -10,10 +10,10 @@
                 alt=""
                 class="m-2 card-img-left"
                 height="300"
-                width="425"
+                width="430"
               />
             </div>
-            <div class="col-12 col-md-5 py-3 px-4">
+            <div class="col-12 col-md-5">
               <p class="small font-weight-bold my-2">cinema</p>
               <h3 class="mb-3">
                 {{ cinema.name }}

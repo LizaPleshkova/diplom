@@ -49,9 +49,9 @@ class BookingClassService:
 
     @staticmethod
     def create_booking(session_id: int, request):
-        # WRONG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         user_id = request.user.id
         booking_instance_ids = request.data
+        # booking_instance_ids = [9,10]
         print(booking_instance_ids)
         # print(booking_instance_ids)
         booked_inst = {}
@@ -60,6 +60,7 @@ class BookingClassService:
             booked_inst['user'] = user_id
             booked_inst['session'] = session_id
             booked_inst['seat'] = booked_id
+            # print(booked_id)
             # for postman
             # booked_inst['seat'] = booking_instance_ids['seat']
             print(booked_inst)
@@ -69,7 +70,6 @@ class BookingClassService:
                     id=user_id), 'session': session_id}
             )
             print('after')
-
             if ser.is_valid(raise_exception=True):
                 seat = Seat.objects.get(id=ser.validated_data['seat'].id)
                 seat.isBooked = True
