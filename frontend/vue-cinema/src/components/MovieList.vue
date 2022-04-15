@@ -1,6 +1,5 @@
 <template>
         <Movie v-for="movie in movies" v-bind:key="movie.id" :movie="movie" />
-      
 </template>
 
 <script>

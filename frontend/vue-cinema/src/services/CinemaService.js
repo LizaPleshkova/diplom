@@ -7,7 +7,7 @@ const CinemaService = {
     });
   },
   getCinema(pk) {
-    return HTTP.get(`/cinema/${pk}`).then((response) => response.data);
+    return HTTP.get(`/cinema/${pk}/`).then((response) => response.data);
   },
 };
 export default CinemaService;

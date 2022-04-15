@@ -28,9 +28,7 @@
       style="padding-left: 3rem; padding-right: 3rem"
     >
       <div class="container-fluid py-md-3">
-        <div class="row">
           <router-view />
-        </div>
       </div>
     </section>
     <Footer />
@@ -40,12 +38,29 @@
 <script>
 import Header from "./components/base/Header";
 import Footer from "./components/base/Footer";
+import axios from 'axios';
+
 
 export default {
   name: "App",
   components: {
     Header,
     Footer,
+  },
+  beforeCreate() {
+    this.$store.commit('initializeStore')
+    console.log(this.$store.state.authModule.user.accessToken)
+    if (this.$store.state.authModule.user.accessToken) {
+      axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
+    } else {
+      axios.defaults.headers.common['Authorization'] = "";
+    }
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    },
   },
 };
 </script>

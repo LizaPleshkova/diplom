@@ -1,9 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from numpy import source
 from rest_framework import serializers
+
+from movie.serializers import MovieMainSerializer
 from .models import Cinema, Hall, Sector, Seat, SessionSchedule, MovieSession, ScheduleRental, Booking
-from .services.PriceService import PriceService
+from .services.PriceService import PriceClassService
 
 User = get_user_model()
 
@@ -11,12 +14,6 @@ User = get_user_model()
 class BookingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = '__all__'
-
-
-class MovieSessionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MovieSession
         fields = '__all__'
 
 
@@ -41,7 +38,7 @@ class BookingSerializer(serializers.ModelSerializer):
         if booking_instance['seat'].id in booked_seats_list:
             raise serializers.ValidationError('seat is already booked', code='invalid')
 
-        price = PriceService.make_price_seat(booking_instance['seat'])
+        price = PriceClassService.make_price_seat(booking_instance['seat'])
         booking_instance['price'] = price
         booking_instance['datetime_book'] = datetime.now()
         return booking_instance
@@ -53,6 +50,7 @@ class CinemaListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class SectorlListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sector
@@ -60,6 +58,13 @@ class SectorlListSerializer(serializers.ModelSerializer):
 
 
 class HallListSerializer(serializers.ModelSerializer):
+    cinema = CinemaListSerializer()
+    class Meta:
+        model = Hall
+        fields = '__all__'
+
+
+class HallSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hall
         fields = '__all__'
@@ -101,6 +106,43 @@ class HallCreateSerializer(serializers.Serializer):
     #         raise serializers.ValidationError('no more than 10 seats in the hall', code='invalid')
     #     return data
 
+
+class MovieSessionMainSerializer(serializers.ModelSerializer):
+    hall = HallSerializer()
+    movie = MovieMainSerializer()
+    # hall_title = serializers.CharField(source='hall')
+
+    class Meta:
+        model = MovieSession
+        fields = ('id', 'hall', 'movie', 'datetime_session',)
+
+
+class MovieSessionSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = MovieSession
+        fields = ('id', 'hall', 'movie', 'datetime_session',)
+
+class SeatIdSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+#         fields = ('id', 'hall', 'sector', 'number_place', 'number_row', 'isBooked')
+
+#     def to_representation(self, instance):
+#         representation = super().to_representation(instance)
+#         cntx = 
+
+#         ms = Seat.objects.get(id=representation['id']).values('hall')
+#         ids_booked_seats = BookingClassService.get_ids_booked_seats(pk_session)
+#         print(ids_booked_seats)
+# if ser.data['id'] in ids_booked_seats:
+#                 ser.data['isBooked'] = True
+#                 print('true')
+#             else:
+#                 ser.data['isBooked'] = False
+#                 print('false')
+#         return representation
 
 class SeatListSerializer(serializers.ModelSerializer):
     class Meta:

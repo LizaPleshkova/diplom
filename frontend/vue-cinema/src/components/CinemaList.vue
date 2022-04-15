@@ -1,37 +1,40 @@
 <template>
-  <div class="left-ads-display col-lg-9">
-    <div class="row" id="gallery">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 mb-4">
-            <h1>from cinema list</h1>
-            <Cinema
-              v-for="cinema in allCinemas"
-              v-bind:key="cinema.id"
-              :cinema="cinema"
-            />
-            <!-- query: { id: cinema.id }-->
-          </div>
+  <div class="container-fluid"> 
+    <div class='row'>
+        <div class="col-sm-9">
+       
+          <Cinema
+            v-for="cinema in allCinemas"
+            v-bind:key="cinema.id"
+            :cinema="cinema"
+          />
         </div>
-      </div>
-    </div>
+        <div class="col-sm-2">
+          <MovieSoon v-for="movie in movieSoon"
+            v-bind:key="movie.id"
+            :movie="movie"
+            />
+        </div>
+        </div>
   </div>
 </template>
 
 <script>
 import Cinema from "./Cinema.vue";
-import {mapGetters, mapActions} from 'vuex' 
+import MovieSoon from "./MovieSoon.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "CinemaList",
   components: {
-    Cinema,
+    Cinema, MovieSoon
   },
-  computed:mapGetters(['allCinemas']),
-  methods: mapActions(['getCinemas']),
-  mounted(){
+  computed: mapGetters(["allCinemas", "movieSoon"]),
+  methods: mapActions(["getCinemas", "getMoviesSoon"]),
+  mounted() {
     this.getCinemas();
+    this.getMoviesSoon();
     console.log(this.allCinemas);
-  }
+  },
 };
 </script>

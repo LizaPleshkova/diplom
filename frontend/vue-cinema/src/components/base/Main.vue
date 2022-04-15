@@ -1,47 +1,31 @@
 <template>
-  <div class="side-bar col-sm-3">
-    <div class="card border-dark mb-2">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Кинотеатры
-      </div>
-      <div class="card-body text-dark"></div>
+  <div class="row">
+    <div class="side-bar col-sm-2">
+      <Filters />
     </div>
 
-    <div class="card border-dark mb-2">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Даты
+    <div class="col-sm-10">
+      <div class="row row-cols-3 row-cols-md-3">
+        <MovieList :movies="allMovies" />
       </div>
-      <div class="card-text text-center m-1"></div>
-    </div>
-
-    <div class="card border-dark mb-3">
-      <div class="card-header border-dark bg-transparent text-dark text-center">
-        Жанры
-      </div>
-      <div class="card-text text-center"></div>
     </div>
   </div>
-
-  <div class=" col-sm-9">
-  <div class="row row-cols-3 row-cols-md-3">
-
-      <MovieList :movies="allMovies" />
-    </div>
-    </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import MovieList from "@/components/MovieList";
+import Filters from "@/components/Filter.vue";
 
 export default {
   name: "Main",
   components: {
     MovieList,
+    Filters,
   },
   computed: mapGetters(["allMovies"]),
   methods: mapActions(["getMovies"]),
-   mounted() {
+  mounted() {
     this.getMovies();
   },
 };

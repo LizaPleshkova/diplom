@@ -1,10 +1,8 @@
-import datetime
-
+from datetime import datetime
 from movie.models import Movie
-# from CinemaProject import cinema
-from cinema.models import MovieSession
+from cinema.models import MovieSession, ScheduleRental
 
-from cinema.models import ScheduleRental
+from cinema.serializers import MovieSessionSerializer
 
 
 class MovieService:
@@ -12,13 +10,18 @@ class MovieService:
     def get_latest_movies():
         ''' for '''
         latest_movies = ScheduleRental.objects.order_by(
-            'start_date', 'end_date'
-        ).distinct().values('id_movie')[:3]
-        movies = Movie.objects.filter(pk__in=latest_movies)
-        # latest_movies = MovieSession.objects.order_by('datetime_session').select_related('id_movie')[:3]
-        # print(latest_movies)
-        # print(movies)
+            '-start_date', '-end_date'
+        ).distinct().values('movie')[:3]
+        movies = Movie.objects.filter(id__in=latest_movies)
+        return movies
 
+    @staticmethod
+    def get_movies_soon():
+        ''' for '''
+        latest_movies = ScheduleRental.objects.filter(start_date__gt=datetime.now()).order_by(
+            '-start_date', '-end_date'
+        ).distinct().values('movie')[:5]
+        movies = Movie.objects.filter(id__in=latest_movies)
         return movies
 
     @staticmethod
@@ -33,9 +36,9 @@ class MovieService:
         return movies
 
     @staticmethod
-    def get_sessions_movie(pk: int):
+    def get_sessions_movie(movie_id: int):
         mv = MovieSession.objects.filter(
-            pk=pk, datetime_session__gte=datetime.datetime.now(),
-
+            movie=movie_id, datetime_session__gte=datetime.now(),
         )
-        return mv
+        serializer = MovieSessionSerializer(mv, many=True)
+        return serializer.data

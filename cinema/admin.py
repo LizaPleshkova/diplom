@@ -24,9 +24,9 @@ class SectorAdmin(admin.ModelAdmin):
 
 class SeatAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'hall', 'sector', 'number_place', 'number_row',
+        'id', 'hall', 'sector', 'number_place', 'number_row','isBooked'
     )
-    list_filter = ['hall', 'sector']
+    list_filter = ['hall', 'sector', 'isBooked']
     search_fields = ['hall', 'sector']
 
 
@@ -34,7 +34,8 @@ class MovieSessionCompositionAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'hall', 'movie', 'datetime_session',
     )
-    list_filter = ['hall', 'movie']
+    list_filter = ['hall', 'movie', 'datetime_session',]
+    search_fields = ['hall', 'movie', 'datetime_session',]
 
 
 class ScheduleRentalAdmin(admin.ModelAdmin):
