@@ -1,7 +1,13 @@
 from django.contrib import admin
 from .models import (
-    Country, Genre, Movie, MovieComposition, PersonalData, Studio
+    Country, Genre, Movie, MovieComposition, PersonalData, Studio, Comment
 )
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'text', 'author', 'movie', 'date', 'is_visible')
+    search_fields = ['author']
+    list_filter = ['author', 'movie', 'is_visible']
 
 
 class CountryAdmin(admin.ModelAdmin):
@@ -16,11 +22,9 @@ class GenreAdmin(admin.ModelAdmin):
 
 class MovieAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'name','duration', 'release_date', 'category',
-        # 'id_movie', 'name', 'genres', 'countries', 'studios', 'duration', 'release_date', 'category',
+        'id', 'name', 'duration', 'release_date', 'category',
     )
     list_filter = ['genres', 'countries', 'studios', 'category']
-    # list_filter = ['genres', 'countries', 'studios', 'category']
     search_fields = ['name']
 
 
@@ -47,6 +51,7 @@ class StudioAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Country, CountryAdmin)
+admin.site.register(Comment, CommentAdmin)
 
 admin.site.register(Genre, GenreAdmin)
 

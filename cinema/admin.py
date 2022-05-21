@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema
+    Hall, MovieSession, Seat, ScheduleRental, Sector, SessionSchedule, Cinema, Booking, BookingHistory
 )
 
 
@@ -10,7 +10,7 @@ class CinemaAdmin(admin.ModelAdmin):
 
 
 class HallAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'cinema')
+    list_display = ('id', 'name', 'cinema', 'count_places')
     list_filter = ['id', 'cinema']
     search_fields = ['name']
 
@@ -24,9 +24,9 @@ class SectorAdmin(admin.ModelAdmin):
 
 class SeatAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'hall', 'sector', 'number_place'
+        'id', 'hall', 'sector', 'number_place', 'number_row','isBooked'
     )
-    list_filter = ['hall', 'sector']
+    list_filter = ['hall', 'sector', 'isBooked']
     search_fields = ['hall', 'sector']
 
 
@@ -34,7 +34,8 @@ class MovieSessionCompositionAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'hall', 'movie', 'datetime_session',
     )
-    list_filter = ['hall', 'movie']
+    list_filter = ['hall', 'movie', 'datetime_session',]
+    search_fields = ['hall', 'movie', 'datetime_session',]
 
 
 class ScheduleRentalAdmin(admin.ModelAdmin):
@@ -52,6 +53,24 @@ class SessionScheduleAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class BookingAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'session', 'seat', 'price', 'datetime_book', 'isPaid'
+    )
+    search_fields = ['user', 'session']
+    list_filter = ['user', 'session', 'isPaid']
+
+
+class BookingHistoryAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'user', 'session', 'seat', 'action'
+    )
+    search_fields = ['user', 'session', 'action']
+    list_filter = ['user', 'session', 'action']
+
+
+admin.site.register(BookingHistory, BookingHistoryAdmin)
+admin.site.register(Booking, BookingAdmin)
 admin.site.register(Cinema, CinemaAdmin)
 admin.site.register(Hall, HallAdmin)
 admin.site.register(Seat, SeatAdmin)
