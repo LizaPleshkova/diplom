@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="side-bar col-sm-2">
+    <div class="side-bar col-sm-2 navbar-nav mr-auto">
       <Filters />
     </div>
 

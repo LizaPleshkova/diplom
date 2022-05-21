@@ -7,12 +7,16 @@ const HTTP = axios.create({
   headers:  {
     "Content-type": "application/json",
   'Authorization': "Bearer " + localStorage.getItem('token')
-}
-  
+}  
 });
 
 export const HTTP_USER = axios.create({
   baseURL: `http://localhost:8000/client/`,
+  headers:  {
+    "Content-type": "application/json",
+  'Authorization': "Bearer " + localStorage.getItem('token')
+}  
+
 });
 
 // HTTP.interceptors.request.use(function (config) {

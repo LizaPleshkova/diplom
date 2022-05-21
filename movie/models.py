@@ -1,5 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class PersonalData(models.Model):
@@ -68,7 +71,7 @@ class MovieCountries(models.Model):
 
 
 class MovieGenres(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE,blank=True, null=True,  related_name='movie_genre')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, blank=True, null=True, related_name='movie_genre')
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, blank=True, null=True, related_name='movie_genre')
 
     class Meta:
@@ -81,3 +84,22 @@ class MovieStudios(models.Model):
 
     class Meta:
         unique_together = (('movie', 'studio'),)
+
+
+class Comment(models.Model):
+    ''' дополнить ограничения полей 
+    поля:
+        сам комментарий
+        автор комментария
+        дата создания комментария
+        фильм, к которому привязан
+        is_visible = проверен или нет, редактирует это админ
+    '''
+    text = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='comments')
+    date = models.DateTimeField(auto_now_add=True)
+    is_visible = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.id} - {self.author} - {self.movie} - {self.is_visible}'

@@ -25,5 +25,6 @@ class CinemaService:
         )
         print(ms)
         return ms
+
     
 

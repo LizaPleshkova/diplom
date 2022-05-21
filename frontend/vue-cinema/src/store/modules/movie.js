@@ -1,20 +1,11 @@
-// import CinemaService from "./services/DataService";
 import MovieService from "../../services/MovieService";
-// import axios from 'axios';
 
-// function update_date_ms(movie_sessions){
-//   for(var ms in movie_sessions){
-//     console.log(ms);
-//       let new_date = new Date( ms.datetime_session )
-//       console.log(ms.datetime_session);
-//       ms.datetime_session = new_date.toLocaleString("en-US");
-//   }
-// }
 
 const movieModule = {
   actions: {
     getMovies(context) {
       MovieService.getMovies().then((movies) => {
+        console.log(movies)
         context.commit("set_movies", movies);
       });
     },

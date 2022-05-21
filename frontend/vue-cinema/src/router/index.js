@@ -10,12 +10,6 @@ const routes = [
     component: () => import("../components/base/Main.vue"),
   },
   {
-    path: "/movie-soon/",
-    name: "movie-soonlist",
-    // component: CinemaDataService,
-    component: () => import("../components/MovieSoon.vue"),
-  },
-  {
     path: "/movie/",
     name: "movie-list",
     // component: CinemaDataService,
@@ -60,6 +54,10 @@ const routes = [
     path: "/logout/",
     component: () => import("../components/user/Logout.vue"),
   },
+  {
+    path: "/profile/",
+    component: () => import("../components/user/Profile.vue"),
+  },
 ];
 
 const router = createRouter({
@@ -67,7 +65,7 @@ const router = createRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/signup', '/'];
+  const publicPages = ['/login/', '/signup/', '/', '/cinema'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('token');
   // trying to access a restricted page + not logged in

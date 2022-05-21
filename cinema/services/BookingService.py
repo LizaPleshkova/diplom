@@ -1,6 +1,7 @@
 import base64
 import json
 from datetime import datetime, date
+import datetime
 from msilib.schema import InstallUISequence
 from turtle import pd
 import holidays
@@ -15,6 +16,7 @@ from ..serializers import BookingSerializer, SeatListSerializer
 User = get_user_model()
 
 COUNT_COLLUMNS_HALL = 3
+MINUTS_CANCELED_BOOKING = 30
 
 
 def _get_user_id_from_token(request):
@@ -41,11 +43,61 @@ def _get_free_booked_seats(pk_session: int):
 
 
 class BookingClassService:
+    #
+    # def __init__(self):
+    #     print('hereeee  ')
+    #     BookingClassService.update_all_booking()
+    #
+    # def __call__(self):
+    #     print('hereeee  ')
+    #     BookingClassService.update_all_booking()
 
     @staticmethod
-    def get_seats(session_id:int):
+    def get_current_booking():
+        current_booked_seats = Booking.objects.select_related('session', 'seat').filter(
+            session__datetime_session__gte=datetime.datetime.now()
+        )
+        return current_booked_seats
+
+    @staticmethod
+    def update_all_booking():
+        '''
+        отменить бронироввание если isPaid = False за 30 минут до начала киносеанса
+        '''
+        current_booking = BookingClassService.get_current_booking().filter(isPaid=False)
+        date_now = datetime.datetime.now()
+
+        for booking in current_booking:
+            print('date now', date_now, booking.session.datetime_session,
+                  booking.session.datetime_session.replace(tzinfo=None))
+            print(booking)
+            if abs(
+                    booking.session.datetime_session.replace(tzinfo=None) - date_now
+            ).min <= datetime.timedelta(minutes=MINUTS_CANCELED_BOOKING):
+                BookingClassService.delete_booking(booking)
+                print(booking.session.datetime_session.replace(tzinfo=None) - date_now)
+        print('end updating booking')
+
+    @staticmethod
+    def delete_booking(instance: Booking):
+
+        print(instance)
+        booking_history = BookingHistory.objects.create(
+            action=ActionChoice.DELETE.value,
+            user=instance.user,
+            session=instance.session,
+            seat=instance.seat,
+            price=instance.price,
+            datetime_book=instance.datetime_book
+        )
+        print(booking_history)
+        booking_history.save()
+        instance.delete()
+        print('------------- END DELETE BOOKING ------------ ')
+
+    @staticmethod
+    def get_seats(session_id: int):
         ms_hall = MovieSession.objects.filter(id=session_id)
-        
 
     @staticmethod
     def create_booking(session_id: int, request):
@@ -108,6 +160,7 @@ class BookingClassService:
         ''' not id -> to object'''
         # get id of booked_seats in the movie_session
         booked_seats = Booking.objects.filter(session=pk_session)
+        print(booked_seats)
 
         # get id of booked_seats(Seat model)
         ids_booked_seats = [bs.seat.id for bs in booked_seats]
@@ -117,10 +170,10 @@ class BookingClassService:
         free_seats = Seat.objects.filter(
             hall__id=hall.id).exclude(id__in=ids_booked_seats)
         booked_seats = Seat.objects.filter(id__in=ids_booked_seats)
-        return free_seats, ids_booked_seats    
+        return free_seats, ids_booked_seats
 
     @staticmethod
-    def create_seat_layout(seats, pk_session):
+    def create_seat_layout(seats, pk_session: int):
         """
         Create structure to represent the layout (rows/columns) of seats.
         Make seat's price

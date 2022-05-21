@@ -1,3 +1,4 @@
+
 // import CinemaService from "./services/DataService";
 import FilterService from "../../services/FilterService.js";
 
@@ -42,4 +43,4 @@ const filterModule = {
   },
 };
 
-export default cinemaModule;
+export default filterModule;

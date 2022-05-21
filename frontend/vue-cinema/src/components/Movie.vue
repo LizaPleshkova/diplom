@@ -3,10 +3,10 @@
     <div class="card">
       <img v-bind:src="movie.image" alt="" class="card-img-top"/>
       <div class="card-body text-center">
-        <h5 class="card-title">{{ movie.name }}</h5>
+        <h1 class="card-title">{{ movie.name }}</h1>
         <p class="card-text" v-for="genre in movie.genres" :key="genre.id">
           {{ genre.name }} </p>
-          {{movie.id}}
+          
          <router-link :to="{ name: 'movie-detail', params: { movieId: movie.id } }"
         class="btn btn-outline-success btn-sm"
         >Read more

@@ -68,7 +68,7 @@
           Login
         </button></router-link
       >
-      <router-link to="/sign-up/">
+      <router-link to="/signup/">
         <button type="button" class="btn btn-outline-warning">
           Sign Up
         </button></router-link

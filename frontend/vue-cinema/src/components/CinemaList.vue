@@ -10,6 +10,7 @@
           />
         </div>
         <div class="col-sm-2">
+         <p style='center'>Coming soon</p><br/><hr/>
           <MovieSoon v-for="movie in movieSoon"
             v-bind:key="movie.id"
             :movie="movie"

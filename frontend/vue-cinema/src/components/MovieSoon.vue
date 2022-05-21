@@ -1,5 +1,4 @@
 <template>
-    <p style='center'>Coming soon</p>
       <div class="card p-3">
           <img :src="movie.image" class=" card-img-top" alt="latest_movie" />
           <div class="card-body">
@@ -23,7 +22,6 @@
 </template>
 
 <script>
-import Movie from "./Movie.vue";
 
 export default {
   name: "MovieSoon",

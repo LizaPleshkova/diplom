@@ -55,10 +55,10 @@ class SessionScheduleAdmin(admin.ModelAdmin):
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'user', 'session', 'seat', 'price', 'datetime_book',
+        'id', 'user', 'session', 'seat', 'price', 'datetime_book', 'isPaid'
     )
     search_fields = ['user', 'session']
-    list_filter = ['user', 'session']
+    list_filter = ['user', 'session', 'isPaid']
 
 
 class BookingHistoryAdmin(admin.ModelAdmin):

@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_framework_simplejwt',
-
+# 'send_email.apps.SendEmailConfig',
+    #
     'client',
     'cinema',
     'movie'
@@ -107,7 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'client.user'
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -136,3 +138,13 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
 CORS_ORIGIN_ALLOW_ALL = True
 # CORS_ORIGIN_WHITELIST = ["http://localhost:8080"]
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# emails
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = '18it1.pleshkova.e@pdu.by'
+EMAIL_HOST_PASSWORD = '24092000f'
+# DEFAULT_FROM_EMAIL = 'Your name'
+# DEFAULT_TO_EMAIL = 'Your email'

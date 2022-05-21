@@ -22,7 +22,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ('user', 'session', 'seat', 'price', 'datetime_book')
+        fields = ('id', 'user', 'session', 'seat', 'price', 'datetime_book', 'isPaid')
 
     def validate(self, booking_instance):
 
@@ -50,7 +50,6 @@ class CinemaListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class SectorlListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sector
@@ -59,6 +58,7 @@ class SectorlListSerializer(serializers.ModelSerializer):
 
 class HallListSerializer(serializers.ModelSerializer):
     cinema = CinemaListSerializer()
+
     class Meta:
         model = Hall
         fields = '__all__'
@@ -110,6 +110,7 @@ class HallCreateSerializer(serializers.Serializer):
 class MovieSessionMainSerializer(serializers.ModelSerializer):
     hall = HallSerializer()
     movie = MovieMainSerializer()
+
     # hall_title = serializers.CharField(source='hall')
 
     class Meta:
@@ -118,14 +119,17 @@ class MovieSessionMainSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-
+    movie = serializers.CharField(source="movie.name")
+    hall = serializers.CharField(source="hall.name")
 
     class Meta:
         model = MovieSession
         fields = ('id', 'hall', 'movie', 'datetime_session',)
 
+
 class SeatIdSerializer(serializers.Serializer):
     id = serializers.IntegerField()
+
 
 #         fields = ('id', 'hall', 'sector', 'number_place', 'number_row', 'isBooked')
 
@@ -145,6 +149,8 @@ class SeatIdSerializer(serializers.Serializer):
 #         return representation
 
 class SeatListSerializer(serializers.ModelSerializer):
+    sector = serializers.CharField(source="sector.name")
+
     class Meta:
         model = Seat
         fields = '__all__'
@@ -159,4 +165,13 @@ class SessionScheduleListSerializer(serializers.ModelSerializer):
 class ScheduleRentalListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduleRental
+        fields = '__all__'
+
+
+class BookingReportSerializer(serializers.ModelSerializer):
+    seat = SeatListSerializer()
+    session = MovieSessionSerializer()
+
+    class Meta:
+        model = Booking
         fields = '__all__'

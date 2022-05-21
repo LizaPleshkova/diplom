@@ -30,7 +30,7 @@
             Sign in
           </button>
           <p class="mt-5 mb-3 text-muted">
-            Or <router-link to="/sign-up">click here</router-link> to sign up!
+            Or <router-link to="/signup/">click here</router-link> to sign up!
           </p>
         </form>
       </div>
@@ -82,23 +82,22 @@ export default {
           credentials: "include",
         })
           .then((response) => {
-            console.log('fomr login vue', response)
+            console.log("fomr login vue", response);
 
             const accessToken = response.data.access;
             const refreshToken = response.data.refresh;
 
-            console.log('tokens ', accessToken, refreshToken)
+            console.log("tokens ", accessToken, refreshToken);
             // const refreshToken = response.data.refresh
             this.$store.commit("setToken", accessToken, refreshToken);
 
             localStorage.setItem("token", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
-            
+
             this.$router.push("/");
           })
           .catch((err) => {
             console.log(err);
-
           });
       }
     },
