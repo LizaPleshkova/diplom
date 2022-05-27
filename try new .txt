@@ -1,0 +1,175 @@
+
+
+
+
+<div<div class="container">
+                                                <table class="flex-fill container-fluid bg-">
+                                                    <tbody>
+                                                        <tr v-for="row in allSeats" :key="1" >
+                                                        {{ row }}
+                                                            <td v-for="seat in row" :key="seat.id">
+
+                                                                <div v-if="booked_seats.indexOf(seat.number_place) != -1">
+                                                                    <input type="checkbox"
+                                                                        class="cliteTooltip btn-check btn-danger danger"
+                                                                        autocomplete="off" name="selected_seat"
+                                                                        :value="seat.id" disabled >
+                                                                    <label class="btn btn-outline-danger ">
+                                                                        {{ seat.number_place }}</label>
+                                                                </div>
+                                                                <div v-else>
+                                                                    <input type="checkbox"
+                                                                        class="checkbox btn-check btn-info"
+                                                                        :id="seat.number_place"
+                                                                        autocomplete="off" name="selected_seat"
+                                                                        :value="seat.id" v-model="selectedSeats">
+                                                                    <label class="checkbox liteTooltip btn btn-outline-primary"
+                                                                        :for="seat.number_place"
+                                                                        data-tooltip-mouseover=" sector: {{ seat.sector.name }}<br/> price: {{ seat.price }} р.">
+                                                                        {{ seat.number_place }}</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <p>selected seats : {{selectedSeats}}</p>
+                                                </table>
+                                            </div>
+
+booked_seats.indexOf(seat.number_place) != -1
+    
+
+                <span>{{ movieSession.hall.cinema.name }} - {{ movieSession.hall.name }}</span><br/>
+                <span>{{ movieSession.datetime_session }}</span>
+
+
+
+      <!-- Часть с ошибками -> нужно добавить ошибки в comp.  -->
+        <div class="card col-sm-6 m-1 text-center">
+            <div class="messages">
+                <div class="alert alert-success m-1" role="alert">
+                        <p>возможные ошибки</p>
+                </div>
+            </div>
+        </div>
+    
+
+
+
+
+    <div><p>Seats laoyt</p>
+    <div class="row justify-content-center">
+        <div class="card col-sm-6 m-1">
+            <div class="card-body text-center bg-danger text-white">
+                <p class="card-text">
+                <h5>{{ movieSession }}</h5>
+                </p>
+            </div>
+        </div>
+        <br/>
+
+   <!--     <div class="row justify-content-center m-1">
+            <div class="col-sm-6">
+                <div class="site-section">
+                    <div class="container">
+                        <div class="row m-1">
+                                <div class="card text-center">
+                                    <div class="card-header">Экран</div>
+                                    <div class="card-body">
+                                        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                </div>
+                        </div>
+                    </div>
+                    <hr/>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+ <div class="row justify-content-center m-1">
+                    <div class="col-sm-6">
+                            <div class="container">
+                                <div class="row m-1">
+                                        <div class="card text-center">
+                                            <div class="card-header">Экран</div>
+                                            <div class="card-body">
+                                                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                        </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+        </div>
+
+        </div>
+
+
+
+
+         <div class="row justify-content-center">
+            <div class="card col-sm-6 m-1">
+                <div class="card-body text-center bg-danger text-white">
+                    <p class="card-text"></p>
+                </div>
+            </div>
+            <div class="row justify-content-center m-1">
+                <div class="col-sm-6">
+                    <div class="site-section">
+                        <div class="container">
+                            <div class="row m-1">
+                                <div class="card text-center">
+                                    <div class="card-header">
+                                    <h3>Экран</h3>
+                                    </div>
+                                        <div class="card-body">
+                                            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-outline-dark m-1">забронировать</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+            <b-form-group
+      label="Button-group style checkboxes with variant primary and large buttons"
+      v-slot="{ ariaDescribedby }"
+    >
+      <b-form-checkbox-group
+        v-model="selected"
+        :options="options"
+        :aria-describedby="ariaDescribedby"
+        buttons
+        button-variant="primary"
+        size="lg"
+        name="buttons-2"
+      ></b-form-checkbox-group>
+    </b-form-group>

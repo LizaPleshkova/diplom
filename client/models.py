@@ -3,4 +3,4 @@ from django.db import models
 
 
 class User(AbstractUser):
-    birth_date = models.DateField(verbose_name='Birthday date')
+    birth_date = models.DateField(verbose_name='Birthday date',  null=True)
