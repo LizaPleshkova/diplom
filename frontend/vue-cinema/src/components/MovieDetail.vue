@@ -1,64 +1,54 @@
 <template>
-  <div class="card mx-auto left-ads-display col-lg-12">
-    <div class="row">
-      <div class="site-section">
-        <div class="container-fluid mx-auto">
-          <div class="row">
-            <div class="col-md-5 mx-2 my-4">
-              <div class="border text-center">
-                <img
-                  v-bind:src="currentMovie.image"
-                  alt="Image"
-                  class="img-fluid p-5"
-                />
+  <div>
+    <div class="display-4 font-weight-bold text-center">{{ currentMovie.name }}</div>
+    <div class="card mx-auto left-ads-display col-lg-12">
+
+      <div class="row">
+        <div class="site-section">
+          <div class="container-fluid mx-auto">
+            <div class="row">
+              <div class="col-md-12 mx-2 my-4">
+                <div>
+                  <img v-bind:src="currentMovie.image" alt="Image" class="img-responsive lefting" width="400"
+                    height="300" />
+                  <!-- <br/> -->
+                  <p class="display-6 font-weight-normal"><strong>Дата выхода: </strong> {{ currentMovie.release_date
+                  }}</p>
+                  <p class=" display-6 font-weight-normal">
+                    <strong>Страны: </strong>{{ currentMovie.countries }}
+                  </p>
+                  <p class=" display-6 font-weight-normal"><strong>Жанра: </strong> {{ currentMovie.genres }} </p>
+
+                  <p class=" display-6 font-weight-normal"><strong>Студии: </strong> {{ currentMovie.studios }} </p>
+                  <p class=" display-6 font-weight-normal"><strong>Возрастная категория: </strong> {{
+                      currentMovie.category
+                  }}+</p>
+                  <p class=" display-6 font-weight-normal"><strong>Длительность: </strong> {{ currentMovie.duration }}+
+                  </p>
+                  <hr />
+                  <p>{{ currentMovie.description }}</p>
+                </div>
               </div>
             </div>
-
-            <div class="col-md-5 mx-4 my-4">
-              <h2 class="text-black">{{ currentMovie.name }}</h2>
-              <br />
-              <p>{{ currentMovie.description }}</p>
-              <hr />
-
-              <h4 class="text-black">Год:</h4>
-              <p>{{ currentMovie.release_date }}</p>
-              <h4 class="text-black">Страна:</h4>
-              <p v-for="country in currentMovie.countries" :key="country.id">
-                {{ country.name }}
-              </p>
-              <h4 class="text-black">Жанры:</h4>
-              <p v-for="genre in currentMovie.genres" :key="genre.id">
-                {{ genre.name }}
-              </p>
-              <h4 class="text-black">Студия:</h4>
-              <p v-for="st in currentMovie.studios" :key="st.id">
-                {{ st.name }}
-              </p>
-              <h4 class="text-black">Возрастная категория:</h4>
-              <p>{{ currentMovie.category }}+</p>
-              <h4 class="text-black">Длительность:</h4>
-              <p>{{ currentMovie.duration }}</p>
-            </div>
           </div>
-        </div>
-        {{movieSessions}}
-        <hr />
+          <hr />
 
-        <div class="container">
-          <MovieSessions :sessions="movieSessions"/>
+          <div class="container">
+            <MovieSessions :sessions="movieSessions" />
+          </div>
+
         </div>
-        
       </div>
+      <div>
+        <div class="row">
+          <CommentsMovie />
+        </div>
+      </div>
+
+
     </div>
-    <div>
-    <div class="row">
-    <CommentsMovie/></div>
-    </div>
-    
-    
   </div>
 
-  
 </template>
 
 <script>
@@ -68,16 +58,21 @@ import MovieSessions from "./MovieSessions.vue";
 
 export default {
   name: "movie-detail",
-    components: {
+  components: {
     CommentsMovie, MovieSessions
   },
-  props:[ 'sessions'],
+  props: ['sessions'],
   computed: mapGetters(["currentMovie", "movieSessions"]),
   methods: mapActions(["getMovie"]),
   created() {
-    console.log("from MD", this.$route.params.movieId);
     this.getMovie(this.$route.params.movieId);
     console.log(this.currentMovie, this.movieSessions);
   },
 };
 </script>
+<style>
+.lefting {
+  float: left;
+  margin: 10px 10px 10px 10px;
+}
+</style>

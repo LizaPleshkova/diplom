@@ -6,11 +6,7 @@
           <div class="row">
             <div class="col-md-5 mx-2 my-4">
               <div class="border text-center">
-                <img
-                  v-bind:src="currentCinema?.image"
-                  alt="Image"
-                  class="img-fluid p-5"
-                />
+                <img v-bind:src="currentCinema?.image" alt="Image" class="img-fluid p-5" />
               </div>
             </div>
 
@@ -25,6 +21,9 @@
                 }}<br />
               </p>
               <hr />
+              <p>
+                {{ currentCinema?.description }}
+              </p>
               <br />
             </div>
           </div>
@@ -33,46 +32,28 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12">
-              <h2 class="text-black">Киносеансы</h2>
+              <h2 class="text-black text-center">Киносеансы</h2>
               <br />
               <div v-if="cinemaSessions">
-                <div class="row justify-content-around row-cols-3 row-cols-md-2">
-                  <div
-                    class="card border-danger col-md-3 m-2 p-2"
-                    v-for="movie_s in cinemaSessions"
-                    :key="movie_s.id"
-                  >
-                      <div class="card-header text-center"><h3>{{ movie_s.movie?.name }}</h3></div>
-                      <img
-                        class="card-img-top"
-                        v-bind:src="movie_s.movie?.image"
-                        alt="movie name"
-                      />
-                      <hr/>
-                      <div class="card-body text-center">
-                      <div v-for="(genre, ind) in movie_s.movie?.genres"
-                          :key="ind">{{ genre}} </div>
-                        <hr/>
-                         <div v-for="(studio, ind) in movie_s.movie?.studios"
-                          :key="ind">{{ studio}} </div>
-                        <hr/>
-                        <router-link
-                          :to="{
-                            name: 'movie-session',
-                            params: { movieSessionId: movie_s.id },
-                          }"
-                          class="btn btn-outline-dark"
-                        >
-                          more details
-                        </router-link>
-                        <p></p>
-                      </div>
+                <div class="row row-cols-2 row-cols-md-4 justify-content-around">
+                  <div class="card m-2 p-2" v-for="movie_s in cinemaSessions" :key="movie_s.id">
+                    <img v-bind:src="movie_s.movie.image" alt="" class="card-img-top" />
+                    <div class="card-body text-center">
+                      <h1 class="card-title">{{ movie_s.movie.name }}</h1>
+                      <p class="card-text" v-for="genre in movie_s.movie.genres" :key="genre.id">
+                        {{ genre }} </p>
+
+                      <router-link :to="{ name: 'movie-detail', params: { movieId: movie_s.movie.id } }"
+                        class="btn btn-outline-success btn-sm">Read more
+                      </router-link>
                     </div>
                   </div>
+
+                </div>
               </div>
               <div v-else>
-                <p>Киносеансов на данный фильм пока что нет</p>
-                <p>Попробуйте выбрать другой фильм</p>
+                <p>Киносеансов в кинотеатре {{ currentCinema?.name }} на текузий момент нет</p>
+                <p>Попробуйте выбрать другой кинотеатр или перезагрузить страницу</p>
               </div>
             </div>
           </div>
@@ -89,9 +70,6 @@ export default {
   name: "cinema-detail",
   computed: mapGetters(["currentCinema", "cinemaSessions", "movieSession"]),
   methods: mapActions(["getCinema"]),
-  // mounted() {
-  //   this.getCinema(this.$route.params.cinemaId);
-  // },
   created() {
     this.getCinema(this.$route.params.cinemaId);
   },

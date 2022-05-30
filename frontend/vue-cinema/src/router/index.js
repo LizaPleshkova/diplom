@@ -57,6 +57,13 @@ const routes = [
   {
     path: "/profile/",
     component: () => import("../components/user/Profile.vue"),
+    props: true,
+  },
+  {
+    path: "/profile/tickets/",
+    name:'user-tickets',
+    component: () => import("../components/user/Tickets.vue"),
+    props: true,
   },
 ];
 

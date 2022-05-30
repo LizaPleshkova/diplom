@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from dateutil.parser import parse
 
 User = get_user_model()
 
@@ -19,9 +17,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(write_only=True, required=True)
     password2 = serializers.CharField(write_only=True, required=True)
-    birth_date = serializers.DateField()
 
     class Meta:
         model = User
@@ -34,22 +31,17 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
-
-        if type(attrs['birth_date']) == type(''):
-            datetime_birth = parse(attrs['birth_date'])
-            attrs['birth_date'] = datetime_birth.date()
+        if type(attrs['birth_date']) != type(''):
+            print('here', attrs['birth_date'])
+            # datetime_birth = parse(attrs['birth_date'])
+            print(attrs['birth_date'], type(attrs['birth_date']))
+            datetime_birth = attrs['birth_date'].strftime('%Y-%m-%d')
+            # datetime_birth = datetime.strptime(attrs['birth_date'], "%Y-%m-%d").date()
+            attrs['birth_date'] = datetime_birth
             print(datetime_birth)
         else:
             raise serializers.ValidationError({"birth_date": "Something wrong with date type"})
         return attrs
-
-    def to_internal_value(self, data):
-        datas = super().to_internal_value(data)
-        print(datas)
-        datetime_birth = parse(datas['birth_date'])
-        datas['birth_date'] = datetime_birth
-        print(datetime_birth)
-        return data
 
     def create(self, validated_data):
         user = User.objects.create(

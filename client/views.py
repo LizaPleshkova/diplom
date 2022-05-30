@@ -1,14 +1,12 @@
-from datetime import datetime
-
-from django.shortcuts import render
+from wsgiref.util import FileWrapper
+from django.http import HttpResponse
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import viewsets, status, serializers
-from dateutil.parser import parse
+from rest_framework import viewsets, status
 
 from .serializers import RegisterSerializer, UserListSerializer
 from .services.UserService import UserService
@@ -20,7 +18,8 @@ User = get_user_model()
 
 
 class UserProfile(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get_queryset(self, *args, **kwargs):
         queryset = User.objects.all()
@@ -42,17 +41,39 @@ class UserProfile(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets
     #     return Response(data, content_type='application/json', status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, url_path='send_tickets')
-    def send_tickets(self, request):
+    def send_tickets_email(self, request):
+        # недописанно   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
         # user = _get_user_id_from_token(request)
         user = request.user
         print("user = ", user)
         UserService.send_tickets_to_email(user)
         return Response(content_type='application/json', status=status.HTTP_200_OK)
 
+    @action(methods=['post'], detail=False, url_path='booked-tickets')
+    def get_booked_tickets(self, request):
+        user = request.user
+        booked_ids = request.data['booked_ids']
+        # booked_ids = ['233']
+        bookings = UserService.get_booked_tickets(booked_ids)
+        bookings_serializer = BookingReportSerializer(bookings, many=True)
+        return Response(bookings_serializer.data, content_type='application/json', status=status.HTTP_200_OK)
+
+    @action(methods=['get'], detail=False, url_path='download-booked-tickets')
+    def download_booked_tickets(self, request):
+        # недописанно   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        print(request, dir(request))
+        user = request.user
+        print("user = ", user)
+        filename = UserService.download_tickets()
+
+        short_report = open(filename, 'rb')
+        response = HttpResponse(FileWrapper(short_report), content_type='application/pdf', status=status.HTTP_200_OK)
+        return response
+
     @action(methods=['get'], detail=False, url_path='report')
     def user_report(self, request):
         user = _get_user_id_from_token(request)
-        print("user = ", user)
         booking_rec = UserService.get_user_history_booked_seats(user)
         current_booked_seats = UserService.get_user_current_booked_seats(user)
 
@@ -68,19 +89,13 @@ class UserProfile(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets
 class RegisterView(ModelViewSet):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
-    serializer_class = RegisterSerializer
+
+    # serializer_class = RegisterSerializer
 
     def create(self, request, *args, **kwargs):
-        print('req ', request.data)
         user = request.data
-        print(user['birth_date'], type(user['birth_date']))
-        dates = parse(user['birth_date'])
-        # user['birth_date'] = dates.date()
         serializer = RegisterSerializer(data=user)
-        # print(serializer.data)
         serializer.is_valid(raise_exception=True)
-        print(serializer.validated_data)
-
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

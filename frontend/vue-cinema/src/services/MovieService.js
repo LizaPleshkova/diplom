@@ -1,18 +1,11 @@
 import HTTP from "../http-common";
 import axios from "axios";
 
-const headers = {
-  "Content-type": "application/json",
-  Authorization: "Bearer " + localStorage.getItem("token"),
-};
-
 const MovieService = {
   getMovies() {
-    return axios
-      .get(`http://localhost:8000/api/movie/`, { headers })
-      .then((response) => {
-        return response.data;
-      });
+    return axios.get(`http://localhost:8000/api/movie/`).then((response) => {
+      return response.data;
+    });
   },
   getMoviesSoon() {
     return HTTP.get("/movie/soon/").then((response) => {

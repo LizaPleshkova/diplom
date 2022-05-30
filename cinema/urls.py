@@ -1,6 +1,5 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework import routers
-# from .views import
 from .views import CinemaView, HallView, MovieSessionView, BookingView, filters_data, SeatView
 from movie.views import MovieView
 from movie.views import CommentView
@@ -16,7 +15,7 @@ router.register(r'booking', BookingView, basename='booking')
 router.register(r'comment', CommentView, basename='comment')
 
 urlpatterns = [
-   path('filters/', filters_data, name='filters'),
+    path('filters/', filters_data, name='filters'),
 ]
 
 urlpatterns += router.urls

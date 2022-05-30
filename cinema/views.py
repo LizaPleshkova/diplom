@@ -1,20 +1,18 @@
-import json
 from datetime import datetime, timedelta
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import viewsets, status, serializers
+from rest_framework import viewsets, status
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.viewsets import ModelViewSet
 from cinema.services.Service import CinemaService
-from .serializers import CinemaListSerializer, HallListSerializer, HallCreateSerializer, MovieSessionMainSerializer, \
-    SeatIdSerializer, SeatListSerializer, \
-    BookingSerializer, MovieSessionSerializer
-from .models import Cinema, Hall, MovieSession, Booking, Seat, BookingHistory, ActionChoice
+from .serializers import (
+    CinemaListSerializer, HallListSerializer, HallCreateSerializer, MovieSessionMainSerializer,
+    SeatListSerializer, BookingSerializer
+)
+from .models import Cinema, Hall, MovieSession, Booking, Seat
 from .services.BookingService import BookingClassService
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
 from movie.models import Genre
 from movie.serializers import GenreListSerializer
 from django.contrib.auth import get_user_model
@@ -30,7 +28,6 @@ def _get_range_dates():
     end = datetime.strptime(str(end_date), '%Y-%m-%d')
 
     daterange = [(start + timedelta(days=x)).strftime('%Y-%m-%d') for x in range(0, (end - start).days)]
-    print(daterange)
     return daterange
 
 
@@ -186,9 +183,7 @@ class MovieSessionView(ModelViewSet):
         seats = Seat.objects.select_related('sector').filter(
             hall=movie_session.hall
         ).order_by('number_place')
-        print('SEATS  ', seats)
         seat_layot = BookingClassService.create_seat_layout(seats, pk)
-        print(seat_layot)
         seats = {
             'seat_layout': seat_layot,
             'count_free_seats': seats.filter(isBooked=False).count(),

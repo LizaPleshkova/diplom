@@ -1,17 +1,10 @@
-// import HTTP from "../http-common";
-import axios from 'axios'
-
-const headers = { 
-  "Content-type": "application/json",
-  'Authorization': "Bearer " + localStorage.getItem('token')
-};
+import axios from "axios";
 
 const FilterService = {
-    getFilters() {
-    return axios.get(`http://localhost:8000/api/filters/`, {headers}).then((response) => {
-        console.log(response.data);
+  getFilters() {
+    return axios.get(`http://localhost:8000/api/filters/`).then((response) => {
       return response.data;
     });
-  }
+  },
 };
 export default FilterService;

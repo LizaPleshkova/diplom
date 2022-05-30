@@ -87,14 +87,6 @@ class MovieStudios(models.Model):
 
 
 class Comment(models.Model):
-    ''' дополнить ограничения полей 
-    поля:
-        сам комментарий
-        автор комментария
-        дата создания комментария
-        фильм, к которому привязан
-        is_visible = проверен или нет, редактирует это админ
-    '''
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='comments')

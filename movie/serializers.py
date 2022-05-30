@@ -111,3 +111,14 @@ class MovieRetrieveSerializer(serializers.ModelSerializer):
             'id', 'name', 'duration', 'release_date', 'studios', 'genres',
             'countries', 'description', 'image',
         )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['genres'] = [j['name'] for j in representation['genres']]
+        representation['studios'] = [j['name'] for j in representation['studios']]
+        representation['countries'] = [j['name'] for j in representation['countries']]
+        print('HERE', representation['countries'])
+        representation['countries'] = ', '.join(representation['countries'])
+        representation['genres'] = ', '.join(representation['genres'])
+        representation['studios'] = ', '.join(representation['studios'])
+        return representation

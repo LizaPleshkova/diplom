@@ -7,6 +7,13 @@ from rest_framework import serializers
 from movie.serializers import MovieMainSerializer
 from .models import Cinema, Hall, Sector, Seat, SessionSchedule, MovieSession, ScheduleRental, Booking
 from .services.PriceService import PriceClassService
+from client.serializers import UserListSerializer
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+from client.serializers import UserListSerializer
 
 User = get_user_model()
 
@@ -169,9 +176,23 @@ class ScheduleRentalListSerializer(serializers.ModelSerializer):
 
 
 class BookingReportSerializer(serializers.ModelSerializer):
+    '''
+    return format:
+    '''
     seat = SeatListSerializer()
     session = MovieSessionSerializer()
+    user = UserListSerializer()
 
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ('id', 'id_ticket', 'user', 'session', 'seat', 'price', 'datetime_book', 'isPaid',)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        seat = representation['seat']
+        hall = seat['hall']
+        print('HALL', hall)
+        cinema = Hall.objects.get(id=hall).cinema
+        cinema_data = CinemaListSerializer(cinema).data
+        representation['cinema'] = cinema_data
+        return representation

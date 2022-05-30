@@ -1,18 +1,19 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <h2 class="text-black">Киносеансы</h2>
-      <br />
+      <h2 class="text-black text-center">Киносеансы</h2>
+      <hr />
       <div v-if="sessions != []">
         <div class="row row-cols-3 row-cols-md-2">
-          <div
-            class="card col-md-3 m-4"
+          <!-- <div
+            class="card col-md-3text-center m-3"
             v-for="movie_s in sessions"
             :key="movie_s.id"
-          >
-            <div class="card border text-center border-danger m-3">
+          > -->
+            <div class="card col-md-3 text-center m-3"  v-for="movie_s in sessions"
+            :key="movie_s.id">
               <div class="card-header bg-danger text-white">
-                {{ movie_s.hall.name }} зал
+                {{ movie_s.hall }} зал
               </div>
               <div class="card-body text-center">
                 <router-link
@@ -29,7 +30,7 @@
                 </p>
               </div>
             </div>
-          </div>
+          <!-- </div> -->
         </div>
       </div>
       <div v-else>

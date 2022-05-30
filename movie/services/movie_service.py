@@ -8,7 +8,6 @@ class MovieService:
 
     @staticmethod
     def get_latest_movies():
-        ''' for '''
         latest_movies = ScheduleRental.objects.order_by(
             '-start_date', '-end_date'
         ).distinct().values('movie')[:3]
@@ -17,7 +16,6 @@ class MovieService:
 
     @staticmethod
     def get_movies_soon():
-        ''' for '''
         latest_movies = ScheduleRental.objects.filter(start_date__gt=datetime.now()).order_by(
             '-start_date', '-end_date'
         ).distinct().values('movie')[:5]
@@ -46,7 +44,7 @@ class MovieService:
     def get_comments_movie(movie_id: int):
         comments = Comment.objects.filter(
             movie=movie_id, is_visible=True
-        )
+        ).order_by('-date')
         for i in comments:
             date = i.date
             i.date = date.strftime("%m-%d-%y, %H:%M")

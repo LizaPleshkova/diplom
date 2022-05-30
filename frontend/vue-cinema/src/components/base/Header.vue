@@ -10,12 +10,12 @@
     <div class="collapse navbar-collapse" id="navb">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link to="/movie" class="nav-link"
+          <router-link to="/movie/" class="nav-link"
             >Movies</router-link
           >
         </li>
         <li class="nav-item">
-          <router-link to="/cinema" class="nav-link"
+          <router-link to="/cinema/" class="nav-link"
             >Cinema</router-link
           >
         </li>
@@ -57,7 +57,7 @@
         </svg>
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link to="/profile" class="dropdown-item">Profile </router-link>
+        <router-link to="/profile/" class="dropdown-item">Profile </router-link>
         <router-link to="/logout/" class="dropdown-item"> LogOut</router-link>
       </div>
     </div>

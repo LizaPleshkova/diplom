@@ -13,6 +13,15 @@
                                 {{ errorMessage }}
                             </div>
                         </div>
+
+                        <p>
+                            Эти данные можно скачать в формате pdf. Для этого нажмите
+                            <router-link :to="{ name: 'user-tickets', params: { selectedBookingIds: selectedBooking } }"
+                                class="btn btn-outline-success btn-sm">View tickets
+                            </router-link>
+                        </p>
+
+
                         <div class="row d-flex justify-content-center" v-if='currentBooking.length != 0'>
                             <table class="table">
                                 <thead>
@@ -27,13 +36,18 @@
                                 </thead>
                                 <tbody>
                                     <th scope="row"></th>
+                                    {{selectedBooking}}
                                     <tr v-for="(booked, ind) in currentBooking" :key="booked.id">
-                                        <td>{{ ind }} {{ booked.id }}</td>
+
+                                        <td>{{ ind }} {{ booked.id }}
+                                        <input type="checkbox" :value="booked.id" v-model="selectedBooking" />
+
+                                        </td>
                                         <td>{{ booked.session.movie }}, {{ booked.session.hall }},
                                             {{ booked.session.datetime_session }}
                                         </td>
                                         <td>{{ booked.seat.number_place }} место, {{ booked.seat.number_row }} ряд,
-                                           сектор {{ booked.seat.sector }} 
+                                            сектор {{ booked.seat.sector }}
                                         </td>
                                         <td>{{ booked.price }}</td>
                                         <td>{{ booked.datetime_book }}</td>
@@ -61,10 +75,13 @@
                         </div>
                         <br>
                         <div class="row d-flex justify-content-center" v-if='historyBooking.length != 0'>
-                            <p>
+                            <!-- <p>
                                 Эти данные можно скачать в формате pdf. Для этого нажмите
-                                <a href="" class="btn btn-outline-success btn-sm">Downland PDF</a>
-                            </p>
+                                <router-link
+                                    :to="{ name: 'user-tickets', params: { selectedBooking: selectedBooking } }"
+                                    class="btn btn-outline-success btn-sm">Downland PDF
+                                </router-link>
+                            </p> -->
 
                             <div class="row d-flex justify-content-center">
                                 <table class="table align-items-center">
@@ -78,15 +95,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(booked, ind) in historyBooking" :key="booked.id" class="justify-content-center align-items-center">
+                                        <tr v-for="(booked, ind) in historyBooking" :key="booked.id"
+                                            class="justify-content-center align-items-center">
 
                                             <!-- <th scope="row"></th> -->
-                                            <td>{{ booked.id }}</td>
+                                            <td>{{ booked.id }}
+                                            </td>
                                             <td>{{ booked.session.movie }}, {{ booked.session.hall }},
                                                 {{ booked.session.datetime_session }}
                                             </td>
                                             <td> место {{ booked.seat.number_place }}, {{ booked.seat.number_row }} ряд,
-                                               сектор {{ booked.seat.sector }} 
+                                                сектор {{ booked.seat.sector }}
                                             </td>
                                             <td>{{ booked.price }}</td>
                                             <td>{{ booked.datetime_book }} /
@@ -113,7 +132,10 @@ import UserProfileService from "@/services/UserProfile";
 export default {
     name: "Profile",
     data() {
+
+        // ADD CHECKBOXES IN FIRST COLUMNS EACH ROW
         return {
+            selectedBooking: [],
             errorMessage: null,
             idsDeleteBooking: "id" + Math.random().toString(16).slice(2),
         }

@@ -6,6 +6,7 @@ import authModule from "../store/modules/auth.js";
 import movieSessionModule from "../store/modules/movie_session.js";
 import commentsModule from "../store/modules/comments.js";
 import profileModule from "../store/modules/profile.js";
+import ticketsModule from "../store/modules/tickets.js";
 
 const store = createStore({
   modules: {
@@ -14,7 +15,8 @@ const store = createStore({
     authModule,
     movieSessionModule,
     commentsModule,
-    profileModule
+    profileModule,
+    ticketsModule
     },
 });
 

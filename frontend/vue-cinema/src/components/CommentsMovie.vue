@@ -12,16 +12,16 @@
                   <option value="oldest">Sort By Oldest</option>
                 </select>
                 {{ sortedBy }}
- <div class="col-sm-12 m-1 text-center " v-if='errorMessage'>
-        <div class="alert alert-warning" role="alert">
-          {{ errorMessage }}
-        </div>
-      </div>
-      <div class="col-sm-12 m-1 text-center " v-if='newComment.length != 0'>
-        <div class="alert alert-success" role="alert">
-          <h6> Спасибо за ваш комментарий! Сейчас он находится на обработке модератором.</h6>
-        </div>
-      </div>
+                <div class="col-sm-12 m-1 text-center " v-if='errorMessage'>
+                  <div class="alert alert-warning" role="alert">
+                    {{ errorMessage }}
+                  </div>
+                </div>
+                <div class="col-sm-12 m-1 text-center " v-if='newComment.length != 0'>
+                  <div class="alert alert-success" role="alert">
+                    <h6> Спасибо за ваш комментарий! Сейчас он находится на обработке модератором.</h6>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="mt-5 d-flex flex-row">
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       sortedBy: "newest",
-      nullStr: " ", 
+      nullStr: " ",
       comment: {
         text: "",
         movie: "",
@@ -103,9 +103,9 @@ export default {
       console.log(this.comment);
       // this.$store.dispatch("postComment", this.comment);
       CommentsService.postComment(this.comment).then((data) => {
-          console.log("from post comments module", data);
-          this.newComment = data;
-}).catch(error => {
+        console.log("from post comments module", data);
+        this.newComment = data;
+      }).catch(error => {
         this.errorMessage = error.message;
         console.error("There was an error!", error);
         return error;

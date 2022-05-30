@@ -1,40 +1,57 @@
 <template>
   <div class="container">
-    <div class="row col-8 justify-content-center">
-      <div class="mx-auto text-center">
-        <form class="form-signin mx-auto" v-on:submit.prevent="submitForm">
-          <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-
-          <label for="inputLogin" class="sr-only">Username</label>
-          <input
-            type="text"
-            id="inputLogin"
-            v-model="username"
-            name="username"
-            class="m-2 form-control form-outline mb-4"
-            placeholder="Login"
-            required=""
-            autofocus=""
-          />
-          <label for="inputPassword" class="sr-only">Password</label>
-          <input
-            type="password"
-            id="inputPassword"
-            v-model="password"
-            name="password"
-            class="m-2 form-control"
-            placeholder="Password"
-            required=""
-          />
-          <button class="btn button btn-lg btn-primary btn-block" type="submit">
-            Sign in
-          </button>
-          <p class="mt-5 mb-3 text-muted">
-            Or <router-link to="/signup/">click here</router-link> to sign up!
-          </p>
-        </form>
+    <div class="hero is-info">
+      <div class="hero-body has-text-centered">
+        <h1 class="title">Sign up</h1>
       </div>
     </div>
+    <div class="col-sm-12 m-1 text-center " v-if='errors.length'>
+      <div class="alert alert-warning" role="alert">
+        {{ errors }}
+      </div>
+    </div>
+    <section class="vh-100 bg-image">
+      <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px;">
+                <div class="card-body p-5">
+                  <h2 class="text-uppercase text-center mb-5">Sign in </h2>
+                  <div class="col-sm-12 m-1 text-center " v-if='errors'>
+                    <div class="alert alert-warning" role="alert">
+                      {{ errors }}
+                    </div>
+                  </div>
+                  <form v-on:submit.prevent="submitForm">
+
+                    <div class="form-outline mb-4">
+                      <input type="text" id="username" class="form-control form-control-lg" v-model="username"
+                        placeholder="Login" />
+                      <label class="form-label" for="username">Your nick</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="password" id="password" class="form-control form-control-lg" v-model="password"
+                        placeholder="Password" />
+                      <label class="form-label" for="password">Password</label>
+                    </div>
+
+                    <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" type="submit">
+                      Sign in
+                    </button>
+                    <p class="text-center text-muted mt-5 mb-0">
+                      Or <router-link to="/signup/">click here</router-link> to sign up!
+                    </p>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
