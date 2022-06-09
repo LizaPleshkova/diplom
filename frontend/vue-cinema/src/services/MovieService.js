@@ -3,7 +3,8 @@ import axios from "axios";
 
 const MovieService = {
   getMovies() {
-    return axios.get(`http://localhost:8000/api/movie/`).then((response) => {
+    // return axios.get(`http://localhost:8000/api/movie/`).then((response) => {
+    return axios.get(`http://localhost:8000/api/movie/current_movies/`).then((response) => {
       return response.data;
     });
   },
@@ -19,6 +20,7 @@ const MovieService = {
   },
   getMovie(pk) {
     return HTTP.get(`/movie/${pk}/`).then((response) => response.data);
+    // return  axios.get(`http://localhost:8000/api/movie/${pk}/`).then((response) => response.data);
   },
   getFilterMovies(filters) {
     var cinemas = get_list_filter(filters, "selectedCinema");

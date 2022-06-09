@@ -2,11 +2,19 @@ import axios from "axios";
 import store from "./store/index";
 import router from "./router/index.js";
 
+// if (this.$store.state.authModule.user.accessToken) {й
+//   console.log('token is exist and != []', this.$store.state.authModule.user.accessToken)
+//     axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
+//   } else {
+//         console.log('token is NOT exist')
+//     // axios.defaults.headers.common['Authorization'] = "";
+//   }
+  
 const HTTP = axios.create({
   baseURL: `http://localhost:8000/api/`,
   headers: {
     "Content-type": "application/json",
-    Authorization: "Bearer " + localStorage.getItem("token"),
+    Authorization: localStorage.getItem("token") ? "Bearer " + localStorage.getItem("token") : '',
   },
 });
 

@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework import routers
-from .views import CinemaView, HallView, MovieSessionView, BookingView, filters_data, SeatView
+from .views import CinemaView, HallView, MovieSessionView, BookingView, filters_data, SeatView, search
 from movie.views import MovieView
 from movie.views import CommentView
 
@@ -16,6 +16,7 @@ router.register(r'comment', CommentView, basename='comment')
 
 urlpatterns = [
     path('filters/', filters_data, name='filters'),
+    path('search/', search, name='search'),
 ]
 
 urlpatterns += router.urls

@@ -2,13 +2,13 @@
   <div>
     <div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Cinemas
+        кинотеатры
       </div>
 
       <div class="card-body text-dark">
         <div v-for="cinema in f_cinemas" :key="cinema.id">
           <label class="check">
-            {{ cinema.name }}
+            {{ cinema.name }}, {{cinema.address}}
             <input
               type="checkbox"
               name="is_name"
@@ -24,7 +24,7 @@
 
     <div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Genres
+        жанры
       </div>
       <div class="card-body text-dark">
         <div v-for="genre in f_genres" :key="genre.id">
@@ -45,7 +45,7 @@
 
     <div class="card border-dark mb-2">
       <div class="card-header border-dark bg-transparent text-dark text-center">
-        Dates
+        даты
       </div>
       <div class="card-body text-dark">
         <div v-for="(date, ind) in f_dates" :key="ind">
@@ -126,7 +126,7 @@ export default {
   padding-left: 30px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -183,13 +183,14 @@ export default {
 
 /* The check */
 .check {
+/* justify-content-around; */
   display: block;
   position: relative;
   padding-left: 25px;
   margin-bottom: 12px;
   padding-right: 15px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 15px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

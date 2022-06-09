@@ -2,7 +2,7 @@
   <div class="signup">
     <div class="hero is-info">
       <div class="hero-body has-text-centered">
-        <h1 class="title">Sign up</h1>
+        <!-- <h1 class="title">Sign up</h1> -->
       </div>
     </div>
  <div class="col-sm-12 m-1 text-center " v-if='errors.length '>
@@ -18,7 +18,7 @@
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+              <h2 class="text-uppercase text-center mb-5">Создай аккаунт</h2>
  <div class="col-sm-12 m-1 text-center " v-if='errors'>
         <div class="alert alert-warning" role="alert">
           {{ errors }}
@@ -27,49 +27,49 @@
               <form v-on:submit.prevent="submitForm">
 
                 <div class="form-outline mb-4">
-                  <input type="text" id="username" class="form-control form-control-lg"  v-model="username"/>
-                  <label class="form-label" for="username">Your nick</label>
+                  <input type="text" id="username" class="form-control form-control-lg" placeholder="Логин" v-model="username"/>
+                  <!-- <label class="form-label" for="username">Your nick</label> -->
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="text" id="first_name" class="form-control form-control-lg"  v-model="first_name"/>
+                  <input type="text" id="first_name" class="form-control form-control-lg" placeholder="Имя" v-model="first_name"/>
                   <label class="form-label" for="first_name">Your First Name</label>
                 </div>
 
 
                 <div class="form-outline mb-4">
-                  <input type="text" id="last_name" class="form-control form-control-lg"  v-model="last_name"/>
-                  <label class="form-label" for="last_name">Your Last Name</label>
+                  <input type="text" id="last_name" class="form-control form-control-lg" placeholder="Фамилия"  v-model="last_name"/>
+                  <!-- <label class="form-label" for="last_name">Your Last Name</label> -->
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="email" id="email" class="form-control form-control-lg" v-model="email" />
-                  <label class="form-label" for="email">Your Email</label>
+                  <input type="email" id="email" class="form-control form-control-lg" placeholder="Почта"  v-model="email" />
+                  <!-- <label class="form-label" for="email">Your Email</label> -->
                 </div>
 
 
                 <div class="form-outline mb-4">
-                  <input type="text" id="birth_date" class="form-control form-control-lg" placeholder="YYYY-MM-DD"  v-model="birth_date" />
-                  <label class="form-label" for="birth_date">Your birth_date</label>
+                  <input type="text" id="birth_date" class="form-control form-control-lg" placeholder="Дата рождения в формате: YYYY-MM-DD" v-model="birth_date" />
+                  <!-- <label class="form-label" for="birth_date">Your birth_date</label> -->
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" id="password" class="form-control form-control-lg" v-model="password" />
-                  <label class="form-label" for="password">Password</label>
+                  <input type="password" id="password" class="form-control form-control-lg" placeholder="Пароль"  v-model="password" />
+                  <!-- <label class="form-label" for="password">Password</label> -->
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" id="password2" class="form-control form-control-lg" v-model="password2" />
-                  <label class="form-label" for="password2">Repeat your password</label>
+                  <input type="password" id="password2" class="form-control form-control-lg" placeholder="Повтори пароль"  v-model="password2" />
+                  <!-- <label class="form-label" for="password2">Repeat your password</label> -->
                 </div>
 
                 <div class="d-flex justify-content-center">
                   <button type="submit"  value="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Зарегистрироваться</button>
                 </div>
 
-                <p class="text-center text-muted mt-5 mb-0">Have already an account?  <u>
-                      <router-link to="/signup/">Login here</router-link></u></p>
+                <p class="text-center text-muted mt-5 mb-0">Уе есть аккаунт?  <u>
+                      <router-link to="/login/">Войти в систему</router-link></u></p>
 
               </form>
 

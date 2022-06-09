@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import viewsets, status
+
+from django.db.models import Q
+from rest_framework.decorators import action, api_view
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework import viewsets, status, filters
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.viewsets import ModelViewSet
 from cinema.services.Service import CinemaService
@@ -11,10 +13,9 @@ from .serializers import (
 )
 from .models import Cinema, Hall, MovieSession, Booking, Seat
 from .services.BookingService import BookingClassService
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from movie.models import Genre
-from movie.serializers import GenreListSerializer
+from movie.models import Genre, Movie
+from movie.serializers import GenreListSerializer, MovieListSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -33,8 +34,6 @@ def _get_range_dates():
 
 @api_view(['GET'])
 def filters_data(request):
-    # latest = MovieService.get_latest_movies()
-
     genres = Genre.objects.all()
     dates = _get_range_dates()
     cinema_list = Cinema.objects.all()
@@ -45,6 +44,31 @@ def filters_data(request):
         'genres': GenreListSerializer(genres, many=True).data,
     }
     return Response(filters_data, content_type='application/json', status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def search(request):
+    '''  ДОПИСАТЬ  '''
+    print('request', request, dir(request))
+    print(request.query_params)
+    search_data = request.data
+    # search_data = request.query_params
+    print(search_data)
+    movies = Movie.objects.filter(
+        Q(name__icontains=search_data) | Q(description__icontains=search_data) | Q(genres__name__icontains=search_data)
+    )
+    cinemas = Cinema.objects.filter(
+        Q(name__icontains=search_data) | Q(description__icontains=search_data) | Q(address__icontains=search_data)
+
+    )
+    print(movies, cinemas)
+    movies_ser = MovieListSerializer(movies, many=True)
+    cinema_ser = CinemaListSerializer(cinemas, many=True)
+    print(movies_ser.data, cinema_ser.data)
+    return Response(
+        {'movies': movies_ser.data, 'cinemas': cinema_ser.data},
+        content_type='application/json', status=status.HTTP_200_OK
+    )
 
 
 class CinemaView(ModelViewSet):
@@ -65,7 +89,8 @@ class CinemaView(ModelViewSet):
         serializer = self.get_serializer(instance)
         ms = CinemaService.get_cinema_sessions(instance.id)
         ser = MovieSessionMainSerializer(ms, many=True)
-        return Response({'cinema': serializer.data, 'movie_session': ser.data})
+        return Response({'cinema': serializer.data, 'movie_session': ser.data}, content_type="application/json",
+                        status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=True, url_path='movie-session', url_name='movie_session')
     def get_movie_session(self, request, pk=None):
@@ -105,6 +130,7 @@ class SeatView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.Ge
 
 
 class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
+    # permission_classes = (IsAuthenticated,)
     permission_classes = (AllowAny,)
     serializer_class = BookingSerializer
 
@@ -117,6 +143,24 @@ class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, v
         print(booking)
         BookingClassService.delete_booking(booking)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['post'], detail=True, url_path='movie-session/booking-seats',
+            url_name='movie-session/booking-seats')
+    def booking_seats(self, request, pk=None):
+        BookingClassService.update_all_booking()
+        try:
+
+            print('MOVIE SESSION ', pk, type(pk))
+            print('IDS  ', request.data)
+            booking_instance = BookingClassService.create_booking(int(pk), request)
+            if booking_instance:
+                print('CREATE BOOKING INST', booking_instance)
+                return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
+            else:
+                print('smth worong')
+        except BaseException as error:
+            print('An exception occurred: {}'.format(error))
+            return Response(format(error), content_type="application/json", status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['get'], detail=False, url_path='update-booking', url_name='update_booking')
     def update_booking_seats(self, request, pk=None):
@@ -152,26 +196,26 @@ class BookingView(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet, v
 
 
 class MovieSessionView(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny, IsAuthenticatedOrReadOnly)
     serializer_class = MovieSessionMainSerializer
 
     def get_queryset(self):
         queryset = MovieSession.objects.filter(datetime_session__date__gte=datetime.now().date())
         return queryset
 
-    @action(methods=['get'], detail=True, url_path='get-seats', url_name='get_seats')
-    def get_seats(self, request, pk=None):
-        # BookingClassService.update_all_booking()
-
-        # movie_session_id = self.get_object()
-        free_seats, booked_seats = BookingClassService.get_free_booked_seats(pk)
-        seats = {
-            'count_free_seats': free_seats.count(),
-            'count_booked_seats': booked_seats.count(),
-            'free_seats': SeatListSerializer(free_seats, many=True).data,
-            'booked_seats': SeatListSerializer(booked_seats, many=True).data
-        }
-        return Response(seats, content_type="application/json", status=status.HTTP_200_OK)
+    # @action(methods=['get'], detail=True, url_path='get-seats', url_name='get_seats')
+    # def get_seats(self, request, pk=None):
+    #     BookingClassService.update_all_booking()
+    #
+    #     # movie_session_id = self.get_object()
+    #     free_seats, booked_seats = BookingClassService.get_free_booked_seats(pk)
+    #     seats = {
+    #         'count_free_seats': free_seats.count(),
+    #         'count_booked_seats': booked_seats.count(),
+    #         'free_seats': SeatListSerializer(free_seats, many=True).data,
+    #         'booked_seats': SeatListSerializer(booked_seats, many=True).data
+    #     }
+    #     return Response(seats, content_type="application/json", status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=True, url_path='seats', url_name='seats')
     def get_seats_layout(self, request, pk=None):
@@ -183,7 +227,10 @@ class MovieSessionView(ModelViewSet):
         seats = Seat.objects.select_related('sector').filter(
             hall=movie_session.hall
         ).order_by('number_place')
-        seat_layot = BookingClassService.create_seat_layout(seats, pk)
+        print('SEATS HALL ', seats.count())
+        seat_layot = BookingClassService.create_seat_layout(seats, movie_session.hall.count_columns,
+                                                            movie_session.hall.count_rows)
+        print('seat layot  ', seat_layot)
         seats = {
             'seat_layout': seat_layot,
             'count_free_seats': seats.filter(isBooked=False).count(),
@@ -191,16 +238,17 @@ class MovieSessionView(ModelViewSet):
         }
         return Response(seats, status=status.HTTP_200_OK)
 
-    @action(methods=['post'], detail=True, url_path='booking', url_name='booking')
-    def booking_seats(self, request, pk=None):
-        try:
-            print(pk, type(pk))
-            booking_instance = BookingClassService.create_booking(int(pk), request)
-            if booking_instance:
-                print('CREATE BOOKING INST', booking_instance)
-                return Response(booking_instance, content_type="application/json", status=status.HTTP_201_CREATED)
-            else:
-                print('smth worong')
-        except BaseException as error:
-            print('An exception occurred: {}'.format(error))
-            return Response(format(error), content_type="application/json", status=status.HTTP_400_BAD_REQUEST)
+    @action(methods=['get'], detail=True, url_path='clear_session_seats', url_name='clear_session_seats')
+    def del_session_bookings(self, request, pk=None):
+        movie_session = MovieSession.objects.get(id=pk)
+        seats = Seat.objects.select_related('sector').filter(
+            hall=movie_session.hall
+        ).order_by('number_place')
+
+        bookings = Booking.objects.filter(session=pk)
+        for seat in seats:
+            seat.isBooked = False
+            seat.save(update_fields=['isBooked'])
+        for book in bookings:
+            BookingClassService.delete_booking(book)
+        return Response('', status=status.HTTP_200_OK)

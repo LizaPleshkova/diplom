@@ -2,14 +2,14 @@
   <div class="col mb-4">
     <div class="card">
       <img v-bind:src="movie.image" alt="" class="card-img-top"/>
-      <div class="card-body text-center">
-        <h1 class="card-title">{{ movie.name }}</h1>
-        <p class="card-text" v-for="genre in movie.genres" :key="genre.id">
-          {{ genre.name }} </p>
+      <div class="card-body text-center p-2 m-1">
+        <h3 class="card-title">{{ movie.name }}</h3>
+        <p class="card-text m-1" v-for="(genre, ind ) in movie.genres" :key="ind">
+          {{ genre }} </p>
           
          <router-link :to="{ name: 'movie-detail', params: { movieId: movie.id } }"
-        class="btn btn-outline-success btn-sm"
-        >Read more
+        class="btn btn-outline-success btn-sm m-2"
+        >Подробнее
       </router-link>
       </div>
     </div>

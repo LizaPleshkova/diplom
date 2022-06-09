@@ -2,7 +2,7 @@
   <div class="container">
     <div class="hero is-info">
       <div class="hero-body has-text-centered">
-        <h1 class="title">Sign up</h1>
+        <!-- <h1 class="title">Авторизация</h1> -->
       </div>
     </div>
     <div class="col-sm-12 m-1 text-center " v-if='errors.length'>
@@ -17,7 +17,7 @@
             <div class="col-12 col-md-9 col-lg-7 col-xl-6">
               <div class="card" style="border-radius: 15px;">
                 <div class="card-body p-5">
-                  <h2 class="text-uppercase text-center mb-5">Sign in </h2>
+                  <h2 class="text-uppercase text-center mb-5">Авторизация</h2>
                   <div class="col-sm-12 m-1 text-center " v-if='errors'>
                     <div class="alert alert-warning" role="alert">
                       {{ errors }}
@@ -27,21 +27,21 @@
 
                     <div class="form-outline mb-4">
                       <input type="text" id="username" class="form-control form-control-lg" v-model="username"
-                        placeholder="Login" />
-                      <label class="form-label" for="username">Your nick</label>
+                        placeholder="логин" />
+                      <!-- <label class="form-label" for="username">Твой ник</label> -->
                     </div>
 
                     <div class="form-outline mb-4">
                       <input type="password" id="password" class="form-control form-control-lg" v-model="password"
-                        placeholder="Password" />
-                      <label class="form-label" for="password">Password</label>
+                        placeholder="пароль" />
+                      <!-- <label class="form-label" for="password">Пароль</label> -->
                     </div>
 
                     <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" type="submit">
-                      Sign in
+                      Войти
                     </button>
                     <p class="text-center text-muted mt-5 mb-0">
-                      Or <router-link to="/signup/">click here</router-link> to sign up!
+                      Или нажми<router-link to="/signup/"> здесь</router-link>, чтобы зарегистрироваться!
                     </p>
                   </form>
 

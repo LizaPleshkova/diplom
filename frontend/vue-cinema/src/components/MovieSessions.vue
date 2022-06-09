@@ -13,7 +13,9 @@
             <div class="card col-md-3 text-center m-3"  v-for="movie_s in sessions"
             :key="movie_s.id">
               <div class="card-header bg-danger text-white">
-                {{ movie_s.hall }} зал
+                
+                Кинотеатр {{movie_s.hall.cinema }}<br/>
+                Зал {{ movie_s.hall.name }}
               </div>
               <div class="card-body text-center">
                 <router-link

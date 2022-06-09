@@ -11,25 +11,27 @@
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/movie/" class="nav-link"
-            >Movies</router-link
+            >Фильмы</router-link
           >
         </li>
         <li class="nav-item">
           <router-link to="/cinema/" class="nav-link"
-            >Cinema</router-link
+            >Кинотетры</router-link
           >
         </li>
         <li class="nav-item">
           <router-link to="/" class="nav-link"
-            >About</router-link
+            >О нас</router-link
           >
         </li>
       </ul>
     </div>
 
     <form class="form-inline my-4 my-lg-0 m-3">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" />
-      <button class="btn btn-success my-2 my-sm-0" type="button">Search</button>
+      <input class="form-control mr-sm-2" type="text" placeholder="поиск" />
+      <button class="btn btn-success my-2 my-sm-0" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg></button>
     </form>
     <div
       class="dropdown m-3"
@@ -57,20 +59,20 @@
         </svg>
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <router-link to="/profile/" class="dropdown-item">Profile </router-link>
-        <router-link to="/logout/" class="dropdown-item"> LogOut</router-link>
+        <router-link to="/profile/" class="dropdown-item">Профиль </router-link>
+        <router-link to="/logout/" class="dropdown-item"> Выход</router-link>
       </div>
     </div>
 
     <div v-else>
       <router-link to="/login/">
         <button type="button" class="btn btn-outline-warning m-3">
-          Login
+          Войти
         </button></router-link
       >
       <router-link to="/signup/">
         <button type="button" class="btn btn-outline-warning">
-          Sign Up
+         Зарегистрироваться
         </button></router-link
       >
     </div>

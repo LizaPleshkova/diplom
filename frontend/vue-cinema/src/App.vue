@@ -20,12 +20,12 @@
         <a href="#" class="editContent">Home</a>
       </li>
     </ol> -->
-    <section class="ab-info-main py-md-5 py-4 editContent" style="padding-left: 3rem; padding-right: 3rem">
+    <section class="ab-info-main editContent" style="padding-left: 1rem; padding-right: 1rem">
       <div class="container-fluid py-md-3">
         <router-view />
       </div>
     </section>
-    <Footer/>
+    <Footer />
   </div>
 
 </template>
@@ -45,11 +45,11 @@ export default {
   beforeCreate() {
     this.$store.commit('initializeStore')
     console.log(this.$store.state.authModule.user.accessToken)
-    if (this.$store.state.authModule.user.accessToken) {й
-    console.log('token is exist and != []', this.$store.state.authModule.user.accessToken)
+    if (this.$store.state.authModule.user.accessToken) {
+      console.log('token is exist and != []', this.$store.state.authModule.user.accessToken)
       axios.defaults.headers.common['Authorization'] = "Bearer " + this.$store.state.authModule.user.accessToken;
     } else {
-          console.log('token is NOT exist')
+      console.log('token is NOT exist')
       // axios.defaults.headers.common['Authorization'] = "";
     }
   },
@@ -63,18 +63,41 @@ export default {
     // let link1 = document.createElement('link')
     // link1.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css')
     // document.head.appendChild(link1)
+    
+    // let links2 = document.createElement('script')
+    // links2.setAttribute('src', ' href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"')
+    // links2.setAttribute('integrity', 'sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3')
+    // links2.setAttribute('crossorigin', 'anonymous')
+    // links2.setAttribute('rel', 'stylesheet')
 
-    let link2 = document.createElement('script')
-    link2.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
-    document.head.appendChild(link2)
+    // document.head.appendChild(links2)
 
-    let b1 = document.createElement('link')
-    b1.setAttribute('rel', 'stylesheet')
-    b1.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css')
-    b1.setAttribute('integrity', 'sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn')
-    b1.setAttribute('crossorigin', 'anonymous')
-    document.head.appendChild(b1)
-// let recaptchaScript2 = document.createElement('script')
+    // let link2 = document.createElement('script')
+    // link2.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js')
+    // link2.setAttribute('integrity', 'sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB')
+    // link2.setAttribute('crossorigin', 'anonymous')
+    // document.head.appendChild(link2)
+
+    // let link2 = document.createElement('script')
+    // link2.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js')
+    // document.head.appendChild(link2)
+
+    // let b1 = document.createElement('link')
+    // // b1.setAttribute('rel', 'stylesheet')
+    // b1.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js')
+    // b1.setAttribute('integrity', 'sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13')
+    // b1.setAttribute('crossorigin', 'anonymous')
+    // document.head.appendChild(b1)
+
+    // let b1 = document.createElement('link')
+    // b1.setAttribute('rel', 'stylesheet')
+    // b1.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css')
+    // b1.setAttribute('integrity', 'sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn')
+    // b1.setAttribute('crossorigin', 'anonymous')
+    // document.head.appendChild(b1)
+
+
+    // let recaptchaScript2 = document.createElement('script')
     // recaptchaScript2.setAttribute('src', 'js/jquery-3.4.1.min.js')
     // document.head.appendChild(recaptchaScript2)
 

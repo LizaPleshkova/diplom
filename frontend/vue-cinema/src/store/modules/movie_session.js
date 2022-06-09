@@ -24,7 +24,8 @@ const movieSessionModule = {
             }
           }
         }
-
+        data.movie_session.datetime_session = new Date(data.movie_session.datetime_session);
+        console.log('', data.movie_session)
         context.commit("set_seats", data.seat_layout);
         context.commit("set_booked_seats", data.booked_seats);
         context.commit("set_movie_session", data.movie_session);

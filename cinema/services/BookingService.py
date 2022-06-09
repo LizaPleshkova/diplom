@@ -5,9 +5,9 @@ import datetime
 from msilib.schema import InstallUISequence
 from turtle import pd
 import holidays
-
+from django.conf import settings
 from cinema.services.PriceService import PriceClassService
-
+from django.utils.timezone import get_current_timezone
 from ..models import Booking, Seat, MovieSession, SectorChoice, BookingHistory, ActionChoice
 from django.contrib.auth import get_user_model
 
@@ -55,7 +55,7 @@ class BookingClassService:
     @staticmethod
     def get_current_booking():
         current_booked_seats = Booking.objects.select_related('session', 'seat').filter(
-            session__datetime_session__gte=datetime.datetime.now()
+            session__datetime_session__gte=datetime.datetime.now(datetime.timezone.utc)
         )
         return current_booked_seats
 
@@ -65,17 +65,28 @@ class BookingClassService:
         отменить бронироввание если isPaid = False за 30 минут до начала киносеанса
         '''
         current_booking = BookingClassService.get_current_booking().filter(isPaid=False)
-        date_now = datetime.datetime.now()
+        date_now = datetime.datetime.now(tz=get_current_timezone())
 
         for booking in current_booking:
-            print('date now', date_now, booking.session.datetime_session,
-                  booking.session.datetime_session.replace(tzinfo=None))
-            print(booking)
+            print(
+                f'\tnow = {date_now}\n \tbooking id = {booking.id}\n \tsession time1 = {booking.session.datetime_session.replace(tzinfo=get_current_timezone())} \n'
+                f'\tsession time2 = {booking.session.datetime_session.astimezone(get_current_timezone())} \n'
+            )
+            print(
+                abs(
+                    booking.session.datetime_session.astimezone(get_current_timezone()) - date_now
+                ).seconds,
+                datetime.timedelta(minutes=MINUTS_CANCELED_BOOKING).seconds,
+                abs(
+                    booking.session.datetime_session.astimezone(get_current_timezone()) - date_now
+                ).seconds <= datetime.timedelta(minutes=MINUTS_CANCELED_BOOKING).seconds, sep=' ----- '
+            )
             if abs(
-                    booking.session.datetime_session.replace(tzinfo=None) - date_now
-            ).min <= datetime.timedelta(minutes=MINUTS_CANCELED_BOOKING):
+                    booking.session.datetime_session.astimezone(get_current_timezone()) - date_now
+            ).seconds <= datetime.timedelta(minutes=MINUTS_CANCELED_BOOKING).seconds:
+                print('session id ', booking.session.id)
+                print('ЗАШЛО')
                 BookingClassService.delete_booking(booking)
-                print(booking.session.datetime_session.replace(tzinfo=None) - date_now)
         print('end updating booking')
 
     @staticmethod
@@ -173,14 +184,17 @@ class BookingClassService:
         return free_seats, ids_booked_seats
 
     @staticmethod
-    def create_seat_layout(seats, pk_session: int):
+    def create_seat_layout(seats, seat_columns, seat_rows):
         """
         Create structure to represent the layout (rows/columns) of seats.
         Make seat's price
         """
-        seat_columns = COUNT_COLLUMNS_HALL
+        # seat_columns = COUNT_COLLUMNS_HALL
         # ids_booked_seats = BookingClassService.get_ids_booked_seats(pk_session)
         # print(ids_booked_seats)
+
+        # print('\tseat_columns', seat_columns, seat_rows)
+        # print('\tseats', seats, seats.count())
         current_column = 0
         seat_layout, seat_row = [], []
         for seat in seats:
@@ -189,8 +203,29 @@ class BookingClassService:
             seat_valid['price'] = PriceClassService.make_price_seat(seat)
             seat_row.append(seat_valid)
             current_column += 1
+            # print(f'\tID = {seat.id} COLUMN = {current_column}')
             if current_column == seat_columns:
+                # print('\tSEAT  ROW', seat_row)
                 seat_layout.append(seat_row)
                 seat_row = []
                 current_column = 0
+            else:
+                # print('   befpre row  ')
+                # print(f'LeN SEAT LAYOT  =  {len(seat_layout)}, seat rows = {seat_rows}')
+                # print('SEAT  ROW ', seat_row)
+                # print('last el  ', seats[::-1], seat )
+                if seat == seats.last():
+                    # print('это должна быть предпоследний элемент  ')
+                    seat_layout.append(seat_row)
+                    seat_row = []
+                    current_column = 0
+                # if len(seat_layout) == seat_rows - 1:  # that's the last row
+                #     print('SEAT LAST ROW ', seat_row)
+                #     if seat == seats[::-1]:
+                #         print('это должна быть предпоследний элемент  ')
+                #         seat_layout.append(seat_row)
+                #         seat_row = []
+                #         current_column = 0
+                #     seat_row.append(seat_valid)
+
         return seat_layout

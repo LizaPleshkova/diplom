@@ -1,10 +1,10 @@
 <template>
   <div class="row">
-    <div class="side-bar col-sm-2 navbar-nav mr-auto">
+    <div class="side-bar col-sm-3 mr-auto">
       <Filters />
     </div>
 
-    <div class="col-sm-10">
+    <div class="col-sm-9">
       <div class="row row-cols-3 row-cols-md-3">
         <MovieList :movies="allMovies" />
       </div>

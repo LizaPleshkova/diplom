@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="display-4 font-weight-bold text-center">{{ currentMovie.name }}</div>
+    <div class="display-4 font-weight-bold text-center">{{ currentMovie?.name }}</div>
     <div class="card mx-auto left-ads-display col-lg-12">
 
       <div class="row">
@@ -9,10 +9,9 @@
             <div class="row">
               <div class="col-md-12 mx-2 my-4">
                 <div>
-                  <img v-bind:src="currentMovie.image" alt="Image" class="img-responsive lefting" width="400"
-                    height="300" />
-                  <!-- <br/> -->
-                  <p class="display-6 font-weight-normal"><strong>Дата выхода: </strong> {{ currentMovie.release_date
+                  <img v-bind:src="currentMovie.image" alt="Image" style="width: 25rem;" class="img-responsive lefting mt-6 px-2"  />
+                 <!-- <br/> -->
+                  <p class="display-6 font-weight-normal mt-1 p-2  mt-2"><strong>Дата выхода: </strong> {{ currentMovie.release_date
                   }}</p>
                   <p class=" display-6 font-weight-normal">
                     <strong>Страны: </strong>{{ currentMovie.countries }}
@@ -23,7 +22,7 @@
                   <p class=" display-6 font-weight-normal"><strong>Возрастная категория: </strong> {{
                       currentMovie.category
                   }}+</p>
-                  <p class=" display-6 font-weight-normal"><strong>Длительность: </strong> {{ currentMovie.duration }}+
+                  <p class=" display-6 font-weight-normal"><strong>Длительность: </strong> {{ currentMovie.duration }}
                   </p>
                   <hr />
                   <p>{{ currentMovie.description }}</p>
@@ -65,8 +64,9 @@ export default {
   computed: mapGetters(["currentMovie", "movieSessions"]),
   methods: mapActions(["getMovie"]),
   created() {
+
     this.getMovie(this.$route.params.movieId);
-    console.log(this.currentMovie, this.movieSessions);
+    console.log('that', this.currentMovie, this.movieSessions, this.isAuthenticated);
   },
 };
 </script>

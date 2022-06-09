@@ -1,7 +1,7 @@
 from datetime import datetime
 import django_filters
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework import viewsets, status
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from .serializers import (
@@ -26,7 +26,7 @@ class MoviesFilter(django_filters.FilterSet):
     def filter_by_cinema(self, queryset, name, value):
         values = [int(i) for i in value.split(',')]
         queryset = Movie.objects.filter(
-            movie_rental__end_date__gte=datetime.now(),
+            session_movie__datetime_session__gte=datetime.now(),
             session_movie__hall__cinema__id__in=values
         ).distinct()
         return queryset
@@ -34,7 +34,7 @@ class MoviesFilter(django_filters.FilterSet):
     def filter_by_genre(self, queryset, name, value):
         values = [int(i) for i in value.split(',')]
         queryset = Movie.objects.filter(
-            movie_rental__end_date__gte=datetime.now(),
+            session_movie__datetime_session__gte=datetime.now(),
             genres__id__in=values
         ).distinct()
         return queryset
@@ -42,27 +42,28 @@ class MoviesFilter(django_filters.FilterSet):
     def filter_by_date(self, queryset, name, value):
         values = [parse(i) for i in value.split(',')]
         queryset = Movie.objects.filter(
-            movie_rental__end_date__gte=datetime.now(),
+            session_movie__datetime_session__gte=datetime.now(),
             session_movie__datetime_session__date__in=values
         )
         return queryset
 
 
 class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = (AllowAny, IsAuthenticatedOrReadOnly)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = MoviesFilter
 
     def get_queryset(self, *args, **kwargs):
-        queryset = Movie.objects.filter(
-            movie_rental__end_date__gte=datetime.now()
-        )
-        return queryset
+        # queryset = Movie.objects.filter(
+        #     movie_rental__end_date__gte=datetime.now()
+        # )
+        # return queryset
+        return Movie.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return MovieRetrieveSerializer
-        return MovieListSerializer
+        return MovieMainSerializer
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -74,10 +75,17 @@ class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.G
         }
         return Response(data, content_type='application/json', status=status.HTTP_200_OK)
 
-    @action(methods=['get'], detail=False, url_path='now')
-    def movies_now(self, request):
+    @action(methods=['get'], detail=False, url_path='today')
+    def get_today_movies(self, request):
         movies_now = MovieService.get_movies_now()
         movies = MovieListSerializer(movies_now, many=True)
+        return Response(movies.data, content_type='application/json', status=status.HTTP_200_OK)
+
+    @action(methods=['get'], detail=False, url_path='current_movies')
+    def get_current_movies(self, request):
+        ''' use in main page '''
+        current_movies = MovieService.get_current_movies()
+        movies = MovieMainSerializer(current_movies, many=True)
         return Response(movies.data, content_type='application/json', status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=True, url_path='comments')
@@ -106,7 +114,7 @@ class MovieView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.G
 
 
 class CommentView(ListModelMixin, RetrieveModelMixin, CreateModelMixin, viewsets.GenericViewSet, viewsets.ViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self, *args, **kwargs):
         queryset = Comment.objects.all()

@@ -40,8 +40,6 @@ class UserService:
     @staticmethod
     def send_tickets_to_email(user):
         '''
-ЛОГИЧНЕЕ БУДЕТ НЕ СОХРАНЯТЬ ФАЙЛ НА ПК, А СОЗДАВАТЬ ЭКЗЕМПЛЯР ФАЙЛА И ЕГО ОТПРАВЛЯТЬ
-
         тут будет отправка одного конкретного билета
         сначала будет генерироваться файл с билетами -> потом отпрака на почту
         '''
@@ -56,8 +54,6 @@ class UserService:
             send_mail(
                 subject, message, from_email=settings.EMAIL_HOST_USER, recipient_list=['pl.1.el.vas@gmail.com']
             )
-            # 'admin@example.com',
-            # ['admin@example.com'])
         except BadHeaderError:
             raise BadHeaderError
 

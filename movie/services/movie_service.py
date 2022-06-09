@@ -25,10 +25,20 @@ class MovieService:
     @staticmethod
     def get_movies_now():
         ''' movies that are in the rental now '''
-        today = datetime.datetime.now().date()
+        today = datetime.now().date()
         mv = MovieSession.objects.filter(
             datetime_session__date=today
         ).distinct().values('id')
+        movies = Movie.objects.filter(id__in=mv)
+        return movies
+
+    @staticmethod
+    def get_current_movies():
+        ''' movies that it's in session'''
+        mv = MovieSession.objects.filter(
+            datetime_session__gte=datetime.now()
+        ).values('movie__id').distinct()
+        print('CURRENT MS MOVIE ID', mv)
         movies = Movie.objects.filter(id__in=mv)
         return movies
 

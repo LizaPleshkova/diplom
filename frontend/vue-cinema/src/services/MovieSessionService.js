@@ -11,10 +11,10 @@ const MovieSessionService = {
   bookSeats(selectedSeats, pk){
     // обновлять ids_booked-seats?
     return HTTP.post(
-      `/movie-session/${pk}/booking/`, selectedSeats
+      `/booking/${pk}//movie-session/booking-seats/`, selectedSeats
     ).then((response) => {
       return response.data;
-    });
+    }); 
   }
 };
 

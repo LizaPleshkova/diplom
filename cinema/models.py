@@ -42,6 +42,8 @@ class Hall(models.Model):
     cinema = models.ForeignKey(
         Cinema, on_delete=models.CASCADE, blank=True, null=True)
     count_places = models.IntegerField()
+    count_rows = models.IntegerField(default=0)
+    count_columns = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.pk} - {self.name} - {self.cinema}- {self.count_places}'
@@ -109,7 +111,7 @@ class MovieSession(models.Model):
 
 
 class Booking(models.Model):
-    id_ticket = models.UUIDField( default=uuid.uuid4, editable=False)
+    id_ticket = models.UUIDField(default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     session = models.ForeignKey(
         MovieSession,

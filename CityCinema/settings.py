@@ -111,7 +111,8 @@ AUTH_USER_MODEL = 'client.user'
 # LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -142,9 +143,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # emails
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = '18it1.pleshkova.e@pdu.by'
-EMAIL_HOST_PASSWORD = '24092000f'
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = 'city_cinema_monstee@mail.ru'
+# EMAIL_HOST_PASSWORD = 'YorETiryT22*'
+EMAIL_HOST_PASSWORD = 'WKNU2ivQiWrCv9cJXPhy'
 # DEFAULT_FROM_EMAIL = 'Your name'
 # DEFAULT_TO_EMAIL = 'Your email'

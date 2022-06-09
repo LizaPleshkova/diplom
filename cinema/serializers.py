@@ -72,6 +72,8 @@ class HallListSerializer(serializers.ModelSerializer):
 
 
 class HallSerializer(serializers.ModelSerializer):
+    cinema = serializers.CharField(source='cinema.name')
+
     class Meta:
         model = Hall
         fields = '__all__'
@@ -127,7 +129,8 @@ class MovieSessionMainSerializer(serializers.ModelSerializer):
 
 class MovieSessionSerializer(serializers.ModelSerializer):
     movie = serializers.CharField(source="movie.name")
-    hall = serializers.CharField(source="hall.name")
+    hall = HallSerializer()
+    # hall = serializers.CharField(source="hall.name")
 
     class Meta:
         model = MovieSession

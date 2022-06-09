@@ -30,13 +30,13 @@ const movieModule = {
         for (var ms_key in data.movie_sessions) {
           let movie_sessions = data.movie_sessions[ms_key];
           let new_date = new Date(movie_sessions["datetime_session"]);
-          var date = new_date.toLocaleDateString("en", {
+          var date = new_date.toLocaleDateString("ru", {
             weekday: "long",
             year: "numeric",
             month: "long",
             day: "numeric",
           });
-          var time = new_date.toLocaleTimeString("en-US");
+          var time = new_date.toLocaleTimeString("ru");
           movie_sessions["datetime_session"] = {
             date: date,
             time: time,

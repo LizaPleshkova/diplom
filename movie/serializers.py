@@ -77,6 +77,9 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class MovieMainSerializer(serializers.ModelSerializer):
+    # studios = serializers.CharField(source='studios.name')
+    # genres = serializers.CharField(source='genres.name')
+    # countries = serializers.CharField(source='countries.name')
     studios = StudioListSerializer(read_only=True, many=True)
     genres = GenreListSerializer(read_only=True, many=True)
     countries = CountryListSerializer(read_only=True, many=True)
@@ -92,9 +95,18 @@ class MovieMainSerializer(serializers.ModelSerializer):
         representation['genres'] = [j['name'] for j in representation['genres']]
         representation['studios'] = [j['name'] for j in representation['studios']]
         representation['countries'] = [j['name'] for j in representation['countries']]
-        url = "http://127.0.0.1:8000/media/movies/EYjhfIcdATk.jpg"
-        if "http://127.0.0.1:8000/" not in representation['image']:
-            representation['image'] = "http://127.0.0.1:8000" + representation['image']
+        # url = "http://127.0.0.1:8000/media/movies/EYjhfIcdATk.jpg"
+        print('1', representation['image'],representation['image'].find(
+                "http://localhost:8000/") == -1
+        )
+        if representation['image'].find(
+                "http://localhost:8000/") == -1:
+            # representation['image'] = "http://127.0.0.1:8000" + representation['image']
+            representation['image'] = "http://localhost:8000" + representation['image']
+        print('2', representation['image'],
+           representation['image'].find(
+                "http://localhost:8000/") == -1
+        )
 
         return representation
 
@@ -109,7 +121,7 @@ class MovieRetrieveSerializer(serializers.ModelSerializer):
         model = Movie
         fields = (
             'id', 'name', 'duration', 'release_date', 'studios', 'genres',
-            'countries', 'description', 'image',
+            'countries', 'description', 'image', 'category'
         )
 
     def to_representation(self, instance):
