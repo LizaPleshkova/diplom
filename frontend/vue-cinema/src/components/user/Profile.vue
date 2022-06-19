@@ -17,7 +17,7 @@
                         <p>
                             Эти данные можно скачать в формате pdf. Для этого нажмите
                             <router-link :to="{ name: 'user-tickets', params: { selectedBookingIds: selectedBooking } }"
-                                class="btn btn-outline-success btn-sm">View tickets
+                                class="btn btn-outline-success btn-sm"> Просмотреть электронные билеты
                             </router-link>
                         </p>
 
@@ -27,24 +27,28 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Кинотеатр</th>
                                         <th scope="col">Киносеанс</th>
                                         <th scope="col">Место</th>
                                         <th scope="col">Цена</th>
-                                        <th scope="col">Дата</th>
+                                        <th scope="col">Дата бронирования</th>
                                         <th scope="col">Снять бронирование</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <th scope="row"></th>
-                                    {{selectedBooking}}
                                     <tr v-for="(booked, ind) in currentBooking" :key="booked.id">
-
-                                        <td>{{ ind }} {{ booked.id }}
-                                        <input type="checkbox" :value="booked.id" v-model="selectedBooking" />
-
+                                       <td> <label class="check text-center">
+                                            <!-- {{ ind }} -->
+                                            <input type="checkbox" :id="ind" :value="booked.id"
+                                                v-model="selectedBooking" />
+                                            <span class="checkmark" :for="ind"></span>
+                                        </label>
                                         </td>
-                                        <td>{{ booked.session.movie }}, {{ booked.session.hall }},
-                                            {{ booked.session.datetime_session }}
+                                        <td>  Кинотеатр {{ booked.cinema.name }}, {{ booked.cinema.address }}
+</td>
+                                        <td>Фильм {{ booked.session.movie }}, Зал {{ booked.session.hall }},
+                                        {{ booked.session.datetime_session}}
                                         </td>
                                         <td>{{ booked.seat.number_place }} место, {{ booked.seat.number_row }} ряд,
                                             сектор {{ booked.seat.sector }}
@@ -53,7 +57,7 @@
                                         <td>{{ booked.datetime_book }}</td>
                                         <td class="d-flex justify-content-center">
                                             <button type="submit" class="btn btn-outline-danger"
-                                                v-on:click="deleteBooking(booked.id)">delete</button>
+                                                v-on:click="deleteBooking(booked.id)">удалить</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -66,7 +70,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12 text-left">
+       <div class="col-sm-12 text-left">
             <div class="container hero-gray-card d-flex align-items-center">
                 <div class="container ground-opacity">
                     <div class="col">
@@ -91,7 +95,7 @@
                                             <th scope="col">Киносеанс</th>
                                             <th scope="col">Место</th>
                                             <th scope="col">Цена</th>
-                                            <th scope="col">Дата</th>
+                                            <th scope="col">Дата брони</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -99,7 +103,7 @@
                                             class="justify-content-center align-items-center">
 
                                             <!-- <th scope="row"></th> -->
-                                            <td>{{ booked.id }}
+                                            <td>{{ ind }}
                                             </td>
                                             <td>{{ booked.session.movie }}, {{ booked.session.hall }},
                                                 {{ booked.session.datetime_session }}
@@ -108,8 +112,7 @@
                                                 сектор {{ booked.seat.sector }}
                                             </td>
                                             <td>{{ booked.price }}</td>
-                                            <td>{{ booked.datetime_book }} /
-                                                {{ booked.datetime_book }}
+                                            <td>{{ booked.datetime_book }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -182,3 +185,150 @@ export default {
     },
 };
 </script>
+
+<style>
+/* The radio */
+.radio {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkround {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border-color: #13c931;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio input:checked~.checkround {
+    background-color: #fff;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkround:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio input:checked~.checkround:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio .checkround:after {
+    left: 2px;
+    top: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #09b425;
+}
+
+/* The check */
+.check {
+    /* justify-content-around; */
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    padding-right: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border-color: #08c904;
+    border-style: solid;
+    border-width: 2px;
+}
+
+/* When the checkbox is checked, add a blue background */
+.check input:checked~.checkmark {
+    background-color: #fff;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.check input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.check .checkmark:after {
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid;
+    border-color: #f8204f;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.cust-btn {
+    margin-bottom: 10px;
+    background-color: #f8204f;
+    border-width: 2px;
+    border-color: #f8204f;
+    color: #fff;
+}
+
+.cust-btn:hover {
+    border-color: #f8204f;
+    background-color: #fff;
+    color: #f8204f;
+    border-radius: 20px;
+    transform-style: 2s;
+}
+</style>

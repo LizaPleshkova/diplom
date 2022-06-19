@@ -14,13 +14,13 @@
               />
             </div>
             <div class="col-12 col-md-5">
-              <p class="small font-weight-bold my-2">cinema</p>
+              <p class="small font-weight-bold my-2">Кинотеатр</p>
               <h3 class="mb-3">
                 {{ cinema.name }}
               </h3>
               <p>
-                <strong>Address: </strong>{{ cinema.address }}<br />
-                <strong>Phone number: </strong>{{ cinema.phone_number }}<br />
+                <strong>Адрес: </strong>{{ cinema.address }}<br />
+                <strong>Номер: </strong>{{ cinema.phone_number }}<br />
               </p>
               <div class="d-flex mb-3">
                 <small class="text-muted">
@@ -30,7 +30,7 @@
                       params: { cinemaId: cinema.id },
                     }"
                   >
-                    here you can view movie sessions
+                    тут можно просмотреть достпуные киносеансы в кинотеатре
                   </router-link></small
                 >
               </div>

@@ -23,29 +23,7 @@
                       {{ errors }}
                     </div>
                   </div> -->
-                  <form v-on:submit.prevent="submitForm">
-
-                    <div class="form-outline mb-4">
-                      <input type="text" id="username" class="form-control form-control-lg" v-model="username"
-                        placeholder="логин" />
-                      <!-- <label class="form-label" for="username">Твой ник</label> -->
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="password" id="password" class="form-control form-control-lg" v-model="password"
-                        placeholder="пароль" />
-                      <!-- <label class="form-label" for="password">Пароль</label> -->
-                    </div>
-
-                    <button class="btn btn-success btn-block btn-lg gradient-custom-4 text-body mt-10" type="submit"
-                      style="margin-top: 5rem;">
-                      Войти
-                    </button>
-                    <p class="text-center text-muted mt-5 mb-0">
-                      Или нажми<router-link to="/signup/"> здесь</router-link>, чтобы зарегистрироваться!
-                    </p>
-                  </form>
-
+                
                 </div>
               </div>
             </div>
@@ -58,7 +36,6 @@
 
 <script>
 import axios from "axios";
-import { HTTP_USER } from "@/http-common.js";
 
 export default {
   data() {
@@ -118,16 +95,6 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-
-
-        HTTP_USER.get(`/is_admin/`).then((response) => {
-          console.log(response.data)
-
-          if (response.data) {
-            window.open("http://127.0.0.1:8000/admin/", '_blank');
-            // window.location.replace("http://127.0.0.1:8000/admin/");
-          }
-        });
       }
     },
   },

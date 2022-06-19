@@ -11,13 +11,13 @@
             </div>
 
             <div class="col-md-5 mx-4 my-4">
-              <p class="small font-weight-bold my-2">cinema</p>
+              <h4 class="small font-weight-bold my-2">Кинотеатр</h4>
               <h3 class="mb-3">
                 {{ currentCinema?.name }}
               </h3>
               <p>
-                <strong>Address: </strong>{{ currentCinema?.address }}<br />
-                <strong>Phone number: </strong>{{ currentCinema?.phone_number
+                <strong>Адрес: </strong>{{ currentCinema?.address }}<br />
+                <strong>Номер телефона: </strong>{{ currentCinema?.phone_number
                 }}<br />
               </p>
               <hr />
@@ -39,12 +39,12 @@
                   <div class="card m-2 p-2" v-for="movie_s in cinemaSessions" :key="movie_s.id">
                     <img v-bind:src="movie_s.movie.image" alt="" class="card-img-top" />
                     <div class="card-body text-center">
-                      <h1 class="card-title">{{ movie_s.movie.name }}</h1>
+                      <h3 class="card-title">{{ movie_s.movie.name }}</h3>
                       <p class="card-text" v-for="genre in movie_s.movie.genres" :key="genre.id">
                         {{ genre }} </p>
 
                       <router-link :to="{ name: 'movie-detail', params: { movieId: movie_s.movie.id } }"
-                        class="btn btn-outline-success btn-sm">Read more
+                        class="btn btn-outline-success btn-sm">подробнее
                       </router-link>
                     </div>
                   </div>

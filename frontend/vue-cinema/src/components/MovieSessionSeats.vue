@@ -30,7 +30,7 @@
       <div class="col-sm-12">
         <div class="card text-center">
           <div class="card-header">
-            <h3>screen</h3>
+            <h3>экран</h3>
           </div>
 
           <div class="card-body">
@@ -39,7 +39,8 @@
                 <table class="flex-fill container-fluid">
                   <tbody>
                     <tr v-for="(row, ind) in allSeats" :key="ind">
-                      <button type="button" class="btn btn-outline-primary btn-sm mr-4 p-1" disabled>{{ ind }} row</button>
+                      <button type="button" class="btn btn-outline-primary btn-sm mr-4 p-1" disabled>{{ ind }}
+                        ряд</button>
                       <!-- <p class ="m-2"> {{ ind }} ряд       </p> -->
                       <td v-for="seat in row" :key="seat.id">
                         <div class="checkbox-btn-group">
@@ -123,10 +124,26 @@ export default {
       session_time = new Date(session_time)
       var now = new Date();
       console.log(now, !this.isAuthenticated, session_time <= now, !this.isAuthenticated || session_time <= now);
-      if (!this.isAuthenticated || session_time <= now) {
-        return true
+      if (!this.isAuthenticated ||
+        (session_time.getDate() <= now.getDate() &&
+          session_time.getMonth() <= now.getMonth() &&
+          session_time.getFullYear() <= now.getFullYear())
+      ) {
+        if (
+          session_time.getHours() <= now.getHours() &&
+          session_time.getMinutes() <= now.getMinutes()
+        ) {
+          console.log(session_time <= now)
+          return true
+        }
+        else {
+          console.log(session_time <= now)
+
+          return false
+        }
+
       }
-      else {
+      else{
         return false
       }
     },

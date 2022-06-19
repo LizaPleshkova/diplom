@@ -9,8 +9,8 @@
             :cinema="cinema"
           />
         </div>
-        <div class="col-sm-2">
-         <p style='center'>Coming soon</p><br/><hr/>
+        <div class="col-sm-3">
+         <h3 class="text-center">Скоро в прокате</h3><hr/>
           <MovieSoon v-for="movie in movieSoon"
             v-bind:key="movie.id"
             :movie="movie"

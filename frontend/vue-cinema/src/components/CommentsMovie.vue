@@ -1,7 +1,7 @@
 <template>
   <div class="card mx-auto left-ads-display col-lg-12 mb-5">
     <div class="container mt-5">
-      <div class="row d-flex justify-content-center">
+      <div class="row d-flex justify-content-center mb-5">
         <div class="col-md-7">
           <div class="shadow p-3 bg-white rounded">
             <div class="d-flex flex-row align-items-left">

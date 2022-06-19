@@ -13,12 +13,22 @@ class PersonalData(models.Model):
     def __str__(self):
         return f'{self.id} - {self.first_name} - {self.last_name} '
 
+    class Meta:
+        verbose_name = "Персональные данные"
+        verbose_name_plural ="Персональные данные"
+
+
 
 class Studio(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return f'{self.id} - {self.name} '
+
+    class Meta:
+        verbose_name = "Студия"
+        verbose_name_plural ="Студии"
+
 
 
 class Country(models.Model):
@@ -27,12 +37,22 @@ class Country(models.Model):
     def __str__(self):
         return f'{self.id} - {self.name} '
 
+    class Meta:
+        verbose_name = "Страна"
+        verbose_name_plural ="Страны"
+
+
 
 class Genre(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return f'{self.id} - {self.name} '
+
+    class Meta:
+        verbose_name = "Жанр"
+        verbose_name_plural ="Жанры"
+
 
 
 class Movie(models.Model):
@@ -52,6 +72,11 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse('movie_detail', kwargs={"id": self.id})
 
+    class Meta:
+        verbose_name = "Фильм"
+        verbose_name_plural ="Фильмы"
+
+
 
 class MovieComposition(models.Model):
     position = models.CharField(max_length=255)
@@ -60,6 +85,9 @@ class MovieComposition(models.Model):
 
     def __str__(self):
         return f'{self.position} - {self.person} - {self.movie} '
+
+    class Meta:
+        verbose_name = "Состав фильма"
 
 
 class MovieCountries(models.Model):
@@ -95,3 +123,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.id} - {self.author} - {self.movie} - {self.is_visible}'
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural ="Комментарии"
+

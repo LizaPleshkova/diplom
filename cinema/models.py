@@ -29,8 +29,13 @@ class Cinema(models.Model):
         "Изображение", upload_to="cinemas/", blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Кинотеатр"
+        verbose_name_plural = "Кинотеатры"
+
     def __str__(self):
-        return f'{self.pk} - {self.name} - {self.address}- {self.phone_number}'
+        # return f'{self.pk} - {self.name} - {self.address}- {self.phone_number}'
+        return f'[{self.pk} - {self.name} - {self.address}]'
 
     def get_absolute_url(self):
         return reverse('cinema_detail', kwargs={"slug": self.name})
@@ -38,12 +43,19 @@ class Cinema(models.Model):
 
 class Hall(models.Model):
     '''  validate count places <10 '''
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="Название зала")
     cinema = models.ForeignKey(
-        Cinema, on_delete=models.CASCADE, blank=True, null=True)
-    count_places = models.IntegerField()
-    count_rows = models.IntegerField(default=0)
-    count_columns = models.IntegerField(default=0)
+        Cinema, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Кинотеатр")
+    count_places = models.IntegerField(verbose_name="Количество мест")
+    count_rows = models.IntegerField(default=0, verbose_name="Количество рядов")
+    count_columns = models.IntegerField(default=0, verbose_name="Количество колон")
+
+    def hall_cinema(self):
+        return f'{self.cinema.id}-{self.cinema.name}'
+
+    class Meta:
+        verbose_name = "Зал"
+        verbose_name_plural = "Залы"
 
     def __str__(self):
         return f'{self.pk} - {self.name} - {self.cinema}- {self.count_places}'
@@ -52,6 +64,10 @@ class Hall(models.Model):
 class Sector(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Сектор"
+        verbose_name_plural = "Сектора"
 
     def __str__(self):
         return f'{self.pk} - {self.name}'
@@ -66,6 +82,10 @@ class Seat(models.Model):
     number_row = models.IntegerField(default=0)
     isBooked = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = "Место"
+        verbose_name_plural = "Места"
+
     def __str__(self):
         return f'{self.pk} - {self.hall} -{self.isBooked}- {self.sector} - {self.number_place}'
 
@@ -76,6 +96,9 @@ class ScheduleRental(models.Model):
                               related_name='movie_rental')  # not on_delte
     start_date = models.DateField()
     end_date = models.DateField()
+
+    class Meta:
+        verbose_name = "Прокат фильма"
 
     def __str__(self):
         return f'{self.pk} - {self.movie} - [{self.start_date} - {self.end_date}] '
@@ -93,6 +116,8 @@ class SessionSchedule(models.Model):
 
     class Meta:
         unique_together = (('start_time', 'end_time'),)
+        verbose_name = "Расписание киносеанса"
+        verbose_name_plural = "Расписание киносеансов"
 
     def __str__(self):
         return f'{self.pk} - {self.name} - {self.start_time} - {self.end_time} '
@@ -101,10 +126,14 @@ class SessionSchedule(models.Model):
 class MovieSession(models.Model):
     ''' киноcеанс '''
     hall = models.ForeignKey(Hall, on_delete=models.CASCADE,
-                             blank=True, null=True, related_name='session_hall')
+                             blank=True, null=True, related_name='session_hall', verbose_name="Зал")
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE,
-                              blank=True, null=True, related_name='session_movie')
-    datetime_session = models.DateTimeField()
+                              blank=True, null=True, related_name='session_movie', verbose_name="Фильм")
+    datetime_session = models.DateTimeField(verbose_name="Время киносеанса")
+
+    class Meta:
+        verbose_name = "Киносеанс"
+        verbose_name_plural = "Киносеансы"
 
     def __str__(self):
         return f'{self.pk} - {self.hall} - {self.movie}'
@@ -127,6 +156,8 @@ class Booking(models.Model):
 
     class Meta:
         unique_together = (('session', 'seat'),)
+        verbose_name = "Бронь"
+        verbose_name_plural = "Бронирования"
 
     def __str__(self):
         return f'{self.id} - {self.user.username} - {self.session} - {self.seat.number_place} - {self.price} - {self.datetime_book} '
@@ -161,6 +192,10 @@ class BookingHistory(models.Model):
         max_digits=1000, decimal_places=2, blank=True, null=True)
     datetime_book = models.DateTimeField()
     action_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "История бронирования"
+        verbose_name_plural = "История броинирования"
 
 
 @receiver(post_save, sender=Hall)

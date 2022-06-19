@@ -5,81 +5,88 @@
         <!-- <h1 class="title">Sign up</h1> -->
       </div>
     </div>
- <div class="col-sm-12 m-1 text-center " v-if='errors.length '>
+    <div class="col-sm-12 m-1 text-center " v-if='errors.length'>
+      <div class="alert alert-warning" role="alert">
+        {{ errors }}
+      </div>
+    </div>
+    <section class=" bg-image">
+      <div class="mask d-flex align-items-center gradient-custom-3">
+        <div class="container">
+          <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+              <div class="card" style="border-radius: 15px; margin: 2rem;">
+                <div class="card-body p-5">
+                  <h3 class="text-uppercase text-center mb-5">Создай аккаунт</h3>
+                  <!-- <div class="col-sm-12 m-1 text-center " v-if='errors'>
         <div class="alert alert-warning" role="alert">
           {{ errors }}
         </div>
-      </div>
-<section class="vh-100 bg-image"
-  >
-  <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-    <div class="container h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-          <div class="card" style="border-radius: 15px;">
-            <div class="card-body p-5">
-              <h2 class="text-uppercase text-center mb-5">Создай аккаунт</h2>
- <div class="col-sm-12 m-1 text-center " v-if='errors'>
-        <div class="alert alert-warning" role="alert">
-          {{ errors }}
-        </div>
-      </div>
-              <form v-on:submit.prevent="submitForm">
+      </div> -->
+                  <form v-on:submit.prevent="submitForm">
 
-                <div class="form-outline mb-4">
-                  <input type="text" id="username" class="form-control form-control-lg" placeholder="Логин" v-model="username"/>
-                  <!-- <label class="form-label" for="username">Your nick</label> -->
+                    <div class="form-outline mb-4">
+                      <input type="text" id="username" class="form-control form-control-lg" placeholder="Логин"
+                        v-model="username" />
+                      <!-- <label class="form-label" for="username">Your nick</label> -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="text" id="first_name" class="form-control form-control-lg" placeholder="Имя"
+                        v-model="first_name" />
+                      <!-- <label class="form-label" for="first_name">Your First Name</label> -->
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+                      <input type="text" id="last_name" class="form-control form-control-lg" placeholder="Фамилия"
+                        v-model="last_name" />
+                      <!-- <label class="form-label" for="last_name">Your Last Name</label> -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="email" id="email" class="form-control form-control-lg" placeholder="Почта"
+                        v-model="email" />
+                      <!-- <label class="form-label" for="email">Your Email</label> -->
+                    </div>
+
+
+                    <div class="form-outline mb-4">
+                      <input type="text" id="birth_date" class="form-control form-control-lg"
+                        placeholder="Дата рождения в формате: YYYY-MM-DD" v-model="birth_date" />
+                      <!-- <label class="form-label" for="birth_date">Your birth_date</label> -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="password" id="password" class="form-control form-control-lg" placeholder="Пароль"
+                        v-model="password" />
+                      <!-- <label class="form-label" for="password">Password</label> -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <input type="password" id="password2" class="form-control form-control-lg"
+                        placeholder="Повтори пароль" v-model="password2" />
+                      <!-- <label class="form-label" for="password2">Repeat your password</label> -->
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                      <button type="submit" value="submit" style=" margin-top: 2rem;"
+                        class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Зарегистрироваться</button>
+                    </div>
+
+                    <p class="text-center text-muted mt-5 mb-0">Уже есть аккаунт? <u>
+                        <router-link to="/login/">Войти в систему</router-link>
+                      </u></p>
+
+                  </form>
+
                 </div>
-
-                <div class="form-outline mb-4">
-                  <input type="text" id="first_name" class="form-control form-control-lg" placeholder="Имя" v-model="first_name"/>
-                  <label class="form-label" for="first_name">Your First Name</label>
-                </div>
-
-
-                <div class="form-outline mb-4">
-                  <input type="text" id="last_name" class="form-control form-control-lg" placeholder="Фамилия"  v-model="last_name"/>
-                  <!-- <label class="form-label" for="last_name">Your Last Name</label> -->
-                </div>
-
-                <div class="form-outline mb-4">
-                  <input type="email" id="email" class="form-control form-control-lg" placeholder="Почта"  v-model="email" />
-                  <!-- <label class="form-label" for="email">Your Email</label> -->
-                </div>
-
-
-                <div class="form-outline mb-4">
-                  <input type="text" id="birth_date" class="form-control form-control-lg" placeholder="Дата рождения в формате: YYYY-MM-DD" v-model="birth_date" />
-                  <!-- <label class="form-label" for="birth_date">Your birth_date</label> -->
-                </div>
-
-                <div class="form-outline mb-4">
-                  <input type="password" id="password" class="form-control form-control-lg" placeholder="Пароль"  v-model="password" />
-                  <!-- <label class="form-label" for="password">Password</label> -->
-                </div>
-
-                <div class="form-outline mb-4">
-                  <input type="password" id="password2" class="form-control form-control-lg" placeholder="Повтори пароль"  v-model="password2" />
-                  <!-- <label class="form-label" for="password2">Repeat your password</label> -->
-                </div>
-
-                <div class="d-flex justify-content-center">
-                  <button type="submit"  value="submit"
-                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Зарегистрироваться</button>
-                </div>
-
-                <p class="text-center text-muted mt-5 mb-0">Уе есть аккаунт?  <u>
-                      <router-link to="/login/">Войти в систему</router-link></u></p>
-
-              </form>
-
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- <section class="section">
       <div class="container">
@@ -174,30 +181,77 @@ export default {
     document.title = "Sign up";
   },
   methods: {
+    checkForm: function () {
+      this.errors = [];
+      var letters_re = /^[а-яА-ЯёЁa-zA-Z]+$/;
+      letters_re.test(this.login);
+
+      if (this.first_name === "") {
+        this.errors.push("Укажите имя");
+      } else if(letters_re.test(this.first_name)){
+       this.errors.push('Укажите имя в корректном формате');
+      }
+      if (this.last_name === "") {
+        this.errors.push("Укажите фамилию");
+      }else if(letters_re.test(this.first_name)){
+       this.errors.push('Укажите фамилию в корректном формате');
+      }
+      if (this.username === "") {
+        this.errors.push("Укажите логин");
+      } else if (!this.validLogin(this.username) && this.username.length < 8) {
+        this.errors.push('Укажите корректный логин.');
+      }
+      if (!this.email) {
+        this.errors.push("Укажите адрес электронной почты");
+      } else if (!this.validEmail(this.email)) {
+        this.errors.push('Укажите корректный адрес электронной почты.');
+      }
+
+      if (this.password === "") {
+        this.errors.push("Укажите пароль");
+      }
+
+      if (this.password !== this.password2) {
+        this.errors.push("Пароли не совпадают");
+      }
+
+
+      if (!this.errors.length) {
+        return true;
+      }
+    },
     submitForm() {
       console.log("submitForm");
       console.log(this.username, this.last_name, this.first_name, this.email, this.birth_date)
 
-      this.errors = [];
-      if (this.first_name === "") {
-        this.errors.push("The first_name is missing!");
-      }
-      if (this.last_name === "") {
-        this.errors.push("The last_name is missing!");
-      }
-      if (this.username === "") {
-        this.errors.push("The username is missing!");
-      }
+      // this.errors = [];
+      // if (this.first_name === "") {
+      //   this.errors.push("The first_name is missing!");
+      // }
+      // if (this.last_name === "") {
+      //   this.errors.push("The last_name is missing!");
+      // }
+      // if (this.username === "") {
+      //   this.errors.push("The username is missing!");
+      // }
+      // if (!this.email) {
+      //   this.errors.push("The username is missing!");
+      // } else if (!this.validEmail(this.email)) {
+      //   this.errors.push('Укажите корректный адрес электронной почты.');
+      // }
 
-      if (this.password === "") {
-        this.errors.push("The password is missing!");
-      }
+      // if (this.password === "") {
+      //   this.errors.push("The password is missing!");
+      // }
 
-      if (this.password !== this.password2) {
-        this.errors.push("The passwords are not matching!");
+      // if (this.password !== this.password2) {
+      //   this.errors.push("The passwords are not matching!");
+      // }
+      if(!this.checkForm()){
+        console.log('smth wrong')
+        return;
       }
-      
-      console.log(this.birth_date, typeof(this.birth_date))
+      console.log(this.birth_date, typeof (this.birth_date))
       if (!this.errors.length) {
         axios({
           method: "post",
@@ -235,6 +289,14 @@ export default {
             }
           });
       }
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+    validLogin: function (login) {
+      var re = /^[a-zA-Z][a-zA-Z0-9-_\.]{2,20}$/;
+      return re.test(login);
     },
   },
 };

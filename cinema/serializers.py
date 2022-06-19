@@ -136,6 +136,15 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         model = MovieSession
         fields = ('id', 'hall', 'movie', 'datetime_session',)
 
+class MovieSessionUserReportSerializer(serializers.ModelSerializer):
+    movie = serializers.CharField(source="movie.name")
+    # hall = HallSerializer()
+    hall = serializers.CharField(source="hall.name")
+
+    class Meta:
+        model = MovieSession
+        fields = ('id', 'hall', 'movie', 'datetime_session',)
+
 
 class SeatIdSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -183,7 +192,7 @@ class BookingReportSerializer(serializers.ModelSerializer):
     return format:
     '''
     seat = SeatListSerializer()
-    session = MovieSessionSerializer()
+    session = MovieSessionUserReportSerializer()
     user = UserListSerializer()
 
     class Meta:

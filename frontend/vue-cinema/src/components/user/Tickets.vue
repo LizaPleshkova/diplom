@@ -2,10 +2,9 @@
     <div class="col-sm-12 container-fluid mx-auto">
         
         <div class="row  justify-content-around m-1 p-1">
-            {{ selectedBookingIds }}
             <!-- Может сделать форма для отправки на почту(она ведь может оличаться от исходной при регистраии) -->
-            <button class="btn btn-outline-success btn-sm-2  m-1 p-1" @click="">Send to email</button>
-            <button class="btn btn-outline-success btn-sm-2  m-1 p-1" @click="generateReport">Download in PDF</button>
+            <!-- <button class="btn btn-outline-success btn-sm-2  m-1 p-1" @click="">Send to email</button> -->
+            <button class="btn btn-outline-success btn-sm-2  m-1 p-1" @click="generateReport">Сохранить в PDF</button>
         </div>
             <section slot="pdf-content"  ref="document">
                 <div class="row justify-content-around">
@@ -13,21 +12,21 @@
                         <div v-for="(booked, ind) in Bookings" :key="booked.id">
                             <article class="card fl-left m-1 p-1">
                                 <section class="date">
-                                    <time datetime="23th feb">
+                                    <time datetime="23th feb" class="ml-2"
+                                    >
                                         <!-- here will be qr -code -->
                                         <vue-qrcode v-bind:value="booked.id_ticket" />
                                     </time>
                                 </section>
                                 <section class="card-cont">
-                                    <small>cinema {{ booked.cinema.name }}</small>
+                                    <small>Кинотеатр {{ booked.cinema.name }}</small>
                                     <h3>{{ booked.session.movie }}</h3>
                                     <div class="even-date">
                                         <i class="fa fa-calendar"></i>
                                         <time>
-                                            {{ booked.seat.number_place }}seat, {{ booked.seat.number_row }} row, {{
+                                            {{ booked.seat.number_place }} место, {{ booked.seat.number_row }} ряд, {{
                                                     booked.seat.sector
-                                            }}
-                                            sector, {{ booked.price }} price
+                                            }}   сектор, {{ booked.price }} цена
 
                                             <span>{{ booked.session.datetime_session }}</span>
                                         </time>
@@ -35,8 +34,8 @@
                                     <div class="even-info">
                                         <i class="fa fa-map-marker"></i>
                                         <p>
-                                            CINEMA ADDRESS {{ booked.cinema.address }}
-                                            CINEMA PHONE NUMBER {{ booked.cinema.phone_number }}
+                                           Адрес кинотеатра {{ booked.cinema.address }}
+                                           Телефонный номер {{ booked.cinema.phone_number }}
                                         </p>
                                     </div>
                                     <a href="#">booked</a>
@@ -77,12 +76,9 @@ export default {
         },
         generateReport() {
             console.log('here')
-            // this.$refs.html2Pdf.generatePdf()
             html2pdf(this.$refs.document, {
         margin: 0.2,
-        filename: "new.pdf",
-        // pagebreak:  { after: '.sautDePage' },
-       
+        filename: `booked tickets, ${new Date()}`,
         html2canvas: { 
           scale: 2, 
           letterRendering: true
@@ -120,7 +116,7 @@ export default {
 }
 
 body {
-    background-color: #dadde6;
+    background-color: #cdd0da8e;
     font-family: arial
 }
 
@@ -133,7 +129,7 @@ body {
 }
 
 h1 {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-weight: 900;
     border-left: 10px solid #fec500;
     padding-left: 10px;
@@ -225,9 +221,9 @@ h1 {
     font-size: 130%
 }
 
-.row:last-child .card:last-of-type .card-cont h3 {
-    text-decoration: line-through
-}
+/* .row:last-child .card:last-of-type .card-cont h3 {
+    /* text-decoration: line-through 
+} */
 
 .card-cont>div {
     display: table-row

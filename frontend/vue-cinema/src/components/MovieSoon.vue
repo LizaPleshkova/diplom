@@ -1,19 +1,18 @@
 <template>
-      <div class="card p-3">
+      <div class="card m-3">
           <img :src="movie.image" class=" card-img-top" alt="latest_movie" />
           <div class="card-body">
-            <h6 class="card-title text-center">
+            <h5 class="card-title text-center">
               {{ movie.name }}
-            </h6>
-            <div class="card-text text-center">
+            </h5>
+            <div class="card-text text-center p-1">
               <div v-for="genre in movie.genres" :key="1" class='small'>
                 <span>{{ genre }} </span>
               </div>
-              <p></p>
               <router-link
                 :to="{ name: 'movie-detail', params: { movieId: movie.id } }"
-                class="btn btn-outline-success btn-sm"
-                >Read more
+                class="btn btn-outline-success btn-sm m-2"
+                >подробнее
               </router-link>
             </div>
           </div>
